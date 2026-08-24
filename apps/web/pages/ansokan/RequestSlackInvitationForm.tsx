@@ -57,7 +57,7 @@ const RequestSlackInvitationForm = () => {
         Ansök om medlemskap i Slack-gruppen för frilansare
       </h1>
 
-      <p className="my-4 text-[1.1em] leading-relaxed text-brand-cream">
+      <p className="my-4 text-[1.1em] leading-[1.5] text-brand-cream">
         Vi godkänner bara ansökningar för dig som redan är frilansare.
       </p>
 
@@ -66,7 +66,7 @@ const RequestSlackInvitationForm = () => {
         onSubmit={submitForm}
       >
         <div className="mb-4">
-          <Label htmlFor="name" className="text-[1.1em] leading-relaxed">
+          <Label htmlFor="name" className="text-[1.1em] leading-[1.5]">
             Namn
           </Label>
           <Input
@@ -80,7 +80,7 @@ const RequestSlackInvitationForm = () => {
         </div>
 
         <div className="mb-4">
-          <Label htmlFor="email" className="text-[1.1em] leading-relaxed">
+          <Label htmlFor="email" className="text-[1.1em] leading-[1.5]">
             E-mail
           </Label>
           <Input
@@ -94,7 +94,7 @@ const RequestSlackInvitationForm = () => {
         </div>
 
         <div className="mb-4">
-          <Label htmlFor="howlong" className="text-[1.1em] leading-relaxed">
+          <Label htmlFor="howlong" className="text-[1.1em] leading-[1.5]">
             Hur länge har du varit frilansare?
           </Label>
           <Input
@@ -107,7 +107,7 @@ const RequestSlackInvitationForm = () => {
         </div>
 
         <div className="mb-4">
-          <Label htmlFor="companyName" className="text-[1.1em] leading-relaxed">
+          <Label htmlFor="companyName" className="text-[1.1em] leading-[1.5]">
             Vad heter ditt företag? Eller har du enskild firma?
           </Label>
           <Input
@@ -120,7 +120,7 @@ const RequestSlackInvitationForm = () => {
         </div>
 
         <div className="mb-4">
-          <Label htmlFor="linkedin" className="text-[1.1em] leading-relaxed">
+          <Label htmlFor="linkedin" className="text-[1.1em] leading-[1.5]">
             Länk till din LinkedIn profil
           </Label>
           <Input
@@ -141,7 +141,7 @@ const RequestSlackInvitationForm = () => {
           />
           <Label
             htmlFor="freelancer-confirmation"
-            className="text-[1.1em] leading-relaxed"
+            className="text-[1.1em] leading-[1.5]"
           >
             Jag är igång som frilansare, d v s har ett bolag att fakturera genom
             och tecknat avtal med åtminstone min första kund.
@@ -149,7 +149,7 @@ const RequestSlackInvitationForm = () => {
         </div>
 
         <div className="mb-4">
-          <Label htmlFor="motivation" className="text-[1.1em] leading-relaxed">
+          <Label htmlFor="motivation" className="text-[1.1em] leading-[1.5]">
             Motivering (berätta kort om vad du gör och varför du vill vara med i
             vårt community). Observera att vi endast godkänner medlemmar som ÄR
             frilansare.
