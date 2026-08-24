@@ -42,3 +42,9 @@ yarn-error.log*
 
 # storybook
 storybook-static/
+
+# Next.js auto-generates these agent instruction files into the app directory
+# on every dev/build run. Regenerated on demand, so nothing is lost by ignoring
+# them; tracking them would add framework-authored agent rules to the repo.
+apps/*/AGENTS.md
+apps/*/CLAUDE.md
