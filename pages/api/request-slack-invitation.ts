@@ -1,4 +1,4 @@
-import https from 'https'
+import https from 'node:https'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const slackWebHookURL: string | undefined =

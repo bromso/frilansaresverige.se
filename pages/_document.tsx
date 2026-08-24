@@ -37,6 +37,7 @@ export default class MyDocument extends Document {
             src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GOOGLE_ANALYTICS_ID}`}
           />
           <script
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: Google Analytics gtag bootstrap requires an inline script; the content is a static literal with no user input.
             dangerouslySetInnerHTML={{
               __html: `
             window.dataLayer = window.dataLayer || [];
