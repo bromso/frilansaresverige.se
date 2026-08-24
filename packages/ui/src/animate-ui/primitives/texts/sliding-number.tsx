@@ -12,7 +12,10 @@ import {
 import * as React from 'react'
 import useMeasure from 'react-use-measure'
 
-import { type UseIsInViewOptions, useIsInView } from '@/hooks/use-is-in-view'
+import {
+  type UseIsInViewOptions,
+  useIsInView,
+} from '../../../hooks/use-is-in-view'
 
 type SlidingNumberRollerProps = {
   prevValue: number
