@@ -31,5 +31,16 @@
     }
   },
   "linter": { "enabled": true, "rules": { "recommended": true } },
-  "assist": { "actions": { "source": { "organizeImports": "on" } } }
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
+  "overrides": [
+    {
+      "includes": ["packages/ui/src/ui/**", "packages/ui/src/animate-ui/**"],
+      "linter": {
+        "rules": {
+          "correctness": { "noUnusedImports": "off" },
+          "suspicious": { "noExplicitAny": "off", "noArrayIndexKey": "off" }
+        }
+      }
+    }
+  ]
 }
