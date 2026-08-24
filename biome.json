@@ -8,7 +8,7 @@
       "!**/.next",
       "!**/storybook-static",
       "!**/bun.lock",
-      "!public"
+      "!apps/web/public"
     ]
   },
   "formatter": {

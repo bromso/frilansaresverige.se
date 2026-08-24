@@ -1,0 +1,13 @@
+{
+  "extends": "@frilansaresverige/tsconfig/nextjs.json",
+  "compilerOptions": {
+    "paths": {
+      "@/components/*": ["./components/*"],
+      "@/pages/*": ["./pages/*"],
+      "@/styles/*": ["./styles/*"],
+      "@/hooks/*": ["./hooks/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "../../test-setup.ts"],
+  "exclude": ["node_modules"]
+}

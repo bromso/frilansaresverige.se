@@ -1,0 +1,31 @@
+{
+  "name": "@frilansaresverige/web",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "classnames": "^2.5.1",
+    "next": "^16.2.9",
+    "react": "^19.2.7",
+    "react-cookie-consent": "^10.0.1",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@frilansaresverige/tsconfig": "workspace:*",
+    "@happy-dom/global-registrator": "20.11.6",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/bun": "^1.4.0",
+    "@types/node": "^26.0.0",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^6.0.3"
+  }
+}
