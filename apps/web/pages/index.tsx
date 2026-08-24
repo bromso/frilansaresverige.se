@@ -96,15 +96,15 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
 
       <div className="flex w-full max-w-[65em] flex-wrap items-stretch justify-center gap-6">
         <CardSlide reduced={reduced}>
-          <Card className="bg-brand-cream text-brand-blue rounded-[10px] p-6 text-left">
-            <h2 className="mb-4 text-xl font-bold">Vi hjälper varandra</h2>
-            <p className="text-xl leading-relaxed">
+          <Card className="bg-brand-cream text-brand-blue rounded-[10px] border-0 p-6 text-left shadow-none">
+            <h2 className="mb-5 text-xl font-bold">Vi hjälper varandra</h2>
+            <p className="text-xl leading-[1.5]">
               Vi hjälper varandra med allt som rör livet som frilansare! T ex
               hur man hittar uppdrag och hur man bokför saker.
             </p>
 
-            <h2 className="mb-4 text-xl font-bold">Ett Slack-community</h2>
-            <p className="text-xl leading-relaxed">
+            <h2 className="mb-5 text-xl font-bold">Ett Slack-community</h2>
+            <p className="text-xl leading-[1.5]">
               Frilansare från hela Sverige är välkomna.
             </p>
 
@@ -118,11 +118,11 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
         </CardSlide>
 
         <CardSlide reduced={reduced}>
-          <Card className="bg-brand-cream text-brand-blue rounded-[10px] p-6 text-left">
-            <h2 className="mb-4 text-xl font-bold">
+          <Card className="bg-brand-cream text-brand-blue rounded-[10px] border-0 p-6 text-left shadow-none">
+            <h2 className="mb-5 text-xl font-bold">
               Vill du ha hjälp med något? &rarr;
             </h2>
-            <p className="text-xl leading-relaxed">
+            <p className="text-xl leading-[1.5]">
               Om du jobbar på ett bolag som har konsultbehov så kan du gratis nå
               ut till <MemberCount count={memberCount} /> frilansare med
               informationen, utan mellanhänder.
