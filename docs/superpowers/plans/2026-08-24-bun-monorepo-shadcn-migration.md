@@ -490,6 +490,7 @@ Create `apps/web/package.json`. Move every `dependencies` and app-relevant `devD
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
+    "@types/bun": "^1.4.0",
     "@types/node": "^26.0.0",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
@@ -497,6 +498,8 @@ Create `apps/web/package.json`. Move every `dependencies` and app-relevant `devD
   }
 }
 ```
+
+**Do not treat this list as authoritative over the live file.** Read the current root `package.json` and move what is actually there. Tasks 2 and 3 changed the dependency set after this plan was written — `@types/bun` came from Task 2, `@biomejs/biome` from Task 3. `@biomejs/biome` is the only devDependency that belongs at the workspace root (Step 4); everything else moves here. If the live file and this block disagree, the live file wins and you should say so in your report.
 
 - [ ] **Step 4: Reduce the root manifest to a workspace root**
 
