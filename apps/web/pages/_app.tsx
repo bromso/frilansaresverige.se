@@ -5,13 +5,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import CookieConsent from 'react-cookie-consent'
 
-import styles from '../styles/Home.module.css'
-
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <div className="content">
-        <Link href="/" className="logo-container" title="Gå till startsidan">
+      <div className="relative z-[2] mx-auto flex min-w-full flex-wrap gap-8 px-[min(2em,3vw)] pt-[4.5em] pb-8">
+        <Link href="/" className="flex-[999_1_8em]" title="Gå till startsidan">
           <svg
             width="137"
             height="112"
@@ -106,20 +104,21 @@ function MyApp({ Component, pageProps }: AppProps) {
             />
           </svg>
         </Link>
-        <main>
+        <main className="relative z-[2] mr-auto flex flex-[1_1_40em] flex-col items-center justify-start">
           <Component {...pageProps} />
         </main>
-        <div className="spacer"></div>
+        <div className="flex-[999_1_8em]" />
       </div>
 
-      <footer className="footer">
+      <footer className="relative z-[2] mt-auto w-full py-8 text-center">
         <a
           href="https://github.com/frilansaresverige/frilansaresverige.se/"
           target="_blank"
           rel="noopener noreferrer"
+          className="text-brand-cream"
         >
           Bidra till sidan genom vår GitHub 👉
-          <span className={styles.logo}>
+          <span className="ml-2 h-[1em]">
             <Image
               alt="Github Logo"
               src="https://github.githubassets.com/images/modules/site/icons/footer/github-mark.svg"
