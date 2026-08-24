@@ -15,11 +15,13 @@ const mockFetchPromise = ({
       .fn()
       .mockImplementation(() =>
         Promise.resolve({ json: () => Promise.resolve({ success }) }),
-      )
+      ) as unknown as typeof fetch
   } else {
     global.fetch = jest
       .fn()
-      .mockImplementation(() => Promise.reject(new Error('ooops')))
+      .mockImplementation(() =>
+        Promise.reject(new Error('ooops')),
+      ) as unknown as typeof fetch
   }
 }
 
