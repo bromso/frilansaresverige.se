@@ -137,6 +137,7 @@ const RequestSlackInvitationForm = () => {
             id="freelancer-confirmation"
             name="freelancer-confirmation"
             required
+            className="border-brand-blue"
           />
           <Label
             htmlFor="freelancer-confirmation"
