@@ -6,9 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "bun test"
+    "test": "bun test --preload ../../test-setup.ts"
   },
   "dependencies": {
+    "@frilansaresverige/ui": "workspace:*",
     "classnames": "^2.5.1",
     "next": "^16.2.9",
     "react": "^19.2.7",
@@ -18,6 +19,7 @@
   "devDependencies": {
     "@frilansaresverige/tsconfig": "workspace:*",
     "@happy-dom/global-registrator": "20.11.6",
+    "@tailwindcss/postcss": "4.3.3",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
@@ -26,6 +28,7 @@
     "@types/node": "^26.0.0",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "tailwindcss": "4.3.3",
     "typescript": "^6.0.3"
   }
 }

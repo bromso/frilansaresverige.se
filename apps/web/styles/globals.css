@@ -1,3 +1,11 @@
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "@frilansaresverige/ui/styles/theme.css";
+
+@source "../../../packages/ui/src";
+
 :root {
   --blue: #4823dc;
   --white: #fffce3;
