@@ -20,7 +20,7 @@
     "incremental": true,
     "types": [
       "node",
-      "jest"
+      "bun"
     ],
     "paths": {
       "@/components/*": [
@@ -41,9 +41,10 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "./jest.setup.ts"
+    "./test-setup.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/*.spec.ts"
   ]
 }
