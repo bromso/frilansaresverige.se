@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,32 +14,14 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "types": [
-      "node",
-      "bun"
-    ],
+    "types": ["node", "bun"],
     "paths": {
-      "@/components/*": [
-        "./components/*"
-      ],
-      "@/pages/*": [
-        "./pages/*"
-      ],
-      "@/styles/*": [
-        "./styles/*"
-      ],
-      "@/hooks/*": [
-        "./hooks/*"
-      ]
+      "@/components/*": ["./components/*"],
+      "@/pages/*": ["./pages/*"],
+      "@/styles/*": ["./styles/*"],
+      "@/hooks/*": ["./hooks/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "./test-setup.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "./test-setup.ts"],
+  "exclude": ["node_modules"]
 }

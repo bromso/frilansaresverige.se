@@ -2,8 +2,8 @@ import '../styles/globals.css'
 
 import type { AppProps } from 'next/app'
 import Image from 'next/image'
-import CookieConsent from 'react-cookie-consent'
 import Link from 'next/link'
+import CookieConsent from 'react-cookie-consent'
 
 import styles from '../styles/Home.module.css'
 

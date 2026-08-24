@@ -1,6 +1,6 @@
-import { describe, it, expect, afterAll, jest } from 'bun:test'
-import { renderHook, act } from '@testing-library/react'
-import { FormEvent } from 'react'
+import { afterAll, describe, expect, it, jest } from 'bun:test'
+import { act, renderHook } from '@testing-library/react'
+import type { FormEvent } from 'react'
 import { useSubmitSlackInvitationForm } from './useSubmitSlackInvitationForm'
 
 const mockFetchPromise = ({

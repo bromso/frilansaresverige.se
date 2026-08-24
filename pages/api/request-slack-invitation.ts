@@ -1,5 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
 import https from 'https'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 const slackWebHookURL: string | undefined =
   process.env.SLACK_REQUEST_INVITE_WEBHOOK_URL
