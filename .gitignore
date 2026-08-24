@@ -48,3 +48,8 @@ storybook-static/
 # them; tracking them would add framework-authored agent rules to the repo.
 apps/*/AGENTS.md
 apps/*/CLAUDE.md
+
+# Next regenerates this on every dev/build run, and emits a different variant
+# for each (.next/dev/types vs .next/types), so tracking it produces churn on
+# every command. It is auto-generated and marked "should not be edited".
+next-env.d.ts
