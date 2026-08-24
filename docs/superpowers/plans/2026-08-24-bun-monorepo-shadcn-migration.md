@@ -668,7 +668,7 @@ container, since a wrong COPY path fails silently at runtime."
 
 **Files:**
 - Create: `packages/ui/package.json`, `packages/ui/tsconfig.json`, `packages/ui/src/styles/theme.css`, `packages/ui/src/lib/utils.ts`, `apps/web/postcss.config.mjs`
-- Modify: `apps/web/styles/globals.css`, `apps/web/package.json`
+- Modify: `apps/web/styles/globals.css`, `apps/web/package.json`, `apps/web/next.config.js`
 
 **Interfaces:**
 - Consumes: workspace layout from Task 4
@@ -767,7 +767,7 @@ cd ../..
 bun install
 ```
 
-- [ ] **Step 5: Add the PostCSS config**
+- [ ] **Step 5: Add the PostCSS config and enable workspace transpilation**
 
 Create `apps/web/postcss.config.mjs`:
 ```js
@@ -777,6 +777,27 @@ export default {
   },
 }
 ```
+
+Then add `transpilePackages` to `apps/web/next.config.js`, keeping the `outputFileTracingRoot` set in Task 4:
+
+```js
+const nextConfig = {
+  output: 'standalone',
+  outputFileTracingRoot: path.join(__dirname, '../../'),
+  transpilePackages: ['@frilansaresverige/ui'],
+  reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'github.githubassets.com',
+      },
+    ],
+  },
+}
+```
+
+**Why this is required:** `@frilansaresverige/ui` exports raw `.ts`/`.tsx` from `src/`, and a workspace package resolves through a symlink into `node_modules`. Next.js does not transpile `node_modules` by default, so without this the first `packages/ui` import from `apps/web` fails to compile. Nothing imports the package until Task 8, so the failure would otherwise surface three tasks later, far from its cause.
 
 - [ ] **Step 6: Wire Tailwind in with preflight OFF**
 
