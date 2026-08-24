@@ -3,8 +3,12 @@
 FROM oven/bun:1-alpine AS deps
 WORKDIR /app
 COPY package.json bun.lock bunfig.toml ./
+# Each workspace package needs its own manifest copied before install —
+# bun install --frozen-lockfile fails if the lockfile references a workspace
+# whose package.json is not on disk.
 COPY apps/web/package.json apps/web/
 COPY packages/tsconfig/package.json packages/tsconfig/
+COPY packages/ui/package.json packages/ui/
 RUN bun install --frozen-lockfile
 
 FROM oven/bun:1-alpine AS builder
