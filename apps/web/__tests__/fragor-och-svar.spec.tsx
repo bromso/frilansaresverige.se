@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'bun:test'
 import { cleanup, render, screen } from '@testing-library/react'
 import { FAQ_ITEMS } from '../components/Faq/faq-items'
-import FragorOchSvar from './fragor-och-svar'
+import FragorOchSvar from '../pages/fragor-och-svar'
 
 describe('/fragor-och-svar', () => {
   afterEach(() => cleanup())

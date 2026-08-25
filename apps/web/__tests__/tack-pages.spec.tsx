@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'bun:test'
 import { cleanup, render, screen } from '@testing-library/react'
-import AnsokanTack from './ansokan/tack'
-import TipsaTack from './tipsa/tack'
+import AnsokanTack from '../pages/ansokan/tack'
+import TipsaTack from '../pages/tipsa/tack'
 
 describe('tack pages', () => {
   afterEach(() => cleanup())

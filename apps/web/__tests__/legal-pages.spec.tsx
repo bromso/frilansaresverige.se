@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it } from 'bun:test'
 import { cleanup, render, screen } from '@testing-library/react'
-import Cookies from './cookies'
-import Integritetspolicy from './integritetspolicy'
-import Villkor from './villkor'
+import Cookies from '../pages/cookies'
+import Integritetspolicy from '../pages/integritetspolicy'
+import Villkor from '../pages/villkor'
 
 afterEach(() => cleanup())
 

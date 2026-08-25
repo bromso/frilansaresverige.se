@@ -1,11 +1,11 @@
 import { afterEach, describe, expect, it } from 'bun:test'
 import { cleanup, render, screen } from '@testing-library/react'
-import Community from './community'
-import Kontakt from './kontakt'
-import Kunskap from './kunskap'
-import Om from './om'
-import SaFungerarDet from './sa-fungerar-det'
-import Uppforandekod from './uppforandekod'
+import Community from '../pages/community'
+import Kontakt from '../pages/kontakt'
+import Kunskap from '../pages/kunskap'
+import Om from '../pages/om'
+import SaFungerarDet from '../pages/sa-fungerar-det'
+import Uppforandekod from '../pages/uppforandekod'
 
 afterEach(() => cleanup())
 

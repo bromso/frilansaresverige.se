@@ -1,9 +1,9 @@
 import { describe, expect, it, afterEach } from 'bun:test'
 import { render, screen, cleanup } from '@testing-library/react'
-import AnlitaFrilansare from './anlita-frilansare'
-import ForForetag from './for-foretag'
-import ForFrilansare from './for-frilansare'
-import Uppdrag from './uppdrag/index'
+import AnlitaFrilansare from '../pages/anlita-frilansare'
+import ForForetag from '../pages/for-foretag'
+import ForFrilansare from '../pages/for-frilansare'
+import Uppdrag from '../pages/uppdrag/index'
 
 describe('hub pages', () => {
   afterEach(() => cleanup())
