@@ -3,7 +3,7 @@ import { cn } from '@frilansaresverige/ui/lib/utils'
 import { AnimatePresence, MotionConfig, motion } from 'motion/react'
 import Link from 'next/link'
 import Router from 'next/router'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import useMeasure from 'react-use-measure'
 import { NAV_TABS } from '../lib/routes'
 
@@ -27,6 +27,7 @@ const SiteNav = () => {
   const [panelRef, bounds] = useMeasure()
   const containerRef = useRef<HTMLDivElement>(null)
   const reduced = useReducedMotion()
+  const panelId = useId()
 
   useEffect(() => {
     const close = () => setSelected(null)
@@ -88,7 +89,7 @@ const SiteNav = () => {
               }}
               onClick={() => selectTab(index)}
               aria-expanded={selected === index}
-              aria-controls="site-nav-panel"
+              aria-controls={panelId}
               className={cn(
                 'flex h-full items-center justify-center rounded-xl text-sm font-medium transition-colors duration-300',
                 selected === index
@@ -120,7 +121,7 @@ const SiteNav = () => {
         </nav>
 
         <motion.div
-          id="site-nav-panel"
+          id={panelId}
           initial={false}
           animate={{ height: tab ? bounds.height : 0 }}
           className="absolute top-full right-0 left-0 z-20 mt-2 overflow-hidden rounded-2xl bg-brand-blue-dark shadow-lg"
