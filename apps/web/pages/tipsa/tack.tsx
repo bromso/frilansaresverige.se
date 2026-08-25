@@ -1,10 +1,19 @@
 import Link from 'next/link'
+import { useEffect } from 'react'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import Seo from '../../components/Seo'
 import { getRoute } from '../../lib/routes'
 
 const TipsaTack = () => {
   const meta = getRoute('/tipsa/tack')!
+
+  // The form redirects here client-side, so _document's gtag config (which
+  // only fires on a full document load) never records this pageview.
+  // Report it ourselves, as a no-op when gtag hasn't loaded.
+  useEffect(() => {
+    window.gtag?.('event', 'page_view', { page_path: '/tipsa/tack' })
+  }, [])
+
   return (
     <>
       <Seo
