@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 
+import { MotionConfig } from 'motion/react'
 import type { AppProps } from 'next/app'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -7,7 +8,7 @@ import CookieConsent from 'react-cookie-consent'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <div className="relative z-[2] mx-auto flex min-w-full flex-wrap gap-8 px-[min(2em,3vw)] pt-[4.5em] pb-8">
         <Link href="/" className="flex-[999_1_8em]" title="Gå till startsidan">
           <svg
@@ -135,7 +136,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         Vi använder cookies för att se hur många besökare det kommer till denna
         sida.
       </CookieConsent>
-    </>
+    </MotionConfig>
   )
 }
 

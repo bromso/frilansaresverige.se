@@ -65,7 +65,14 @@ const MemberCount = ({ count }: { count: number | null }) => {
   if (reduced) {
     return <>{count}</>
   }
-  return <SlidingNumber number={count} />
+  return (
+    <>
+      <span className="sr-only">{count}</span>
+      <span aria-hidden="true">
+        <SlidingNumber number={count} />
+      </span>
+    </>
+  )
 }
 
 // Wraps a card in the Slide entrance animation, except when the visitor has
@@ -88,7 +95,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
         <title>Frilansare Sverige</title>
       </Head>
 
-      <p className="mb-12 max-w-[45em] text-2xl leading-normal">
+      <p className="mb-[3em] max-w-[45em] text-2xl leading-[1.5]">
         Vi är Sveriges största community för frilansare med{' '}
         <MemberCount count={memberCount} /> medlemmar! Vårt syfte är att främja
         kontaktskapande och uppdragstipsande mellan frilansare.
@@ -96,19 +103,24 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
 
       <div className="flex w-full max-w-[65em] flex-wrap items-stretch justify-center gap-6">
         <CardSlide reduced={reduced}>
-          <Card className="bg-brand-cream text-brand-blue rounded-[10px] border-0 p-6 text-left shadow-none">
+          <Card className="bg-brand-cream text-brand-blue gap-0 rounded-[10px] border-0 p-6 text-left shadow-none">
             <h2 className="mb-5 text-xl font-bold">Vi hjälper varandra</h2>
             <p className="text-xl leading-[1.5]">
               Vi hjälper varandra med allt som rör livet som frilansare! T ex
               hur man hittar uppdrag och hur man bokför saker.
             </p>
 
-            <h2 className="mb-5 text-xl font-bold">Ett Slack-community</h2>
+            <h2 className="mt-5 mb-5 text-xl font-bold">Ett Slack-community</h2>
             <p className="text-xl leading-[1.5]">
               Frilansare från hela Sverige är välkomna.
             </p>
 
-            <Button asChild variant="primary" size="none">
+            <Button
+              asChild
+              variant="primary"
+              size="none"
+              className="mt-[1.25em]"
+            >
               <Link href="/ansokan">
                 Ansök om medlemskap
                 <ArrowRight />
@@ -118,7 +130,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
         </CardSlide>
 
         <CardSlide reduced={reduced}>
-          <Card className="bg-brand-cream text-brand-blue rounded-[10px] border-0 p-6 text-left shadow-none">
+          <Card className="bg-brand-cream text-brand-blue gap-0 rounded-[10px] border-0 p-6 text-left shadow-none">
             <h2 className="mb-5 text-xl font-bold">
               Vill du ha hjälp med något? &rarr;
             </h2>
@@ -128,7 +140,12 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
               informationen, utan mellanhänder.
             </p>
 
-            <Button asChild variant="primary" size="none">
+            <Button
+              asChild
+              variant="primary"
+              size="none"
+              className="mt-[1.25em]"
+            >
               <Link href="https://uppdrag.frilansaresverige.se/">
                 Tipsa om konsultuppdrag
                 <ArrowRight />

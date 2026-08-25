@@ -53,11 +53,11 @@ const RequestSlackInvitationForm = () => {
 
   return (
     <div>
-      <h1 className="text-2xl text-brand-cream">
+      <h1 className="my-[0.67em] text-2xl text-brand-cream">
         Ansök om medlemskap i Slack-gruppen för frilansare
       </h1>
 
-      <p className="my-4 text-[1.1em] leading-[1.5] text-brand-cream">
+      <p className="my-[1em] text-[1.1em] leading-[1.5] text-brand-cream">
         Vi godkänner bara ansökningar för dig som redan är frilansare.
       </p>
 
