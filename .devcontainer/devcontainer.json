@@ -1,0 +1,53 @@
+{
+  "$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json",
+  "name": "frilansaresverige.se",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+
+  // node_modules must be container-native, never the host's.
+  //
+  // bunfig.toml sets linker = "hoisted", but that does NOT collapse
+  // everything to the root: apps/web/node_modules and apps/story/node_modules
+  // both hold real content. Since the repo is bind-mounted from the host —
+  // macOS/arm64 — any package with a prebuilt platform binary would be wrong
+  // inside a Linux container. A named volume per node_modules directory
+  // shadows the bind mount so the container installs its own.
+  "mounts": [
+    "source=frilansare-node-modules-root,target=${containerWorkspaceFolder}/node_modules,type=volume",
+    "source=frilansare-node-modules-web,target=${containerWorkspaceFolder}/apps/web/node_modules,type=volume",
+    "source=frilansare-node-modules-story,target=${containerWorkspaceFolder}/apps/story/node_modules,type=volume",
+    "source=frilansare-node-modules-ui,target=${containerWorkspaceFolder}/packages/ui/node_modules,type=volume"
+  ],
+
+  // Named volumes are created root-owned; hand them to the user that will
+  // actually run bun install, then install.
+  "onCreateCommand": "sudo chown -R node:node ${containerWorkspaceFolder}/node_modules ${containerWorkspaceFolder}/apps/web/node_modules ${containerWorkspaceFolder}/apps/story/node_modules ${containerWorkspaceFolder}/packages/ui/node_modules",
+  "postCreateCommand": "bun install",
+
+  "forwardPorts": [3000, 6006, 9229],
+  "portsAttributes": {
+    "3000": { "label": "Next.js", "onAutoForward": "notify" },
+    "6006": { "label": "Storybook", "onAutoForward": "silent" },
+    "9229": { "label": "Node inspector", "onAutoForward": "silent" }
+  },
+
+  "remoteUser": "node",
+
+  "customizations": {
+    "vscode": {
+      // Mirrors .vscode/extensions.json — the workspace recommendations are
+      // only a prompt, whereas these are installed into the container.
+      "extensions": [
+        "biomejs.biome",
+        "bradlc.vscode-tailwindcss",
+        "oven.bun-vscode",
+        "ms-azuretools.vscode-containers"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  }
+}

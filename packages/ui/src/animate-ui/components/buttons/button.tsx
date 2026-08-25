@@ -17,6 +17,8 @@ const buttonVariants = cva(
           'bg-primary text-primary-foreground shadow-xs hover:bg-primary/90',
         primary:
           'bg-brand-coral text-brand-grey hover:bg-brand-coral-light rounded-[3em] px-6 py-3 text-[1.1em] font-bold gap-2 max-w-max transition-[box-shadow,background] duration-150 focus:shadow-[0_0_0_0.1em_var(--color-brand-cream),0_0_0_0.2em_var(--color-brand-coral)] focus:outline-none focus-visible:ring-0',
+        'primary-outline':
+          'border-2 border-brand-cream/40 bg-transparent text-brand-cream hover:border-brand-cream hover:bg-brand-cream hover:text-brand-blue rounded-[3em] px-6 py-3 text-[1.1em] font-bold gap-2 max-w-max transition-[box-shadow,background,border-color,color] duration-150 focus:shadow-[0_0_0_0.1em_var(--color-brand-blue),0_0_0_0.2em_var(--color-brand-cream)] focus:outline-none focus-visible:ring-0',
         accent: 'bg-accent text-accent-foreground shadow-xs hover:bg-accent/90',
         destructive:
           'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',

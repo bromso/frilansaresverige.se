@@ -17,6 +17,14 @@
     "hooks": "@/hooks"
   },
   "registries": {
-    "@animate-ui": "https://animate-ui.com/r/{name}.json"
+    "@animate-ui": "https://animate-ui.com/r/{name}.json",
+    "@react-bits": "https://reactbits.dev/r/{name}.json",
+    "@shadcnblocks": "https://shadcnblocks.com/r/{name}.json",
+    "@skiper-ui": {
+      "url": "https://skiper-ui.com/r/{name}.json",
+      "headers": {
+        "Authorization": "Bearer ${SKIPER_UI_LICENSE_KEY}"
+      }
+    }
   }
 }

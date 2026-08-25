@@ -1,0 +1,73 @@
+{
+  // ---------------------------------------------------------------------
+  // Formatting and linting — Biome owns all of it
+  // ---------------------------------------------------------------------
+  // Setting the default formatter per-language wins over any other
+  // formatter a developer happens to have installed globally, which is the
+  // only reliable way to keep Prettier from fighting Biome.
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "biomejs.biome",
+  "[javascript]": { "editor.defaultFormatter": "biomejs.biome" },
+  "[javascriptreact]": { "editor.defaultFormatter": "biomejs.biome" },
+  "[typescript]": { "editor.defaultFormatter": "biomejs.biome" },
+  "[typescriptreact]": { "editor.defaultFormatter": "biomejs.biome" },
+  "[json]": { "editor.defaultFormatter": "biomejs.biome" },
+  "[jsonc]": { "editor.defaultFormatter": "biomejs.biome" },
+  "[css]": { "editor.defaultFormatter": "biomejs.biome" },
+
+  // "explicit" — booleans stopped being valid here in VS Code 1.83.
+  // Deliberately source.fixAll.biome rather than quickfix.biome: TypeScript's
+  // language service intercepts any action whose id starts with "quickfix",
+  // adding roughly half a second to every .ts save.
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  },
+
+  // Only activate where a biome.json actually exists.
+  "biome.requireConfiguration": true,
+
+  // ---------------------------------------------------------------------
+  // TypeScript
+  // ---------------------------------------------------------------------
+  // Use the repo's TypeScript, not the one bundled with VS Code, so editor
+  // diagnostics match `bunx tsc`. Bun's hoisted linker puts it at the root.
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+
+  // ---------------------------------------------------------------------
+  // Tailwind v4
+  // ---------------------------------------------------------------------
+  // Give IntelliSense the class-merging helpers so class strings inside
+  // cn(...) and cva(...) get completion and hover, not just className="".
+  "tailwindCSS.classFunctions": ["cn", "cva"],
+
+  // ---------------------------------------------------------------------
+  // Monorepo noise reduction
+  // ---------------------------------------------------------------------
+  // watcherExclude does NOT inherit files.exclude or search.exclude, so
+  // these have to be listed separately. .next in particular churns hard.
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.next/**": true,
+    "**/storybook-static/**": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/storybook-static": true,
+    "**/bun.lock": true
+  },
+
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "package.json": "bun.lock, bunfig.toml, .bun-version, .nvmrc, .node-version, .envrc",
+    "biome.json": ".editorconfig",
+    "Dockerfile": ".dockerignore, deploy.sh",
+    "README.md": ".env.example"
+  },
+
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true
+}

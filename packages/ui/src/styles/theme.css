@@ -22,3 +22,61 @@
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
     Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
+
+/* Light mode. The site's design language is "ink on ground" with coral
+   accents: in the default (dark) theme the ground is brand blue and the
+   ink is cream. Light mode swaps the roles of that pair — every utility
+   referencing the brand tokens flips with it — while coral, coral-light
+   and grey stay put. brand-blue-dark (used for emphasis surfaces like the
+   headline highlight and the footer) becomes a darker cream. next-themes
+   toggles the .light/.dark class on <html>. This block is unlayered, so
+   it always wins over the @theme layer. */
+.light {
+  --color-brand-blue: #fffce3;
+  --color-brand-cream: #4823dc;
+  --color-brand-blue-dark: #f1e8c8;
+}
+
+/* A theme --animate-* variable would resolve var(--duration) against :root
+   (where it is never set) instead of the marquee element, so the animation
+   is a plain utility to let per-instance durations work. */
+@utility animate-marquee-vertical {
+  animation: marquee-vertical var(--duration, 40s) linear infinite;
+}
+
+/* Radix accordion open/close, driven by the content height variable the
+   primitive sets. Plain utilities for the same reason as the marquee. */
+@utility animate-accordion-down {
+  animation: accordion-down 0.2s ease-out;
+}
+
+@utility animate-accordion-up {
+  animation: accordion-up 0.2s ease-out;
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-100% - var(--gap, 1rem)));
+  }
+}

@@ -3,12 +3,9 @@ import Document, { Head, Html, Main, NextScript } from 'next/document'
 export default class MyDocument extends Document {
   render() {
     return (
-      <Html>
+      // next-themes stamps the theme class on <html> before hydration.
+      <Html suppressHydrationWarning>
         <Head>
-          <meta
-            name="description"
-            content="Frilansare Sverige är Sveriges största community för frilansare."
-          />
           <meta name="viewport" content="width=device-width,initial-scale=1" />
           <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
           <link rel="icon" type="image/ico" href="favicon.ico" />

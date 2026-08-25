@@ -1,0 +1,27 @@
+# Only covers file types Biome does NOT format. Biome owns JS/TS/JSON/CSS
+# and reads its rules from biome.json; do not set formatter.useEditorconfig
+# there, or the two configs start competing over the same files.
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.md]
+# Two trailing spaces are a hard line break in Markdown.
+trim_trailing_whitespace = false
+
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+
+[*.sh]
+indent_style = space
+indent_size = 2
+
+[Dockerfile*]
+indent_style = space
+indent_size = 2

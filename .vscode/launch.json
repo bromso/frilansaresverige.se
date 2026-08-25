@@ -1,0 +1,62 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // Runs on the HOST. `bun run dev` delegates through
+      // `bun run --filter '@frilansaresverige/web' dev`, and the trailing
+      // --inspect is forwarded through the filter to `next dev` — verified:
+      // the inspector binds 127.0.0.1:9229 and is owned by a real node
+      // process (next-server), because `bun run` executes the `next` binary
+      // under Node unless you pass -b/--bun.
+      "name": "Next.js: server-side",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "bun run dev --inspect",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Next.js: client-side",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/apps/web"
+    },
+    {
+      // Use when VS Code is running on the HOST and the dev server is inside
+      // a container. Requires the server to bind the inspector to 0.0.0.0 —
+      // Node defaults to 127.0.0.1, which is unreachable from outside the
+      // container. See the "dev:inspect (container)" task.
+      //
+      // If you instead open the folder IN the container via the Dev
+      // Containers extension, don't use this: the plain "Next.js:
+      // server-side" config works unmodified and you avoid path mapping.
+      "name": "Next.js: attach (in container)",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 9229,
+      "restart": true,
+      "localRoot": "${workspaceFolder}",
+      "remoteRoot": "/workspaces/frilansaresverige.se",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      // Bun implements the WebKit inspector protocol, not V8/CDP, so the
+      // built-in node debugger cannot attach. This needs oven.bun-vscode.
+      "name": "Debug bun test (current file)",
+      "type": "bun",
+      "request": "launch",
+      "program": "${file}",
+      "runtime": "bun",
+      "runtimeArgs": ["test", "--preload", "${workspaceFolder}/test-setup.ts"],
+      "cwd": "${workspaceFolder}"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Next.js: full stack",
+      "configurations": ["Next.js: server-side", "Next.js: client-side"],
+      "stopAll": true
+    }
+  ]
+}

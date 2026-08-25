@@ -1,0 +1,33 @@
+{
+  "recommendations": [
+    // Formats and lints JS/TS/JSON/CSS. This repo uses Biome instead of
+    // ESLint + Prettier, so without this extension nothing formats on save.
+    "biomejs.biome",
+
+    // Tailwind v4 IntelliSense. Activates off the CSS entrypoints
+    // (apps/web/styles/globals.css, apps/story/styles/storybook.css) —
+    // v4 is CSS-first, so there is no tailwind.config.js to detect.
+    "bradlc.vscode-tailwindcss",
+
+    // Bun runtime debugging and the Testing panel for `bun test`.
+    // Required rather than optional: Bun speaks the WebKit inspector
+    // protocol, not V8, so the built-in Node debugger cannot attach to it.
+    "oven.bun-vscode",
+
+    // Opens VS Code inside .devcontainer/.
+    "ms-vscode-remote.remote-containers",
+
+    // Container/image management. Note this is the current ID — the old
+    // ms-azuretools.vscode-docker was renamed in April 2025.
+    "ms-azuretools.vscode-containers"
+  ],
+  "unwantedRecommendations": [
+    // Biome replaced both of these. If either is installed and active it
+    // fights Biome on format-on-save, producing churn on every write.
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+
+    // Deprecated; superseded by ms-azuretools.vscode-containers above.
+    "ms-azuretools.vscode-docker"
+  ]
+}
