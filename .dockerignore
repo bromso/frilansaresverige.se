@@ -1,5 +1,7 @@
-node_modules
-.next
+**/node_modules
+**/.next
+**/storybook-static
+**/*.tsbuildinfo
 out
 build
 coverage
@@ -13,5 +15,4 @@ npm-debug.log*
 .env.*.local
 Dockerfile
 .dockerignore
-storybook-static
 docs
