@@ -1,0 +1,40 @@
+import { describe, expect, it, afterEach } from 'bun:test'
+import { render, screen, cleanup } from '@testing-library/react'
+import Custom404 from './404'
+import Custom500 from './500'
+
+describe('404 page', () => {
+  afterEach(() => cleanup())
+
+  it('links to every hub and home', () => {
+    render(<Custom404 />)
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Sidan finns inte',
+    )
+    for (const href of [
+      '/',
+      '/for-frilansare',
+      '/for-foretag',
+      '/uppdrag',
+      '/kunskap',
+      '/community',
+    ]) {
+      expect(
+        screen
+          .getAllByRole('link')
+          .some((a) => a.getAttribute('href') === href),
+      ).toBe(true)
+    }
+  })
+})
+
+describe('500 page', () => {
+  afterEach(() => cleanup())
+
+  it('renders the minimal error message', () => {
+    render(<Custom500 />)
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Något gick fel',
+    )
+  })
+})
