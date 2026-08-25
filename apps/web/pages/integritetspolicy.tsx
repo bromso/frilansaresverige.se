@@ -29,7 +29,7 @@ const Integritetspolicy = () => {
           <Link href="/ansokan" className="underline hover:no-underline">
             ansökan
           </Link>{' '}
-          om medlemskap ber vi om namn, e-mail, hur länge du varit frilansare,
+          om medlemskap ber vi om namn, mejl, hur länge du varit frilansare,
           företagsnamn, länk till din LinkedIn-profil och en fritextmotivering
           om dig själv.
         </p>
@@ -48,8 +48,8 @@ const Integritetspolicy = () => {
         </h2>
         <p className="mt-4 leading-[1.6] text-brand-cream/85">
           Uppgifterna i din ansökan används för att bedöma om du kan bli medlem.
-          Godkänns ansökan används e-mailadressen för att skicka en inbjudan
-          till vårt Slack-community.
+          Godkänns ansökan används mejladressen för att skicka en inbjudan till
+          vårt Slack-community.
         </p>
         <p className="mt-4 leading-[1.6] text-brand-cream/85">
           Uppgifterna i ett uppdragstips publiceras till communityt, det vill
@@ -71,8 +71,8 @@ const Integritetspolicy = () => {
           Cookies och statistik
         </h2>
         <p className="mt-4 leading-[1.6] text-brand-cream/85">
-          Sajten använder Google Analytics för anonym besöksstatistik. Läs mer
-          om vilka cookies det innebär på{' '}
+          Sajten använder Google Analytics för besöksstatistik. Läs mer om vilka
+          cookies det innebär på{' '}
           <Link href="/cookies" className="underline hover:no-underline">
             cookiessidan
           </Link>

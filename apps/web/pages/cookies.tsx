@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import Breadcrumbs from '../components/Breadcrumbs'
 import Seo from '../components/Seo'
 import { getRoute } from '../lib/routes'
@@ -38,9 +37,9 @@ const Cookies = () => {
           Google Analytics
         </h2>
         <p className="mt-4 leading-[1.6] text-brand-cream/85">
-          Sajten läser in Google Analytics för att föra anonym besöksstatistik,
-          till exempel hur många som besöker en sida. Skriptet läses in när
-          sidan laddas och kan sätta cookies eller liknande identifierare i din
+          Sajten läser in Google Analytics för att föra besöksstatistik, till
+          exempel hur många som besöker en sida. Skriptet läses in när sidan
+          laddas och kan sätta cookies eller liknande identifierare i din
           webbläsare för att räkna besök, oavsett vilket svar du ger i
           cookie-rutan.
         </p>
