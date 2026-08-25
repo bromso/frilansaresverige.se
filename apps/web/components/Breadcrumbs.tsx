@@ -50,7 +50,7 @@ const Breadcrumbs = ({ path }: { path: string }) => {
       </ol>
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: static registry-derived breadcrumb data, no user input.
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
     </nav>

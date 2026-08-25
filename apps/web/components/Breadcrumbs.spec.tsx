@@ -15,17 +15,13 @@ describe('Breadcrumbs', () => {
       'href',
       '/community',
     )
-    expect(
-      screen.queryByRole('link', { name: 'Uppförandekod' }),
-    ).toBeNull()
+    expect(screen.queryByRole('link', { name: 'Uppförandekod' })).toBeNull()
     expect(screen.getByText('Uppförandekod')).toBeInTheDocument()
   })
 
   it('emits BreadcrumbList JSON-LD', () => {
     const { container } = render(<Breadcrumbs path="/uppforandekod" />)
-    const script = container.querySelector(
-      'script[type="application/ld+json"]',
-    )
+    const script = container.querySelector('script[type="application/ld+json"]')
     const data = JSON.parse(script!.textContent!)
     expect(data['@type']).toBe('BreadcrumbList')
     expect(data.itemListElement).toHaveLength(3)

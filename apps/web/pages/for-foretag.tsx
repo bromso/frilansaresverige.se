@@ -9,9 +9,8 @@ const ForForetag = () => (
       <p>
         Söker du en konsult? I Frilansare Sverige når ditt uppdrag Sveriges
         största frilanscommunity på en gång. Det kostar ingenting, och
-        frilansarna hör av sig direkt till dig — utan mellanhänder. Det
-        gäller oavsett om du är arbetsgivare, konsultförmedlare eller
-        konsultbolag.
+        frilansarna hör av sig direkt till dig — utan mellanhänder. Det gäller
+        oavsett om du är arbetsgivare, konsultförmedlare eller konsultbolag.
       </p>
     }
     links={[

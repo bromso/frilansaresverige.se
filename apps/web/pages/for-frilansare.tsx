@@ -8,8 +8,8 @@ const ForFrilansare = () => (
     intro={
       <p>
         Frilansare Sverige är ett gratis community där tusentals frilansare
-        delar uppdrag, kunskap och kollegskap i Slack. Ingen medlemsavgift,
-        inga mellanhänder — bara kollegor.
+        delar uppdrag, kunskap och kollegskap i Slack. Ingen medlemsavgift, inga
+        mellanhänder — bara kollegor.
       </p>
     }
     links={[

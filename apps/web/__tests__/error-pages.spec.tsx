@@ -1,5 +1,5 @@
-import { describe, expect, it, afterEach } from 'bun:test'
-import { render, screen, cleanup } from '@testing-library/react'
+import { afterEach, describe, expect, it } from 'bun:test'
+import { cleanup, render, screen } from '@testing-library/react'
 import Custom404 from '../pages/404'
 import Custom500 from '../pages/500'
 

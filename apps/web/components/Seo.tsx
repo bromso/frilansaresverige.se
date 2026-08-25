@@ -19,8 +19,7 @@ export const buildSeoTags = ({
   path,
   noindex,
 }: SeoProps) => ({
-  title:
-    path === '/' ? `${SITE_NAME} – ${title}` : `${title} – ${SITE_NAME}`,
+  title: path === '/' ? `${SITE_NAME} – ${title}` : `${title} – ${SITE_NAME}`,
   description,
   canonical: `${SITE_URL}${path}`,
   robots: noindex ? 'noindex,nofollow' : null,

@@ -1,5 +1,5 @@
-import { describe, expect, it, afterEach } from 'bun:test'
-import { render, screen, cleanup } from '@testing-library/react'
+import { afterEach, describe, expect, it } from 'bun:test'
+import { cleanup, render, screen } from '@testing-library/react'
 import AnlitaFrilansare from '../pages/anlita-frilansare'
 import ForForetag from '../pages/for-foretag'
 import ForFrilansare from '../pages/for-frilansare'
@@ -12,7 +12,9 @@ describe('hub pages', () => {
     expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument()
     for (const href of ['/ansokan', '/sa-fungerar-det', '/fragor-och-svar']) {
       expect(
-        screen.getAllByRole('link').some((a) => a.getAttribute('href') === href),
+        screen
+          .getAllByRole('link')
+          .some((a) => a.getAttribute('href') === href),
       ).toBe(true)
     }
   })
@@ -21,7 +23,9 @@ describe('hub pages', () => {
     render(<ForForetag />)
     for (const href of ['/tipsa', '/anlita-frilansare']) {
       expect(
-        screen.getAllByRole('link').some((a) => a.getAttribute('href') === href),
+        screen
+          .getAllByRole('link')
+          .some((a) => a.getAttribute('href') === href),
       ).toBe(true)
     }
   })
@@ -37,14 +41,18 @@ describe('hub pages', () => {
         ),
     ).toBe(true)
     expect(
-      screen.getAllByRole('link').some((a) => a.getAttribute('href') === '/tipsa'),
+      screen
+        .getAllByRole('link')
+        .some((a) => a.getAttribute('href') === '/tipsa'),
     ).toBe(true)
   })
 
   it('/anlita-frilansare has a tipsa call to action', () => {
     render(<AnlitaFrilansare />)
     expect(
-      screen.getAllByRole('link').some((a) => a.getAttribute('href') === '/tipsa'),
+      screen
+        .getAllByRole('link')
+        .some((a) => a.getAttribute('href') === '/tipsa'),
     ).toBe(true)
   })
 })

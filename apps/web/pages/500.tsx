@@ -17,9 +17,8 @@ const Custom500 = () => (
       Något gick fel
     </h1>
     <p className="mt-4 max-w-[36em] text-lg leading-[1.6] text-brand-cream/85">
-      Ett tekniskt fel inträffade på servern. Ladda om sidan om en stund —
-      och om det fortsätter, säg till i Slacken eller öppna ett ärende på
-      GitHub.
+      Ett tekniskt fel inträffade på servern. Ladda om sidan om en stund — och
+      om det fortsätter, säg till i Slacken eller öppna ett ärende på GitHub.
     </p>
     <a
       href="/"

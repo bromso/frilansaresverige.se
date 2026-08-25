@@ -18,9 +18,8 @@ const AnlitaFrilansare = () => {
         </h1>
         <p className="mt-4 text-lg leading-[1.6] text-brand-cream/85">
           I Frilansare Sverige finns frilansare i hela landet och i de flesta
-          branscher: utveckling, design, copy, foto, projektledning, ekonomi
-          och mer. Alla är etablerade — med eget bolag och minst en kund
-          bakom sig.
+          branscher: utveckling, design, copy, foto, projektledning, ekonomi och
+          mer. Alla är etablerade — med eget bolag och minst en kund bakom sig.
         </p>
         <h2 className="font-display mt-10 text-2xl font-bold text-brand-cream">
           Så går det till
@@ -38,8 +37,7 @@ const AnlitaFrilansare = () => {
           </li>
           <li>
             Intresserade frilansare kontaktar dig direkt. Ni gör upp om
-            villkoren själva — vi tar ingen avgift och står inte som
-            mellanhand.
+            villkoren själva — vi tar ingen avgift och står inte som mellanhand.
           </li>
         </ol>
         <div className="mt-10">
