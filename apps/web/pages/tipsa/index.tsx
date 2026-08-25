@@ -1,13 +1,15 @@
 import type { NextPage } from 'next'
+import Breadcrumbs from '../../components/Breadcrumbs'
+import GigTipForm from '../../components/GigTipForm'
 import Seo from '../../components/Seo'
 import { getRoute } from '../../lib/routes'
-import GigTipForm from '../../components/GigTipForm'
 
 const Tipsa: NextPage = () => {
   const meta = getRoute('/tipsa')!
   return (
     <div className="w-full max-w-[44em] pt-10 pb-24 md:pt-16">
       <Seo title={meta.title} description={meta.description} path={meta.path} />
+      <Breadcrumbs path={meta.path} />
 
       <p className="font-display mb-3 text-sm font-bold tracking-widest text-brand-coral uppercase">
         Konsultuppdrag
