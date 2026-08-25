@@ -10,14 +10,19 @@
   },
   "dependencies": {
     "@frilansaresverige/ui": "workspace:*",
+    "gsap": "^3.15.0",
     "next": "^16.2.9",
+    "next-themes": "^0.4.6",
     "react": "^19.2.7",
-    "react-cookie-consent": "^10.0.1",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "shaders": "^3.1.462"
   },
   "devDependencies": {
     "@frilansaresverige/tsconfig": "workspace:*",
     "@happy-dom/global-registrator": "20.11.6",
+    "@iconify-json/lucide": "^1.2.126",
+    "@iconify-json/simple-icons": "^1.2.93",
+    "@iconify/tailwind4": "^1.2.3",
     "@tailwindcss/postcss": "4.3.3",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",

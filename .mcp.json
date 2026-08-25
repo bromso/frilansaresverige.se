@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "shaders": {
+      "type": "http",
+      "url": "https://shaders.com/mcp"
+    },
+    "shadcn": {
+      "command": "npx",
+      "args": ["shadcn@latest", "mcp"]
+    }
+  }
+}

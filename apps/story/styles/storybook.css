@@ -5,6 +5,8 @@
 @import "tailwindcss/utilities.css" layer(utilities);
 @import "@frilansaresverige/ui/styles/theme.css";
 
+@plugin "@iconify/tailwind4";
+
 /* Tailwind auto-scans this package; @source adds the component library, whose
    class names would otherwise never be seen and every component would render
    unstyled while the build still succeeded. */

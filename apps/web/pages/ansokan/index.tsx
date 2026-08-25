@@ -1,15 +1,17 @@
 import type { NextPage } from 'next'
-import Head from 'next/head'
+import Seo from '../../components/Seo'
+import { getRoute } from '../../lib/routes'
+import AnsokanFaq from './AnsokanFaq'
 import RequestSlackInvitationForm from './RequestSlackInvitationForm'
 
 const Ansokan: NextPage = () => {
+  const meta = getRoute('/ansokan')!
   return (
     <>
-      <Head>
-        <title>Frilansare Sverige - Ansök om medlemskap</title>
-      </Head>
+      <Seo title={meta.title} description={meta.description} path={meta.path} />
 
       <RequestSlackInvitationForm />
+      <AnsokanFaq />
     </>
   )
 }

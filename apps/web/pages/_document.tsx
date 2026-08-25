@@ -3,7 +3,8 @@ import Document, { Head, Html, Main, NextScript } from 'next/document'
 export default class MyDocument extends Document {
   render() {
     return (
-      <Html>
+      // next-themes stamps the theme class on <html> before hydration.
+      <Html suppressHydrationWarning>
         <Head>
           <meta
             name="description"

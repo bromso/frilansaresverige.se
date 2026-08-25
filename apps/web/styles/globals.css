@@ -5,9 +5,42 @@
 @import "tailwindcss/utilities.css" layer(utilities);
 @import "@frilansaresverige/ui/styles/theme.css";
 
+@plugin "@iconify/tailwind4";
+
 @source "../../../packages/ui/src";
 
+/* The display font is loaded with next/font in _app.tsx, which defines
+   --font-bricolage on the app wrapper. `inline` makes the font-display
+   utility emit the var() reference itself, so it resolves against the
+   element using it (inside the wrapper) instead of against :root. */
+@theme inline {
+  --font-display:
+    var(--font-bricolage), -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", sans-serif;
+}
+
 @layer base {
+  :root {
+    /* Easing tokens used by the theme-toggle view transition. */
+    --expo-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --expo-in: cubic-bezier(0.7, 0, 0.84, 0);
+  }
+
+  /* Squircle corners: routes the element through the SVG goo filter
+     mounted in _app (see components/SquircleFilter.tsx), smoothing its
+     rounded corners into a superellipse. */
+  .squircle {
+    filter: url(#SquiCircle);
+  }
+
+  /* Form inputs keep light backgrounds in both themes (bg-white/60), so
+     their text must not flip to cream in light mode. */
+  .light input,
+  .light textarea,
+  .light select {
+    color: var(--color-brand-grey);
+  }
+
   html,
   body {
     height: 100%;
@@ -15,6 +48,14 @@
     color: var(--color-brand-cream);
     font-family: var(--font-sans);
     position: relative;
+    /* The hero shader breaks out of the centered column with w-screen;
+       clip (not hidden — hidden would break position: sticky) stops the
+       scrollbar-width overflow that 100vw causes on Windows. */
+    overflow-x: clip;
+    /* The marquees translate continuously, and Chrome's scroll anchoring
+       picks their content as anchor nodes — the page then drifts on its
+       own (and tooltips slide out from under the cursor). */
+    overflow-anchor: none;
   }
 
   /* Next.js injects a #__next wrapper between body and the app tree;
@@ -25,30 +66,13 @@
     flex-direction: column;
   }
 
-  /* Decorative blobs. No utility equivalent — pseudo-element geometry. */
-  body::before,
-  body::after {
-    content: "";
-    background: var(--color-brand-blue-dark);
-    width: 40em;
-    height: 40em;
-    position: fixed;
-    bottom: 0;
-    z-index: 0;
-    transform: translateX(50%);
-  }
-
-  body::before {
-    right: 0;
-    border-radius: 50% 50% 0 0;
-  }
-
-  body::after {
-    right: 40em;
-    border-radius: 50%;
-  }
-
   a {
     color: inherit;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 }

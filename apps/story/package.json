@@ -13,6 +13,8 @@
   },
   "devDependencies": {
     "@frilansaresverige/tsconfig": "workspace:*",
+    "@iconify-json/lucide": "^1.2.126",
+    "@iconify/tailwind4": "^1.2.3",
     "@storybook/addon-docs": "10.5.10",
     "@storybook/react-vite": "10.5.10",
     "@tailwindcss/postcss": "4.3.3",
