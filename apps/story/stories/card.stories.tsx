@@ -1,6 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/nextjs-vite'
-
-import { Card } from './card'
+import { Card } from '@frilansaresverige/ui/ui/card'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 
 const meta = {
   title: 'UI/Card',

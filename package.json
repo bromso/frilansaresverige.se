@@ -12,8 +12,8 @@
     "test": "bun test",
     "check": "biome check .",
     "check:fix": "biome check --write .",
-    "storybook": "bun run --filter '@frilansaresverige/web' storybook",
-    "build-storybook": "bun run --filter '@frilansaresverige/web' build-storybook"
+    "storybook": "bun run --filter '@frilansaresverige/story' storybook",
+    "build-storybook": "bun run --filter '@frilansaresverige/story' build-storybook"
   },
   "overrides": {
     "postcss": "^8.5.10",

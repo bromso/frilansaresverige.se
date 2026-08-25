@@ -1,0 +1,27 @@
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "@frilansaresverige/ui/styles/theme.css";
+
+/* Tailwind auto-scans this package; @source adds the component library, whose
+   class names would otherwise never be seen and every component would render
+   unstyled while the build still succeeded. */
+@source "../../../packages/ui/src";
+
+@layer base {
+  /* Brand ground, foreground and typography. Deliberately NOT the decorative
+     body::before/::after blobs or the html/body height chain from the web
+     app's globals.css — those are page furniture, not component styling, and
+     a component catalogue should not inherit them.
+
+     The background must be set here: Storybook's `backgrounds` parameter
+     paints the manager's canvas chrome, not the story iframe's body, so
+     without this rule cream-on-white components render invisible. */
+  body {
+    background: var(--color-brand-blue);
+    color: var(--color-brand-cream);
+    font-family: var(--font-sans);
+  }
+}

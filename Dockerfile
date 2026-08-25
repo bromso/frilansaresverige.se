@@ -7,6 +7,7 @@ COPY package.json bun.lock bunfig.toml ./
 # bun install --frozen-lockfile fails if the lockfile references a workspace
 # whose package.json is not on disk.
 COPY apps/web/package.json apps/web/
+COPY apps/story/package.json apps/story/
 COPY packages/tsconfig/package.json packages/tsconfig/
 COPY packages/ui/package.json packages/ui/
 RUN bun install --frozen-lockfile

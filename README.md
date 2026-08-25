@@ -19,11 +19,17 @@ You can start editing the page by modifying `apps/web/pages/index.tsx`. The page
 
 ### Component library
 
-Components live in `packages/ui` and are catalogued in Storybook:
+Components live in `packages/ui`. Storybook is its own workspace app at
+`apps/story`, with the stories under `apps/story/stories`:
 
 ```bash
 bun run storybook
 ```
+
+`apps/story` is a dev-only harness — it is not deployed. It carries its own
+Tailwind entry (`apps/story/styles/storybook.css`) with the brand theme and a
+`@source` directive pointing at `packages/ui`, without the web app's
+page furniture (the decorative blobs and sticky-footer height chain).
 
 After running `shadcn add` inside `packages/ui`, rewrite any emitted `@/…`
 imports to relative paths — Next resolves `@/…` against `apps/web`, not
