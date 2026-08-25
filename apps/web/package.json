@@ -15,6 +15,7 @@
     "next-themes": "^0.4.6",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "react-use-measure": "^2.1.7",
     "shaders": "^3.1.462"
   },
   "devDependencies": {

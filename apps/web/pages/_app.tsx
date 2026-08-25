@@ -10,6 +10,7 @@ import { ThemeProvider } from 'next-themes'
 import CookieToast from '../components/CookieToast'
 import PageTransition from '../components/PageTransition'
 import { ProgressiveBlur } from '../components/ProgressiveBlur'
+import SiteNav from '../components/SiteNav'
 import { SquircleFilter } from '../components/SquircleFilter'
 import { ThemeToggleButton } from '../components/ThemeToggle'
 
@@ -67,6 +68,10 @@ function MyApp({ Component, pageProps }: AppProps) {
                   </span>
                 </Link>
 
+                <div className="hidden md:block">
+                  <SiteNav />
+                </div>
+
                 <div className="flex items-center gap-3">
                   <ThemeToggleButton variant="circle-blur" start="top-right" />
                   <Button
@@ -78,6 +83,10 @@ function MyApp({ Component, pageProps }: AppProps) {
                     <Link href="/ansokan">Ansök om medlemskap</Link>
                   </Button>
                 </div>
+              </div>
+
+              <div className="flex justify-center pb-3 md:hidden">
+                <SiteNav />
               </div>
             </header>
 
