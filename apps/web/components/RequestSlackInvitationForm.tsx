@@ -9,8 +9,8 @@ import { Textarea } from '@frilansaresverige/ui/ui/textarea'
 import { useRouter } from 'next/router'
 import type { ReactElement, ReactNode } from 'react'
 import { useEffect } from 'react'
-import { FIELD_CLASSES, LABEL_CLASSES } from '../../components/form-classes'
-import { useSubmitSlackInvitationForm } from '../../hooks/useSubmitSlackInvitationForm'
+import { useSubmitSlackInvitationForm } from '../hooks/useSubmitSlackInvitationForm'
+import { FIELD_CLASSES, LABEL_CLASSES } from './form-classes'
 
 // Wraps a status Alert in the Slide entrance animation, except when the
 // visitor has asked for reduced motion — in that case it renders as-is,
