@@ -1,0 +1,31 @@
+{
+  // Deliberately minimal. The package.json scripts are the source of truth
+  // and `bun run <script>` covers day-to-day work — duplicating them as VS
+  // Code tasks would just be a second place to keep in sync. Only the two
+  // that VS Code specifically enables live here.
+  "version": "2.0.0",
+  "tasks": [
+    {
+      // Binds the inspector to 0.0.0.0 so a host-side debugger can reach it
+      // through the container's forwarded port. Pair with the
+      // "Next.js: attach (in container)" launch config.
+      "label": "dev:inspect (container)",
+      "type": "shell",
+      "command": "bun run dev --inspect=0.0.0.0:9229",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      // `bun test` from inside apps/ or packages/ silently skips the
+      // happy-dom preload — bunfig.toml resolves its preload path against
+      // the invocation directory, not the config file. Always run from root.
+      "label": "test (from repo root)",
+      "type": "shell",
+      "command": "bun test",
+      "options": { "cwd": "${workspaceFolder}" },
+      "group": "test",
+      "problemMatcher": []
+    }
+  ]
+}

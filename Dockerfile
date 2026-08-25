@@ -10,7 +10,12 @@ COPY apps/web/package.json apps/web/
 COPY apps/story/package.json apps/story/
 COPY packages/tsconfig/package.json packages/tsconfig/
 COPY packages/ui/package.json packages/ui/
-RUN bun install --frozen-lockfile
+# apps/story is Storybook — a dev-only workspace that is never built or
+# served here. Its manifest must still be copied above (a frozen install
+# fails on a lockfile reference whose package.json is absent), but excluding
+# it from the install drops ~128 packages / ~96MB from this layer. That is
+# real deploy time: deploy.sh streams the whole image over ssh.
+RUN bun install --frozen-lockfile --filter '!@frilansaresverige/story'
 
 FROM oven/bun:1.3.14-alpine AS builder
 WORKDIR /app
