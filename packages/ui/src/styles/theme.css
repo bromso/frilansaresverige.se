@@ -1,0 +1,24 @@
+@theme {
+  --color-brand-blue: #4823dc;
+  --color-brand-cream: #fffce3;
+  --color-brand-coral: #ff9c8e;
+  --color-brand-coral-light: #ffcfc8;
+  --color-brand-blue-dark: #2601bb;
+  --color-brand-grey: #333333;
+
+  --color-background: var(--color-brand-blue);
+  --color-foreground: var(--color-brand-cream);
+  --color-card: var(--color-brand-cream);
+  --color-card-foreground: var(--color-brand-blue);
+  --color-primary: var(--color-brand-coral);
+  --color-primary-foreground: var(--color-brand-grey);
+  --color-border: var(--color-brand-blue);
+  --color-input: var(--color-brand-cream);
+  --color-ring: var(--color-brand-coral);
+
+  --radius: 0.25rem;
+
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+}

@@ -1,0 +1,54 @@
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "@frilansaresverige/ui/styles/theme.css";
+
+@source "../../../packages/ui/src";
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+    background: var(--color-brand-blue);
+    color: var(--color-brand-cream);
+    font-family: var(--font-sans);
+    position: relative;
+  }
+
+  /* Next.js injects a #__next wrapper between body and the app tree;
+     the sticky footer depends on this height chain. */
+  body > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Decorative blobs. No utility equivalent — pseudo-element geometry. */
+  body::before,
+  body::after {
+    content: "";
+    background: var(--color-brand-blue-dark);
+    width: 40em;
+    height: 40em;
+    position: fixed;
+    bottom: 0;
+    z-index: 0;
+    transform: translateX(50%);
+  }
+
+  body::before {
+    right: 0;
+    border-radius: 50% 50% 0 0;
+  }
+
+  body::after {
+    right: 40em;
+    border-radius: 50%;
+  }
+
+  a {
+    color: inherit;
+  }
+}

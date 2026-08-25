@@ -1,0 +1,5 @@
+{
+  "extends": "@frilansaresverige/tsconfig/nextjs.json",
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "../../test-setup.ts"],
+  "exclude": ["node_modules"]
+}
