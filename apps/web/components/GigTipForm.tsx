@@ -9,7 +9,9 @@ import {
   RadioGroupItem,
 } from '@frilansaresverige/ui/ui/radio-group'
 import { Textarea } from '@frilansaresverige/ui/ui/textarea'
+import { useRouter } from 'next/router'
 import type { ReactElement } from 'react'
+import { useEffect } from 'react'
 import { useSubmitGigTipForm } from '../hooks/useSubmitGigTipForm'
 import { FIELD_CLASSES, LABEL_CLASSES } from './form-classes'
 
@@ -39,18 +41,14 @@ const StatusSlide = ({
 const GigTipForm = () => {
   const { submitForm, data, error } = useSubmitGigTipForm()
   const reduced = useReducedMotion()
+  const router = useRouter()
 
-  if (data?.success) {
-    return (
-      <StatusSlide reduced={reduced}>
-        <Alert className="mt-8 rounded-[0.75em] border-[#6a6a6a] bg-[#adffb4] p-5 text-brand-grey">
-          <AlertDescription>
-            Tack för tipset! Uppdraget är inskickat till communityt.
-          </AlertDescription>
-        </Alert>
-      </StatusSlide>
-    )
-  }
+  useEffect(() => {
+    if (data?.success) {
+      void router.push('/tipsa/tack')
+    }
+  }, [data, router])
+
   if (error) {
     return (
       <StatusSlide reduced={reduced}>

@@ -6,7 +6,9 @@ import { Checkbox } from '@frilansaresverige/ui/ui/checkbox'
 import { Input } from '@frilansaresverige/ui/ui/input'
 import { Label } from '@frilansaresverige/ui/ui/label'
 import { Textarea } from '@frilansaresverige/ui/ui/textarea'
+import { useRouter } from 'next/router'
 import type { ReactElement, ReactNode } from 'react'
+import { useEffect } from 'react'
 import { FIELD_CLASSES, LABEL_CLASSES } from '../../components/form-classes'
 import { useSubmitSlackInvitationForm } from '../../hooks/useSubmitSlackInvitationForm'
 
@@ -46,19 +48,14 @@ const StatusSlide = ({
 const RequestSlackInvitationForm = () => {
   const { submitForm, data, error } = useSubmitSlackInvitationForm()
   const reduced = useReducedMotion()
+  const router = useRouter()
 
-  if (data?.success) {
-    return (
-      <StatusSlide reduced={reduced}>
-        <Alert className="mt-8 rounded-[0.75em] border-[#6a6a6a] bg-[#adffb4] p-5 text-brand-grey">
-          <AlertDescription>
-            Grattis! Din ansökan är inskickad. Vi hör av oss via mail så fort vi
-            har tittat på den.
-          </AlertDescription>
-        </Alert>
-      </StatusSlide>
-    )
-  }
+  useEffect(() => {
+    if (data?.success) {
+      void router.push('/ansokan/tack')
+    }
+  }, [data, router])
+
   if (error) {
     return (
       <StatusSlide reduced={reduced}>
