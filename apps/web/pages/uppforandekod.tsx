@@ -18,42 +18,34 @@ const Uppforandekod = () => {
         <h2 className="font-display mt-10 text-2xl font-bold text-brand-cream">
           Var schysst
         </h2>
-        <ul className="mt-4 list-disc pl-5 leading-[1.6] text-brand-cream/85">
-          <li>
-            Vi är kollegor, inte konkurrenter. Hård kritik mot idéer är okej;
-            påhopp på personer är det inte. Trakasserier och diskriminering
-            leder till uteslutning.
-          </li>
-        </ul>
+        <p className="mt-4 leading-[1.6] text-brand-cream/85">
+          Vi är kollegor, inte konkurrenter. Hård kritik mot idéer är okej;
+          påhopp på personer är det inte. Trakasserier och diskriminering leder
+          till uteslutning.
+        </p>
         <h2 className="font-display mt-10 text-2xl font-bold text-brand-cream">
           Ingen spam
         </h2>
-        <ul className="mt-4 list-disc pl-5 leading-[1.6] text-brand-cream/85">
-          <li>
-            Dela gärna det du gör, men communityt är inte en säljkanal.
-            Massutskick, oombedd reklam och dolda affärsintressen hör inte hemma
-            här.
-          </li>
-        </ul>
+        <p className="mt-4 leading-[1.6] text-brand-cream/85">
+          Dela gärna det du gör, men communityt är inte en säljkanal.
+          Massutskick, oombedd reklam och dolda affärsintressen hör inte hemma
+          här.
+        </p>
         <h2 className="font-display mt-10 text-2xl font-bold text-brand-cream">
           Uppdragstips är gratis och direkta
         </h2>
-        <ul className="mt-4 list-disc pl-5 leading-[1.6] text-brand-cream/85">
-          <li>
-            Tipsa bara om uppdrag du själv står bakom, med ärliga villkor och en
-            riktig kontaktperson. Inga mellanhänder som säljer vidare
-            communityts tips.
-          </li>
-        </ul>
+        <p className="mt-4 leading-[1.6] text-brand-cream/85">
+          Tipsa bara om uppdrag du själv står bakom, med ärliga villkor och en
+          riktig kontaktperson. Inga mellanhänder som säljer vidare communityts
+          tips.
+        </p>
         <h2 className="font-display mt-10 text-2xl font-bold text-brand-cream">
           Säg till
         </h2>
-        <ul className="mt-4 list-disc pl-5 leading-[1.6] text-brand-cream/85">
-          <li>
-            Ser du något som bryter mot koden? Säg till en administratör i
-            Slacken.
-          </li>
-        </ul>
+        <p className="mt-4 leading-[1.6] text-brand-cream/85">
+          Ser du något som bryter mot koden? Säg till en administratör i
+          Slacken.
+        </p>
       </section>
     </>
   )
