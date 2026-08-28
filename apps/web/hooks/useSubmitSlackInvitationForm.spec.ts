@@ -30,6 +30,9 @@ const createMockFormEvent = (data: Record<string, { value: string }> = {}) => ({
   target: {
     name: { value: 'name' },
     email: { value: 'mail' },
+    roll: { value: 'roll' },
+    ort: { value: 'ort' },
+    portfolio: { value: 'portfolio' },
     howlong: { value: 'howlong' },
     companyName: { value: 'companyName' },
     linkedin: { value: 'linkedin' },
