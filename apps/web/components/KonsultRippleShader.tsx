@@ -19,10 +19,10 @@ const KonsultRippleShader = ({ reduced }: { reduced: boolean }) => (
   <Shader className="h-full w-full" toneMapping="neutral" disableTelemetry>
     <MultiPointGradient
       colorA="#a8b4ff"
-      colorB="#4823dc"
-      colorC="#ff9c8e"
-      colorD="#2601bb"
-      colorE="#16045e"
+      colorB="#8a5cf6"
+      colorC="#ffcfc8"
+      colorD="#ff9c8e"
+      colorE="#4823dc"
       colorSpace="oklab"
       positionA={{ x: 0.59, y: -0.05 }}
       positionB={{ x: -0.02, y: 0.23 }}
