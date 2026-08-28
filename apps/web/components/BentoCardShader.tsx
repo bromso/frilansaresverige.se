@@ -63,44 +63,46 @@ interface VariantConfig {
 
 const VARIANTS: Record<BentoShaderVariant, VariantConfig> = {
   // Palettes for the "Hitta rätt konsult" bento: the same composition
-  // as the cards above, arranged so the warm tone flows through the
-  // grid — coral in the hero's top-right corner hands over to the skin
-  // tone opening the adjacent card, whose navy foot hands over to the
-  // violet opening the card below, which runs back out to coral.
+  // as the cards above, in the coral family of the primary button
+  // (brand coral, its light hover tone and a deeper coral), still
+  // flowing through the grid — strong coral in the hero's top-right
+  // corner fades to the light tone under its copy, the adjacent card
+  // opens light and deepens toward its foot, and the card below runs
+  // back out to light.
   aurora: {
-    // Coral top-right → blue bottom-left.
-    grad: ['#ff9c8e', '#8a5cf6', '#2601bb'],
+    // Deep coral top-right → light bottom-left.
+    grad: ['#fe7c74', '#ff9c8e', '#ffcfc8'],
     gradStart: { x: 0.97, y: 0.03 },
     gradEnd: { x: 0.05, y: 0.96 },
     leak: {
-      fringe: '#ff9c8e',
-      hot: '#ffcfc8',
-      mid: '#a8b4ff',
+      fringe: '#fe7c74',
+      hot: '#fffce3',
+      mid: '#ffcfc8',
       pos: { x: 1.05, y: 0.12 },
     },
-    trail: ['#fffce3', '#ff9c8e'],
+    trail: ['#fffce3', '#fe7c74'],
   },
   haze: {
-    // Skin top-left (continuing the hero's coral corner) → navy foot.
-    grad: ['#ffcfc8', '#8a5cf6', '#16045e'],
-    leak: {
-      fringe: '#ffcfc8',
-      hot: '#ffcfc8',
-      mid: '#8a5cf6',
-      pos: { x: 0.14, y: 0.1 },
-    },
-    trail: ['#a8b4ff', '#ff9c8e'],
-  },
-  dawn: {
-    // Violet top (continuing haze's dark foot) → back out to coral.
-    grad: ['#8a5cf6', '#ed5fbc', '#ff9c8e'],
+    // Light top-left (continuing the hero's fade) → deep coral foot.
+    grad: ['#ffcfc8', '#ff9c8e', '#fe7c74'],
     leak: {
       fringe: '#ff9c8e',
-      hot: '#ffcfc8',
-      mid: '#a8b4ff',
+      hot: '#fffce3',
+      mid: '#ffcfc8',
+      pos: { x: 0.14, y: 0.1 },
+    },
+    trail: ['#fffce3', '#fe7c74'],
+  },
+  dawn: {
+    // Deep top (continuing haze's foot) → back out to light.
+    grad: ['#fe7c74', '#ff9c8e', '#ffcfc8'],
+    leak: {
+      fringe: '#ff9c8e',
+      hot: '#fffce3',
+      mid: '#ffcfc8',
       pos: { x: 0.9, y: 0.9 },
     },
-    trail: ['#fffce3', '#8a5cf6'],
+    trail: ['#fffce3', '#fe7c74'],
   },
   torus: {
     grad: ['#a8b4ff', '#4823dc', '#16045e'],

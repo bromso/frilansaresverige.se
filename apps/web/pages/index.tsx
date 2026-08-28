@@ -739,7 +739,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                   className="absolute inset-0 z-0"
                   style={{
                     background:
-                      'linear-gradient(to bottom left, #ff9c8e, #8a5cf6 55%, #2601bb)',
+                      'linear-gradient(to bottom left, #fe7c74, #ff9c8e 55%, #ffcfc8)',
                   }}
                 >
                   {webgpu && (
@@ -750,30 +750,35 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                     />
                   )}
                 </div>
-                {/* Dark bottom scrim keeps the cream copy readable while
+                {/* Cream bottom scrim keeps the dark copy readable while
                     the shader stays the visual star; the hairline ring
                     sits above it with pointer-events off so the cursor
                     trail still registers across the whole card. */}
                 <div
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-3/5 bg-gradient-to-t from-[#160a4d]/80 via-[#160a4d]/30 to-transparent"
+                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-3/5 bg-gradient-to-t from-[#fffce3]/75 via-[#fffce3]/30 to-transparent"
                 />
                 <div
                   aria-hidden="true"
                   className="pointer-events-none absolute inset-0 z-[1] rounded-3xl shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15)] max-lg:rounded-t-4xl lg:rounded-l-4xl"
                 />
                 <div className="relative z-10 flex h-full flex-col justify-end p-8 lg:p-10">
-                  <h3 className="font-display max-w-[14ch] text-3xl font-bold tracking-tight text-balance text-[#fffce3] lg:text-4xl">
+                  <h3 className="font-display max-w-[14ch] text-3xl font-bold tracking-tight text-balance text-brand-grey lg:text-4xl">
                     Nå tusentals frilansare direkt.
                   </h3>
-                  <p className="mt-4 max-w-[46ch] leading-[1.6] text-[#fffce3]/85">
+                  <p className="mt-4 max-w-[46ch] leading-[1.6] text-brand-grey/85">
                     Beskriv ert uppdrag så når det{' '}
                     <MemberCount count={memberCount} /> frilansare — ni väljer
                     själva vem ni vill jobba med, utan förmedlingsavgifter och
                     utan mellanhänder som tar en del av kakan.
                   </p>
                   <div className="mt-7">
-                    <Button asChild variant="primary" size="none">
+                    <Button
+                      asChild
+                      variant="primary"
+                      size="none"
+                      className="bg-brand-blue text-brand-cream hover:bg-brand-blue-dark focus:shadow-[0_0_0_0.1em_var(--color-brand-coral),0_0_0_0.2em_var(--color-brand-blue)]"
+                    >
                       <Link href="/tipsa">
                         Tipsa om konsultuppdrag
                         <ArrowRight />
@@ -793,7 +798,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                   className="absolute inset-0 z-0"
                   style={{
                     background:
-                      'linear-gradient(to bottom right, #ffcfc8, #8a5cf6 55%, #16045e)',
+                      'linear-gradient(to bottom right, #ffcfc8, #ff9c8e 55%, #fe7c74)',
                   }}
                 >
                   {webgpu && (
@@ -806,7 +811,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 </div>
                 <div
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/3 bg-gradient-to-t from-[#160a4d]/80 to-transparent"
+                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/3 bg-gradient-to-t from-[#ffcfc8]/70 to-transparent"
                 />
                 <div className="relative z-10 flex flex-1 flex-col p-8 text-brand-grey">
                   <h3 className="font-display text-2xl font-bold tracking-tight">
@@ -817,18 +822,18 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                     mellan er och frilansaren. Inga avgifter, ingen provision.
                   </p>
                   <div className="mt-auto pt-6">
-                    <div className="flex items-center gap-3 rounded-2xl bg-white/10 p-3 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15)] backdrop-blur-sm">
+                    <div className="flex items-center gap-3 rounded-2xl bg-white/45 p-3 shadow-[inset_0_0_0_1px_rgba(51,51,51,0.15)] backdrop-blur-sm">
                       <span
                         aria-hidden="true"
-                        className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-coral"
+                        className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-blue-dark"
                       >
-                        <span className="icon-[lucide--briefcase-business] size-4 text-brand-grey" />
+                        <span className="icon-[lucide--briefcase-business] size-4 text-[#fffce3]" />
                       </span>
-                      <span className="min-w-0 text-[#fffce3]">
+                      <span className="min-w-0 text-brand-grey">
                         <span className="block truncate text-sm font-medium">
                           Nytt uppdragstips — Frontendutvecklare
                         </span>
-                        <span className="block truncate font-mono text-xs text-[#fffce3]/45">
+                        <span className="block truncate font-mono text-xs text-brand-grey/60">
                           direktkontakt · 950 kr/h · #uppdrag
                         </span>
                       </span>
@@ -845,7 +850,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                   className="absolute inset-0 z-0"
                   style={{
                     background:
-                      'linear-gradient(to bottom right, #8a5cf6, #ed5fbc 55%, #ff9c8e)',
+                      'linear-gradient(to bottom right, #fe7c74, #ff9c8e 55%, #ffcfc8)',
                   }}
                 >
                   {webgpu && (
@@ -858,13 +863,13 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 </div>
                 <div
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/3 bg-gradient-to-t from-[#160a4d]/80 to-transparent"
+                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/3 bg-gradient-to-t from-[#fffce3]/70 to-transparent"
                 />
-                <div className="relative z-10 flex flex-1 flex-col p-8 text-[#fffce3]">
+                <div className="relative z-10 flex flex-1 flex-col p-8 text-brand-grey">
                   <h3 className="font-display text-2xl font-bold tracking-tight">
                     Alla kompetenser.
                   </h3>
-                  <p className="mt-3 text-sm leading-[1.6] text-[#fffce3]/85">
+                  <p className="mt-3 text-sm leading-[1.6] text-brand-grey/85">
                     Utvecklare, designers, skribenter, projektledare, ekonomer —
                     nätverket täcker de flesta kompetenser och branscher.
                   </p>
@@ -873,18 +878,18 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                       {KONSULT_AVATARS.map((initials, index) => (
                         <span
                           key={initials}
-                          className={`font-display flex size-11 items-center justify-center rounded-full bg-brand-coral text-sm font-bold text-brand-grey ring-2 ring-[#fffce3] ${index > 0 ? '-ml-3' : ''}`}
+                          className={`font-display flex size-11 items-center justify-center rounded-full bg-[#fffce3] text-sm font-bold text-brand-grey ring-2 ring-white/70 ${index > 0 ? '-ml-3' : ''}`}
                         >
                           {initials}
                         </span>
                       ))}
-                      <span className="font-display -ml-3 flex size-11 items-center justify-center rounded-full bg-brand-blue-dark text-xs font-bold text-[#fffce3] ring-2 ring-[#fffce3]">
+                      <span className="font-display -ml-3 flex size-11 items-center justify-center rounded-full bg-brand-blue-dark text-xs font-bold text-[#fffce3] ring-2 ring-white/70">
                         {memberCount
                           ? `+${Math.round(memberCount / 1000)}k`
                           : '+3k'}
                       </span>
                     </div>
-                    <span className="text-sm font-medium whitespace-nowrap text-[#fffce3]/85">
+                    <span className="text-sm font-medium whitespace-nowrap text-brand-grey/85">
                       frilansare i Slack
                     </span>
                   </div>
