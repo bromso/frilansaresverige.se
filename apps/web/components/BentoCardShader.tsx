@@ -23,6 +23,9 @@ export type BentoShaderVariant =
   | 'metaballs'
   | 'ribbon'
   | 'hemisphere'
+  | 'aurora'
+  | 'haze'
+  | 'dawn'
 
 const SPIN = {
   type: 'auto-animate',
@@ -42,7 +45,9 @@ interface VariantConfig {
     pos: { x: number; y: number }
   }
   trail: [string, string]
-  glass: {
+  // The konsult variants are gradient-only; the "Vad du får" cards float
+  // a refractive solid on top.
+  glass?: {
     center: { x: number; y: number }
     scale: number
     shapeType: string
@@ -52,6 +57,39 @@ interface VariantConfig {
 }
 
 const VARIANTS: Record<BentoShaderVariant, VariantConfig> = {
+  // Light, airy palettes for the "Hitta rätt konsult" bento: the same
+  // composition as the cards above but without navy anchors, so the
+  // cards read as light purple and skin tones under dark ink.
+  aurora: {
+    grad: ['#ffcfc8', '#a8b4ff', '#8a5cf6'],
+    leak: {
+      fringe: '#ff9c8e',
+      hot: '#fffce3',
+      mid: '#a8b4ff',
+      pos: { x: 1.05, y: 0.12 },
+    },
+    trail: ['#fffce3', '#ff9c8e'],
+  },
+  haze: {
+    grad: ['#a8b4ff', '#8a5cf6', '#ffcfc8'],
+    leak: {
+      fringe: '#ffcfc8',
+      hot: '#fffce3',
+      mid: '#8a5cf6',
+      pos: { x: 0.14, y: 0.1 },
+    },
+    trail: ['#a8b4ff', '#ff9c8e'],
+  },
+  dawn: {
+    grad: ['#ffcfc8', '#ff9c8e', '#a8b4ff'],
+    leak: {
+      fringe: '#ff9c8e',
+      hot: '#fffce3',
+      mid: '#a8b4ff',
+      pos: { x: 0.9, y: 0.9 },
+    },
+    trail: ['#fffce3', '#8a5cf6'],
+  },
   torus: {
     grad: ['#a8b4ff', '#4823dc', '#16045e'],
     leak: {
