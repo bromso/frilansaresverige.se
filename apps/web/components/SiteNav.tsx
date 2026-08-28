@@ -85,7 +85,10 @@ const SiteNav = () => {
         {/* One morphing surface, like the Skiper96 demo: the tab row and
             the link panel share this glass container, whose height
             animates from the bare bar (56px) to bar + measured panel.
-            The 28px radius equals the closed bar's pill radius. */}
+            The 28px radius equals the closed bar's pill radius, and the
+            radii nest concentrically: outer 28px − 8px padding = 20px
+            for everything inset by p-2/px-2 (the 40px pill items resolve
+            to 20px via rounded-full; the panel links use 1.25rem). */}
         <motion.div
           initial={false}
           animate={{ height: tab ? 56 + bounds.height : 56 }}
@@ -183,7 +186,7 @@ const SiteNav = () => {
                   <li>
                     <Link
                       href={tab.hub}
-                      className="flex h-10 items-center rounded-xl px-3 text-sm font-bold text-brand-cream hover:bg-brand-cream/10"
+                      className="flex h-10 items-center rounded-[1.25rem] px-3 text-sm font-bold text-brand-cream hover:bg-brand-cream/10"
                     >
                       {tab.items.length === 0
                         ? tab.title
@@ -194,7 +197,7 @@ const SiteNav = () => {
                     <li key={item.path}>
                       <Link
                         href={item.path}
-                        className="flex h-10 items-center rounded-xl px-3 text-sm text-brand-cream/85 hover:bg-brand-cream/10 hover:text-brand-cream"
+                        className="flex h-10 items-center rounded-[1.25rem] px-3 text-sm text-brand-cream/85 hover:bg-brand-cream/10 hover:text-brand-cream"
                       >
                         {item.label}
                       </Link>
