@@ -1,11 +1,7 @@
 // Loads the MDX content that drives /nyheter and /event. Files live in
-// apps/web/content/<section>/<slug>.mdx with YAML frontmatter; this
-// module reads the filesystem, so only call it from getStaticProps /
-// getStaticPaths (or the sitemap's getServerSideProps).
-import fs from 'node:fs'
-import path from 'node:path'
-import matter from 'gray-matter'
-import { load as loadYaml } from 'js-yaml'
+// apps/web/content/<section>/<slug>.mdx with YAML frontmatter. This
+// module is fs-free (types, parsing, sorting, formatting) so components
+// can import it; the filesystem loaders live in lib/content.server.ts.
 
 export interface PostMeta {
   slug: string
@@ -30,8 +26,6 @@ export interface EventMeta {
   price?: string
   image?: string
 }
-
-const CONTENT_DIR = path.join(process.cwd(), 'content')
 
 const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?$/
 
@@ -186,55 +180,4 @@ export const formatEventBadge = (
     // sv-SE short months come with a trailing period ("sep.") — drop it.
     month: monthBadgeFormat.format(date).replace('.', ''),
   }
-}
-
-// --- Filesystem loaders (build/server only) ---
-
-const listSlugs = (section: string): string[] =>
-  fs
-    .readdirSync(path.join(CONTENT_DIR, section))
-    .filter((file) => file.endsWith('.mdx'))
-    .map((file) => file.replace(/\.mdx$/, ''))
-    .sort()
-
-// The repo pins js-yaml to v4 (root package.json overrides), whose API
-// dropped the safeLoad function gray-matter's built-in engine calls —
-// so hand gray-matter a v4 engine explicitly.
-const MATTER_OPTIONS = {
-  engines: {
-    yaml: (source: string) => loadYaml(source) as Record<string, unknown>,
-  },
-}
-
-const readEntry = (section: string, slug: string) =>
-  matter(
-    fs.readFileSync(path.join(CONTENT_DIR, section, `${slug}.mdx`), 'utf8'),
-    MATTER_OPTIONS,
-  )
-
-export const getPostSlugs = (): string[] => listSlugs('nyheter')
-export const getEventSlugs = (): string[] => listSlugs('event')
-
-export const getAllPosts = (): PostMeta[] =>
-  sortPosts(
-    getPostSlugs().map((slug) =>
-      parsePostMeta(slug, readEntry('nyheter', slug).data),
-    ),
-  )
-
-export const getAllEvents = (): EventMeta[] =>
-  getEventSlugs().map((slug) =>
-    parseEventMeta(slug, readEntry('event', slug).data),
-  )
-
-export const getPost = (slug: string): { meta: PostMeta; content: string } => {
-  const { data, content } = readEntry('nyheter', slug)
-  return { meta: parsePostMeta(slug, data), content }
-}
-
-export const getEvent = (
-  slug: string,
-): { meta: EventMeta; content: string } => {
-  const { data, content } = readEntry('event', slug)
-  return { meta: parseEventMeta(slug, data), content }
 }

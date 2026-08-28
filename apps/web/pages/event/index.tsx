@@ -1,7 +1,8 @@
 import type { GetStaticProps } from 'next'
 import EventCard from '../../components/event/EventCard'
 import Seo from '../../components/Seo'
-import { type EventMeta, getAllEvents, splitEvents } from '../../lib/content'
+import { type EventMeta, splitEvents } from '../../lib/content'
+import { getAllEvents } from '../../lib/content.server'
 import { getRoute } from '../../lib/routes'
 
 interface Props {

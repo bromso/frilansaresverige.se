@@ -4,16 +4,13 @@ import {
   formatEventDate,
   formatEventTime,
   formatPostDate,
-  getAllEvents,
-  getAllPosts,
-  getEvent,
-  getPost,
   parseEventMeta,
   parseLocalDate,
   parsePostMeta,
   sortPosts,
   splitEvents,
 } from './content'
+import { getAllEvents, getAllPosts, getEvent, getPost } from './content.server'
 
 const post = (slug: string, date: string) =>
   parsePostMeta(slug, {

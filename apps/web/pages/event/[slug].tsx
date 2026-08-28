@@ -10,10 +10,9 @@ import {
   type EventMeta,
   formatEventDate,
   formatEventTime,
-  getEvent,
-  getEventSlugs,
   parseLocalDate,
 } from '../../lib/content'
+import { getEvent, getEventSlugs } from '../../lib/content.server'
 
 interface Props {
   meta: EventMeta
@@ -45,7 +44,10 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
 const InfoRow = ({ icon, children }: { icon: string; children: string }) => (
   <div className="flex items-center gap-3">
-    <span aria-hidden="true" className={`${icon} size-5 shrink-0 text-brand-coral`} />
+    <span
+      aria-hidden="true"
+      className={`${icon} size-5 shrink-0 text-brand-coral`}
+    />
     <span className="text-brand-cream/85">{children}</span>
   </div>
 )

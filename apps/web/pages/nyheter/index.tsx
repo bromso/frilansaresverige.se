@@ -1,7 +1,8 @@
 import type { GetStaticProps } from 'next'
 import ArticleCard from '../../components/nyheter/ArticleCard'
 import Seo from '../../components/Seo'
-import { getAllPosts, type PostMeta } from '../../lib/content'
+import type { PostMeta } from '../../lib/content'
+import { getAllPosts } from '../../lib/content.server'
 import { getRoute } from '../../lib/routes'
 
 interface Props {

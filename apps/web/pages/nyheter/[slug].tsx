@@ -8,13 +8,8 @@ import ArticleCover from '../../components/nyheter/ArticleCover'
 import { MDX_COMPONENTS } from '../../components/nyheter/MdxContent'
 import Seo, { SITE_NAME, SITE_URL } from '../../components/Seo'
 import StructuredData from '../../components/StructuredData'
-import {
-  formatPostDate,
-  getAllPosts,
-  getPost,
-  getPostSlugs,
-  type PostMeta,
-} from '../../lib/content'
+import { formatPostDate, type PostMeta } from '../../lib/content'
+import { getAllPosts, getPost, getPostSlugs } from '../../lib/content.server'
 
 interface Props {
   meta: PostMeta
