@@ -4,13 +4,17 @@ import Router from 'next/router'
 import type { ReactNode } from 'react'
 import { useEffect, useRef } from 'react'
 
-// Scribble page transition: on navigation a hand-drawn coral line sweeps
-// across the screen, its stroke fattening until it covers the page, then
-// retracts to reveal the new one. The Pages Router can't hold navigation
-// back the way next-transition-router does in the App Router, so the
-// leave timeline plays while the next page loads underneath and the
-// enter timeline waits for the leave to finish before retracting. Under
-// reduced motion no listeners are attached and navigation is instant.
+// Scribble page transition: a hand-drawn coral line sweeps across the
+// screen, its stroke fattening until it covers the page, then retracts to
+// reveal the new one. The Pages Router can't hold navigation back on its
+// own, so internal link clicks are intercepted in the capture phase: the
+// cover animation plays over the OLD page first, and only when the screen
+// is fully covered does Router.push run — the swap happens out of sight
+// and the reveal plays once the route change completes. Programmatic
+// navigations (form submits, back/forward) aren't interceptable, so they
+// keep the old behavior of covering while the next page loads underneath.
+// Under reduced motion no listeners are attached and navigation is
+// instant.
 const PageTransition = ({ children }: { children: ReactNode }) => {
   const overlayRef = useRef<HTMLDivElement>(null)
   const pathRef = useRef<SVGPathElement>(null)
@@ -32,23 +36,27 @@ const PageTransition = ({ children }: { children: ReactNode }) => {
 
     let leaveTl: gsap.core.Timeline | null = null
     let enterTl: gsap.core.Timeline | null = null
+    // True while a click-held navigation is in flight: the cover already
+    // played (or is playing), so routeChangeStart must not restart it.
+    let holding = false
 
     const reset = () => {
       leaveTl?.kill()
       enterTl?.kill()
       leaveTl = null
       enterTl = null
+      holding = false
       gsap.set(overlay, { opacity: 0 })
       gsap.set(path, { drawSVG: '0%', strokeWidth: 2 })
     }
 
-    const onStart = (_url: string, { shallow }: { shallow: boolean }) => {
-      if (shallow) {
-        return
-      }
-      reset()
+    const playLeave = (onLeaveComplete?: () => void) => {
+      leaveTl?.kill()
+      enterTl?.kill()
+      gsap.set(overlay, { opacity: 0 })
+      gsap.set(path, { drawSVG: '0%', strokeWidth: 2 })
       leaveTl = gsap
-        .timeline()
+        .timeline({ onComplete: onLeaveComplete })
         .to(overlay, { opacity: 1, duration: 0.4, ease: 'power2.inOut' })
         .to(
           path,
@@ -60,6 +68,13 @@ const PageTransition = ({ children }: { children: ReactNode }) => {
           },
           0,
         )
+    }
+
+    const onStart = (_url: string, { shallow }: { shallow: boolean }) => {
+      if (shallow || holding) {
+        return
+      }
+      playLeave()
     }
 
     const playEnter = () => {
@@ -76,11 +91,58 @@ const PageTransition = ({ children }: { children: ReactNode }) => {
     }
 
     const onComplete = () => {
+      holding = false
       if (leaveTl?.isActive()) {
         leaveTl.eventCallback('onComplete', playEnter)
       } else if (leaveTl) {
         playEnter()
       }
+    }
+
+    // Capture-phase so this runs before next/link's own click handler.
+    // Only plain left-clicks on same-origin page links are held back;
+    // modified clicks, new-tab targets, downloads, hash jumps and
+    // same-page links keep their default behavior.
+    const onClick = (event: MouseEvent) => {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
+        return
+      }
+      const anchor = (event.target as Element).closest?.('a')
+      if (
+        !anchor?.href ||
+        (anchor.target && anchor.target !== '_self') ||
+        anchor.hasAttribute('download')
+      ) {
+        return
+      }
+      const url = new URL(anchor.href)
+      if (url.origin !== window.location.origin) {
+        return
+      }
+      if (
+        url.pathname === window.location.pathname &&
+        url.search === window.location.search
+      ) {
+        return
+      }
+      event.preventDefault()
+      event.stopPropagation()
+      if (holding || leaveTl?.isActive()) {
+        // A transition is already covering the screen; swallow the click.
+        return
+      }
+      holding = true
+      const href = url.pathname + url.search + url.hash
+      playLeave(() => {
+        void Router.push(href)
+      })
     }
 
     // The Router singleton's events, not useRouter()'s — the hook returns
@@ -89,11 +151,13 @@ const PageTransition = ({ children }: { children: ReactNode }) => {
     Router.events.on('routeChangeStart', onStart)
     Router.events.on('routeChangeComplete', onComplete)
     Router.events.on('routeChangeError', reset)
+    document.addEventListener('click', onClick, true)
 
     return () => {
       Router.events.off('routeChangeStart', onStart)
       Router.events.off('routeChangeComplete', onComplete)
       Router.events.off('routeChangeError', reset)
+      document.removeEventListener('click', onClick, true)
       reset()
     }
   }, [])
