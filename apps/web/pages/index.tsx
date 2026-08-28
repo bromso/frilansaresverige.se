@@ -739,7 +739,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                   className="absolute inset-0 z-0"
                   style={{
                     background:
-                      'linear-gradient(135deg, #ffcfc8, #8a5cf6 55%, #4823dc)',
+                      'linear-gradient(135deg, #ff9c8e, #8a5cf6 55%, #4823dc)',
                   }}
                 >
                   {webgpu && (
@@ -798,7 +798,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                   className="absolute inset-0 z-0"
                   style={{
                     background:
-                      'linear-gradient(to bottom, #a8b4ff, #8a5cf6 55%, #4823dc)',
+                      'linear-gradient(to bottom, #8a5cf6, #4823dc 55%, #ff9c8e)',
                   }}
                 >
                   {webgpu && (
@@ -850,7 +850,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                   className="absolute inset-0 z-0"
                   style={{
                     background:
-                      'linear-gradient(to bottom, #ffcfc8, #ff9c8e 55%, #8a5cf6)',
+                      'linear-gradient(to bottom, #ff9c8e, #ed5fbc 55%, #8a5cf6)',
                   }}
                 >
                   {webgpu && (

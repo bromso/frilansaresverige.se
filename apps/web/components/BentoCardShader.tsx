@@ -61,30 +61,30 @@ const VARIANTS: Record<BentoShaderVariant, VariantConfig> = {
   // composition as the cards above but without navy anchors, so the
   // cards read as light purple and skin tones under dark ink.
   aurora: {
-    grad: ['#ffcfc8', '#8a5cf6', '#4823dc'],
+    grad: ['#ff9c8e', '#8a5cf6', '#4823dc'],
     leak: {
       fringe: '#ff9c8e',
-      hot: '#fffce3',
+      hot: '#ffcfc8',
       mid: '#a8b4ff',
       pos: { x: 1.05, y: 0.12 },
     },
     trail: ['#fffce3', '#ff9c8e'],
   },
   haze: {
-    grad: ['#a8b4ff', '#8a5cf6', '#4823dc'],
+    grad: ['#8a5cf6', '#4823dc', '#ff9c8e'],
     leak: {
       fringe: '#ffcfc8',
-      hot: '#fffce3',
+      hot: '#ffcfc8',
       mid: '#8a5cf6',
       pos: { x: 0.14, y: 0.1 },
     },
     trail: ['#a8b4ff', '#ff9c8e'],
   },
   dawn: {
-    grad: ['#ffcfc8', '#ff9c8e', '#8a5cf6'],
+    grad: ['#ff9c8e', '#ed5fbc', '#8a5cf6'],
     leak: {
       fringe: '#ff9c8e',
-      hot: '#fffce3',
+      hot: '#ffcfc8',
       mid: '#a8b4ff',
       pos: { x: 0.9, y: 0.9 },
     },
