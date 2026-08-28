@@ -9,6 +9,13 @@
 
 @source "../../../packages/ui/src";
 
+/* next-themes toggles the .dark/.light class on <html>, so the dark:
+   variant must key off that class — Tailwind's default keys it off the
+   OS prefers-color-scheme, which made shadcn's dark:bg-input/30 turn
+   input surfaces dark for dark-OS visitors even when the site was in
+   light mode. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* The display font is loaded with next/font in _app.tsx, which defines
    --font-bricolage on the app wrapper. `inline` makes the font-display
    utility emit the var() reference itself, so it resolves against the
@@ -39,6 +46,20 @@
   .light textarea,
   .light select {
     color: var(--color-brand-grey);
+  }
+
+  /* Placeholders on those light input surfaces: the preflight default
+     (currentColor at 50%) drops below readable on the light theme's
+     lavender-tinted fields, so pin them to brand grey with a higher
+     alpha where the surface is tinted. */
+  input::placeholder,
+  textarea::placeholder {
+    color: rgb(51 51 51 / 0.55);
+  }
+
+  .light input::placeholder,
+  .light textarea::placeholder {
+    color: rgb(51 51 51 / 0.75);
   }
 
   html,
