@@ -109,6 +109,18 @@ export const ROUTES: RouteMeta[] = [
 
   // Community
   {
+    path: '/nyheter',
+    title: 'Nyheter',
+    description:
+      'Nyheter från Frilansare Sverige — uppdateringar från communityt, sajten och frilanslivet i Sverige.',
+  },
+  {
+    path: '/event',
+    title: 'Event',
+    description:
+      'Kommande träffar och event för frilansare — AW, workshops och årsmöten från Frilansare Sverige.',
+  },
+  {
     path: '/community',
     title: 'Community',
     description:
@@ -193,6 +205,8 @@ export const NAV_TABS: NavTab[] = [
     icon: 'icon-[lucide--heart-handshake]',
     hub: '/community',
     items: [
+      { path: '/nyheter', label: 'Nyheter' },
+      { path: '/event', label: 'Event' },
       { path: '/om', label: 'Om oss' },
       { path: '/uppforandekod', label: 'Uppförandekod' },
       { path: '/kontakt', label: 'Kontakt' },
