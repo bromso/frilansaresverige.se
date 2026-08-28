@@ -11,17 +11,18 @@ import {
 // gradient with wave distortion and a faint spiral engraving that
 // ripples under the pointer via the declarative CursorRipples layer (no
 // event wiring — the component tracks the cursor itself). Recolored
-// from the reference's ember oranges to the site's coral/magenta/blue
-// palette; all other props match the reference. Under reduced motion
-// the wave stops and the pointer ripples are dropped.
+// from the reference's ember oranges to the same palette as the "Vad du
+// får" glass cards (periwinkle/brand blue/deep navy with coral light
+// leaks); all other props match the reference. Under reduced motion the
+// wave stops and the pointer ripples are dropped.
 const KonsultRippleShader = ({ reduced }: { reduced: boolean }) => (
   <Shader className="h-full w-full" toneMapping="neutral" disableTelemetry>
     <MultiPointGradient
-      colorA="#ff9c8e"
-      colorB="#ed5fbc"
-      colorC="#ffcfc8"
-      colorD="#fffce3"
-      colorE="#4823dc"
+      colorA="#a8b4ff"
+      colorB="#4823dc"
+      colorC="#ff9c8e"
+      colorD="#2601bb"
+      colorE="#16045e"
       colorSpace="oklab"
       positionA={{ x: 0.59, y: -0.05 }}
       positionB={{ x: -0.02, y: 0.23 }}

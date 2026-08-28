@@ -741,7 +741,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                   className="absolute inset-0 z-0"
                   style={{
                     background:
-                      'radial-gradient(ellipse 90% 80% at 60% 0%, #ff9c8e, transparent 70%), radial-gradient(ellipse 80% 80% at 0% 25%, #ed5fbc, transparent 60%), linear-gradient(160deg, #4823dc, #ed5fbc 55%, #ffcfc8)',
+                      'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255,156,142,0.25), transparent), linear-gradient(to bottom, #2601bb, #16045e)',
                   }}
                 >
                   {webgpu && <KonsultRippleShader reduced={reduced} />}
