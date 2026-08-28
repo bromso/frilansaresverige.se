@@ -438,14 +438,18 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
           </div>
         )}
 
+        {/* The hero copy enters with the CSS hero-enter animation (not the
+            JS Reveal wrapper): the paragraph below is the page's LCP
+            element, and a hydration-gated fade would hold its first paint
+            until all JavaScript has loaded. */}
         <div className="max-w-[50em] text-left">
-          <Reveal reduced={reduced}>
+          <div className="hero-enter">
             <p className="mb-6 inline-block rounded-full border border-brand-cream/30 px-4 py-1.5 text-sm tracking-wide text-brand-cream/90">
               Sveriges största frilanscommunity
             </p>
-          </Reveal>
+          </div>
 
-          <Reveal reduced={reduced} delay={100}>
+          <div className="hero-enter" style={{ animationDelay: '100ms' }}>
             <h1 className="font-display text-5xl leading-[1.05] font-extrabold tracking-tight text-brand-cream md:text-6xl lg:text-7xl">
               Att frilansa är bättre{' '}
               {reduced ? (
@@ -463,9 +467,9 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 />
               )}
             </h1>
-          </Reveal>
+          </div>
 
-          <Reveal reduced={reduced} delay={200}>
+          <div className="hero-enter" style={{ animationDelay: '200ms' }}>
             <div className="mt-6 flex items-baseline gap-[0.35em] text-xl text-brand-cream/90 md:text-2xl">
               <span>För</span>
               {reduced ? (
@@ -482,18 +486,18 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 </RotatingTextContainer>
               )}
             </div>
-          </Reveal>
+          </div>
 
-          <Reveal reduced={reduced} delay={300}>
+          <div className="hero-enter" style={{ animationDelay: '300ms' }}>
             <p className="mt-8 max-w-[38em] text-lg leading-[1.6] text-brand-cream/85 md:text-xl">
               Vi är <MemberCount count={memberCount} /> frilansare som delar
               uppdrag, kunskap och kollegskap i Slack. Vårt syfte är att främja
               kontaktskapande och uppdragstipsande mellan frilansare — helt
               gratis, utan mellanhänder.
             </p>
-          </Reveal>
+          </div>
 
-          <Reveal reduced={reduced} delay={400}>
+          <div className="hero-enter" style={{ animationDelay: '400ms' }}>
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <Button asChild variant="primary" size="none">
                 <Link href="/ansokan">
@@ -505,13 +509,13 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 <Link href="/tipsa">Tipsa om konsultuppdrag</Link>
               </Button>
             </div>
-          </Reveal>
+          </div>
 
-          <Reveal reduced={reduced} delay={500}>
+          <div className="hero-enter" style={{ animationDelay: '500ms' }}>
             <p className="mt-7 text-sm text-brand-cream/60">
               Gratis · Inga mellanhänder · Vi ses i Slack
             </p>
-          </Reveal>
+          </div>
         </div>
       </section>
 
