@@ -1,16 +1,23 @@
 import type { GetServerSideProps } from 'next'
 import { SITE_URL } from '../components/Seo'
+import { getEventSlugs, getPostSlugs } from '../lib/content'
 import { buildSitemapXml } from '../lib/sitemap'
 
 // The registry is static, so the XML is too — but a real page route (not
 // a build artifact in public/) keeps it in lockstep with lib/routes.ts.
+// The content reads at request time need content/ traced into the
+// standalone bundle — see outputFileTracingIncludes in next.config.js.
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   res.setHeader('Content-Type', 'application/xml')
   res.setHeader(
     'Cache-Control',
     'public, s-maxage=86400, stale-while-revalidate',
   )
-  res.write(buildSitemapXml(SITE_URL))
+  const extras = [
+    ...getPostSlugs().map((slug) => `/nyheter/${slug}`),
+    ...getEventSlugs().map((slug) => `/event/${slug}`),
+  ]
+  res.write(buildSitemapXml(SITE_URL, extras))
   res.end()
   return { props: {} }
 }
