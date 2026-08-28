@@ -1,3 +1,4 @@
+import { Button } from '@frilansaresverige/ui/animate-ui/components/buttons/button'
 import Link from 'next/link'
 import Seo from '../components/Seo'
 import { NAV_TABS } from '../lib/routes'
@@ -22,21 +23,15 @@ const Custom404 = () => (
     </p>
     <ul className="mt-8 flex flex-wrap gap-3">
       <li>
-        <Link
-          href="/"
-          className="inline-block rounded-full bg-brand-coral px-5 py-2 font-bold text-brand-grey"
-        >
-          Till startsidan
-        </Link>
+        <Button asChild variant="primary" size="none">
+          <Link href="/">Till startsidan</Link>
+        </Button>
       </li>
       {NAV_TABS.map((tab) => (
         <li key={tab.hub}>
-          <Link
-            href={tab.hub}
-            className="inline-block rounded-full border border-brand-cream/30 px-5 py-2 text-brand-cream/85 hover:border-brand-cream hover:text-brand-cream"
-          >
-            {tab.title}
-          </Link>
+          <Button asChild variant="primary-outline" size="none">
+            <Link href={tab.hub}>{tab.title}</Link>
+          </Button>
         </li>
       ))}
     </ul>
