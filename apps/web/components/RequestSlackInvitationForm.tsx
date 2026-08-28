@@ -92,6 +92,7 @@ const RequestSlackInvitationForm = () => {
             <IconField icon="icon-[lucide--user]">
               <Input
                 id="name"
+                placeholder="Anna Andersson…"
                 name="name"
                 type="text"
                 autoComplete="name"
@@ -108,6 +109,7 @@ const RequestSlackInvitationForm = () => {
             <IconField icon="icon-[lucide--mail]">
               <Input
                 id="email"
+                placeholder="anna@exempel.se…"
                 name="email"
                 type="text"
                 autoComplete="email"
@@ -125,6 +127,7 @@ const RequestSlackInvitationForm = () => {
           <IconField icon="icon-[lucide--clock]">
             <Input
               id="howlong"
+              placeholder="t.ex. 3 år…"
               name="howlong"
               type="text"
               required
@@ -140,6 +143,7 @@ const RequestSlackInvitationForm = () => {
           <IconField icon="icon-[lucide--building-2]">
             <Input
               id="companyName"
+              placeholder="t.ex. Anna Design AB…"
               name="companyName"
               type="text"
               required
@@ -155,6 +159,7 @@ const RequestSlackInvitationForm = () => {
           <IconField icon="icon-[simple-icons--linkedin]">
             <Input
               id="linkedin"
+              placeholder="linkedin.com/in/anna-andersson…"
               name="linkedin"
               type="text"
               required
@@ -178,6 +183,7 @@ const RequestSlackInvitationForm = () => {
           <IconField icon="icon-[lucide--message-square]" top="top-[0.85em]">
             <Textarea
               id="motivation"
+              placeholder="Jag är frilansande formgivare sedan 2021 och vill…"
               name="motivation"
               required
               aria-describedby="motivation-description"
