@@ -57,11 +57,11 @@ interface VariantConfig {
 }
 
 const VARIANTS: Record<BentoShaderVariant, VariantConfig> = {
-  // Light, airy palettes for the "Hitta rätt konsult" bento: the same
-  // composition as the cards above but without navy anchors, so the
-  // cards read as light purple and skin tones under dark ink.
+  // Palettes for the "Hitta rätt konsult" bento: the same composition
+  // as the cards above — saturated coral/violet/magenta leads grounded
+  // by dark blue feet, one hue per card.
   aurora: {
-    grad: ['#ff9c8e', '#8a5cf6', '#4823dc'],
+    grad: ['#ff9c8e', '#8a5cf6', '#2601bb'],
     leak: {
       fringe: '#ff9c8e',
       hot: '#ffcfc8',
@@ -71,7 +71,7 @@ const VARIANTS: Record<BentoShaderVariant, VariantConfig> = {
     trail: ['#fffce3', '#ff9c8e'],
   },
   haze: {
-    grad: ['#8a5cf6', '#4823dc', '#ff9c8e'],
+    grad: ['#8a5cf6', '#4823dc', '#16045e'],
     leak: {
       fringe: '#ffcfc8',
       hot: '#ffcfc8',
@@ -81,7 +81,7 @@ const VARIANTS: Record<BentoShaderVariant, VariantConfig> = {
     trail: ['#a8b4ff', '#ff9c8e'],
   },
   dawn: {
-    grad: ['#ff9c8e', '#ed5fbc', '#8a5cf6'],
+    grad: ['#ed5fbc', '#8a5cf6', '#2601bb'],
     leak: {
       fringe: '#ff9c8e',
       hot: '#ffcfc8',
