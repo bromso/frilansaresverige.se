@@ -38,6 +38,11 @@ const SPIN = {
 
 interface VariantConfig {
   grad: [string, string, string]
+  // Optional gradient axis override; defaults to the shared top-left →
+  // bottom-right sweep. The konsult cards use it to hand the warm tone
+  // from card to card (see the variant comments).
+  gradStart?: { x: number; y: number }
+  gradEnd?: { x: number; y: number }
   leak: {
     fringe: string
     hot: string
@@ -58,10 +63,15 @@ interface VariantConfig {
 
 const VARIANTS: Record<BentoShaderVariant, VariantConfig> = {
   // Palettes for the "Hitta rätt konsult" bento: the same composition
-  // as the cards above — saturated coral/violet/magenta leads grounded
-  // by dark blue feet, one hue per card.
+  // as the cards above, arranged so the warm tone flows through the
+  // grid — coral in the hero's top-right corner hands over to the skin
+  // tone opening the adjacent card, whose navy foot hands over to the
+  // violet opening the card below, which runs back out to coral.
   aurora: {
+    // Coral top-right → blue bottom-left.
     grad: ['#ff9c8e', '#8a5cf6', '#2601bb'],
+    gradStart: { x: 0.97, y: 0.03 },
+    gradEnd: { x: 0.05, y: 0.96 },
     leak: {
       fringe: '#ff9c8e',
       hot: '#ffcfc8',
@@ -71,7 +81,8 @@ const VARIANTS: Record<BentoShaderVariant, VariantConfig> = {
     trail: ['#fffce3', '#ff9c8e'],
   },
   haze: {
-    grad: ['#8a5cf6', '#4823dc', '#16045e'],
+    // Skin top-left (continuing the hero's coral corner) → navy foot.
+    grad: ['#ffcfc8', '#8a5cf6', '#16045e'],
     leak: {
       fringe: '#ffcfc8',
       hot: '#ffcfc8',
@@ -81,7 +92,8 @@ const VARIANTS: Record<BentoShaderVariant, VariantConfig> = {
     trail: ['#a8b4ff', '#ff9c8e'],
   },
   dawn: {
-    grad: ['#ed5fbc', '#8a5cf6', '#2601bb'],
+    // Violet top (continuing haze's dark foot) → back out to coral.
+    grad: ['#8a5cf6', '#ed5fbc', '#ff9c8e'],
     leak: {
       fringe: '#ff9c8e',
       hot: '#ffcfc8',
@@ -272,8 +284,8 @@ const BentoCardShader = ({
       <Shader className="h-full w-full" toneMapping="neutral" disableTelemetry>
         <LinearGradient
           colorSpace="oklab"
-          start={{ x: 0.11, y: 0.03 }}
-          end={{ x: 0.99, y: 0.96 }}
+          start={config.gradStart ?? { x: 0.11, y: 0.03 }}
+          end={config.gradEnd ?? { x: 0.99, y: 0.96 }}
           stops={[
             { color: config.grad[0], position: 0 },
             { color: config.grad[1], position: 0.6038 },

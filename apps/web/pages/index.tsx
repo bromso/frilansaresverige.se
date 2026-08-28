@@ -739,7 +739,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                   className="absolute inset-0 z-0"
                   style={{
                     background:
-                      'linear-gradient(135deg, #ff9c8e, #8a5cf6 55%, #2601bb)',
+                      'linear-gradient(to bottom left, #ff9c8e, #8a5cf6 55%, #2601bb)',
                   }}
                 >
                   {webgpu && (
@@ -793,7 +793,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                   className="absolute inset-0 z-0"
                   style={{
                     background:
-                      'linear-gradient(to bottom, #8a5cf6, #4823dc 55%, #16045e)',
+                      'linear-gradient(to bottom right, #ffcfc8, #8a5cf6 55%, #16045e)',
                   }}
                 >
                   {webgpu && (
@@ -808,11 +808,11 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                   aria-hidden="true"
                   className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/3 bg-gradient-to-t from-[#160a4d]/80 to-transparent"
                 />
-                <div className="relative z-10 flex flex-1 flex-col p-8 text-[#fffce3]">
+                <div className="relative z-10 flex flex-1 flex-col p-8 text-brand-grey">
                   <h3 className="font-display text-2xl font-bold tracking-tight">
                     Utan mellanhänder.
                   </h3>
-                  <p className="mt-3 text-sm leading-[1.6] text-[#fffce3]/85">
+                  <p className="mt-3 text-sm leading-[1.6] text-brand-grey/85">
                     Tipset går rakt ut i communityt och kontakten sker direkt
                     mellan er och frilansaren. Inga avgifter, ingen provision.
                   </p>
@@ -824,7 +824,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                       >
                         <span className="icon-[lucide--briefcase-business] size-4 text-brand-grey" />
                       </span>
-                      <span className="min-w-0">
+                      <span className="min-w-0 text-[#fffce3]">
                         <span className="block truncate text-sm font-medium">
                           Nytt uppdragstips — Frontendutvecklare
                         </span>
@@ -845,7 +845,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                   className="absolute inset-0 z-0"
                   style={{
                     background:
-                      'linear-gradient(to bottom, #ed5fbc, #8a5cf6 55%, #2601bb)',
+                      'linear-gradient(to bottom right, #8a5cf6, #ed5fbc 55%, #ff9c8e)',
                   }}
                 >
                   {webgpu && (
