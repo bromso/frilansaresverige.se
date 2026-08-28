@@ -1,15 +1,10 @@
 import { type ReactNode, useEffect, useRef, useState } from 'react'
 import {
-  Blob,
-  ContourLines,
   CursorTrail,
   FilmGrain,
   Glass,
   LightLeak,
   LinearGradient,
-  Liquify,
-  Plasma,
-  ProgressiveBlur,
   Shader,
 } from 'shaders/react'
 
@@ -21,12 +16,6 @@ import {
 // diamond, metaballs, ribbon, hemisphere) come straight from the
 // reference, including the auto-animate rotation drivers, which are
 // replaced with static angles under reduced motion.
-//
-// The "Hitta rätt konsult" cards (ember1–ember5) instead use the Shaders
-// "Drifting Contours 5" preset: a coral/pink plasma wash with purple
-// topographic contour lines traced around an animated blob, warped by a
-// cursor-reactive Liquify. Each card varies the blob seed and anchor so
-// no two cards match.
 
 export type BentoShaderVariant =
   | 'torus'
@@ -34,11 +23,6 @@ export type BentoShaderVariant =
   | 'metaballs'
   | 'ribbon'
   | 'hemisphere'
-  | 'ember1'
-  | 'ember2'
-  | 'ember3'
-  | 'ember4'
-  | 'ember5'
 
 const SPIN = {
   type: 'auto-animate',
@@ -49,8 +33,7 @@ const SPIN = {
   easing: 'linear',
 } as const
 
-interface GlassVariantConfig {
-  contours?: undefined
+interface VariantConfig {
   grad: [string, string, string]
   leak: {
     fringe: string
@@ -67,15 +50,6 @@ interface GlassVariantConfig {
     shape: (reduced: boolean) => Record<string, unknown>
   }
 }
-
-interface ContourVariantConfig {
-  contours: {
-    seed: number
-    blobCenter: { x: number; y: number }
-  }
-}
-
-type VariantConfig = GlassVariantConfig | ContourVariantConfig
 
 const VARIANTS: Record<BentoShaderVariant, VariantConfig> = {
   torus: {
@@ -204,21 +178,6 @@ const VARIANTS: Record<BentoShaderVariant, VariantConfig> = {
       }),
     },
   },
-  ember1: {
-    contours: { seed: 42, blobCenter: { x: 0.52, y: 1 } },
-  },
-  ember2: {
-    contours: { seed: 7, blobCenter: { x: 0.3, y: 0.95 } },
-  },
-  ember3: {
-    contours: { seed: 18, blobCenter: { x: 0.62, y: 1.05 } },
-  },
-  ember4: {
-    contours: { seed: 63, blobCenter: { x: 0.44, y: 0.9 } },
-  },
-  ember5: {
-    contours: { seed: 29, blobCenter: { x: 0.56, y: 1 } },
-  },
 }
 
 // Defers mounting its children (a <Shader> canvas) until the card has
@@ -258,89 +217,13 @@ const MountNearViewport = ({ children }: { children: ReactNode }) => {
 const BentoCardShader = ({
   variant,
   reduced,
-  showGlass = true,
 }: {
   variant: BentoShaderVariant
   reduced: boolean
-  // The "Hitta rätt konsult" cards reuse these compositions without the
-  // refractive 3D solid.
-  showGlass?: boolean
 }) => {
   const config = VARIANTS[variant]
 
-  if (config.contours) {
-    // "Drifting Contours 5" preset (Shaders collection "Drifting
-    // Contours"), with a particle layer on top. The particles sit after
-    // Liquify so the cursor warps the contours but the motes stay crisp.
-    return (
-      <MountNearViewport>
-        <Shader
-          className="h-full w-full"
-          toneMapping="neutral"
-          disableTelemetry
-        >
-          <Plasma
-            balance={40}
-            colorA="#ed5fbc"
-            colorB="#fe7c74"
-            density={0.9}
-            speed={reduced ? 0 : 2}
-            warp={0.3}
-          />
-          <ContourLines
-            gamma={0.1}
-            levels={30}
-            lineColor="#ff4a4a"
-            lineWidth={1.5}
-            source="alpha"
-          >
-            <Blob
-              center={config.contours.blobCenter}
-              colorA="#730db1"
-              colorB="#cf62dc"
-              deformation={0.7}
-              highlightColor="#fbffb3"
-              highlightIntensity={1}
-              highlightX={-0.5}
-              highlightY={-0.6}
-              highlightZ={-0.1}
-              seed={config.contours.seed}
-              size={0.7}
-              softness={1}
-              speed={reduced ? 0 : 0.2}
-            />
-          </ContourLines>
-          {/* The preset exports Liquify for a newer API (decay/intensity/
-            radius); translated here to the installed 3.1.x props. */}
-          {!reduced && <Liquify damping={1.5} intensity={8} radius={1.2} />}
-          {/* Legibility scrim rising from the bottom edge to ~65% of the
-            card: the contour work blurs progressively toward the bottom
-            and a near-opaque coral gradient covers it, hiding the shader
-            behind the card copy so the text stays readable. The top of
-            the card stays fully crisp. (ProgressiveBlur grows along
-            +angle from `center`, whose y is measured from the bottom:
-            angle 90 + center y 0.65 = blur from 35% down.) */}
-          <ProgressiveBlur
-            angle={90}
-            center={{ x: 0.5, y: 0.65 }}
-            falloff={0.4}
-            intensity={50}
-          />
-          <LinearGradient
-            start={{ x: 0.5, y: 0.35 }}
-            end={{ x: 0.5, y: 1 }}
-            stops={[
-              { color: '#fe7c7400', position: 0 },
-              { color: '#fe7c74e6', position: 0.4 },
-              { color: '#ff9c8e', position: 1 },
-            ]}
-          />
-        </Shader>
-      </MountNearViewport>
-    )
-  }
-
-  const glass = showGlass ? config.glass : undefined
+  const glass = config.glass
 
   return (
     <MountNearViewport>

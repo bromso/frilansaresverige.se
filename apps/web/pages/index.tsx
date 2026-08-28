@@ -41,6 +41,10 @@ const HeroShaderBackground = dynamic(
 const BentoCardShader = dynamic(() => import('../components/BentoCardShader'), {
   ssr: false,
 })
+const KonsultRippleShader = dynamic(
+  () => import('../components/KonsultRippleShader'),
+  { ssr: false },
+)
 
 const API_BASE_URL =
   process.env.API_BASE_URL || 'https://uppdrag.frilansaresverige.se/api'
@@ -343,54 +347,9 @@ const TestimonialCard = ({ name, role, body }: Testimonial) => (
   </figure>
 )
 
-// Bento grid for the "Hitta rätt konsult" section: each card runs the
-// Shaders "Drifting Contours 5" preset (see BentoCardShader) with a
-// per-card blob seed. Same corner treatment as the "Vad du får" bento:
-// the four outer corners of the grid are rounded to 2rem per card
-// position.
-interface KonsultCard {
-  variant: BentoShaderVariant
-  title: string
-  text: string
-  wrapper: string
-  corners: string
-  height: string
-}
-
-const KONSULT_BENTO: KonsultCard[] = [
-  {
-    variant: 'ember1',
-    title: 'För företag',
-    text: 'Beskriv ert uppdrag och nå tusentals frilansare direkt. Ni väljer själva vem ni vill jobba med — utan förmedlingsavgifter och utan mellanhänder som tar en del av kakan.',
-    wrapper: 'lg:col-span-3',
-    corners: 'max-lg:rounded-t-4xl lg:rounded-tl-4xl',
-    height: 'min-h-[20rem] lg:min-h-[22rem]',
-  },
-  {
-    variant: 'ember2',
-    title: 'För frilansare och byråer',
-    text: 'Fullbokad, eller behöver du en underkonsult med en annan spets? Tipsa nätverket och hitta rätt kollega till projektet — ofta inom några timmar.',
-    wrapper: 'lg:col-span-3',
-    corners: 'lg:rounded-tr-4xl',
-    height: 'min-h-[20rem] lg:min-h-[22rem]',
-  },
-  {
-    variant: 'ember3',
-    title: 'Utan mellanhänder',
-    text: 'Tipset går rakt ut i communityt och kontakten sker direkt mellan er och frilansaren. Inga avgifter, ingen provision.',
-    wrapper: 'lg:col-span-2',
-    corners: 'lg:rounded-bl-4xl',
-    height: 'min-h-[18rem] lg:min-h-[20rem]',
-  },
-  {
-    variant: 'ember4',
-    title: 'Alla kompetenser',
-    text: 'Utvecklare, designers, skribenter, projektledare, ekonomer — nätverket täcker de flesta kompetenser och branscher.',
-    wrapper: 'lg:col-span-2',
-    corners: '',
-    height: 'min-h-[18rem] lg:min-h-[20rem]',
-  },
-]
+// The avatar stack in the konsult bento's cream card reuses the
+// testimonial initials idiom.
+const KONSULT_AVATARS = ['SL', 'JE', 'AH']
 
 // Site-level schema.org entities, emitted from the homepage only. Typed
 // with schema-dts so invalid shapes fail the typecheck.
@@ -761,79 +720,126 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
         </Reveal>
       </section>
 
-      {/* For companies and hiring freelancers: find the right consultant */}
+      {/* For companies and hiring freelancers: find the right consultant.
+          Layout after the Shaders "Ripple Bento Grid" section: one hero
+          card running a cursor-reactive ripple shader (2/3 width on
+          desktop), beside a column with a dark and a cream support card.
+          Same outer-corner treatment as the "Vad du får" bento. */}
       <section className="w-full pt-8 pb-24 md:pt-12 md:pb-32">
         <SectionHeading
           eyebrow="Hitta rätt konsult"
           title="Rätt frilansare för nästa uppdrag"
         />
-        <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-6 lg:grid-rows-2">
-          {KONSULT_BENTO.map((card, index) => (
-            <div key={card.title} className={`relative ${card.wrapper}`}>
-              <CardSlide reduced={reduced} delay={index * 100}>
-                <div
-                  className={`squircle relative flex h-full flex-col overflow-hidden rounded-xl text-left transition-transform duration-200 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${card.height} ${card.corners}`}
-                >
-                  <div
-                    aria-hidden="true"
-                    className="absolute inset-0 z-0 bg-[#fe7c74]"
-                  >
-                    {webgpu && (
-                      <BentoCardShader
-                        variant={card.variant}
-                        reduced={reduced}
-                        showGlass={false}
-                      />
-                    )}
-                  </div>
-                  <div className="relative z-10 mt-auto p-8">
-                    <h3 className="font-display text-xl font-bold tracking-tight text-brand-grey">
-                      {card.title}
-                    </h3>
-                    <p className="mt-2 leading-[1.6] text-brand-grey">
-                      {card.text}
-                    </p>
-                  </div>
-                </div>
-              </CardSlide>
-            </div>
-          ))}
+        <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-3">
           <div className="relative lg:col-span-2">
-            <CardSlide reduced={reduced} delay={400}>
-              <div className="squircle relative flex h-full min-h-[18rem] flex-col overflow-hidden rounded-xl text-left transition-transform duration-200 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0 max-lg:rounded-b-4xl lg:min-h-[20rem] lg:rounded-br-4xl">
+            <CardSlide reduced={reduced} delay={0}>
+              <div className="squircle relative flex h-full min-h-[28.75rem] flex-col overflow-hidden rounded-3xl text-left max-lg:rounded-t-4xl lg:min-h-[35rem] lg:rounded-l-4xl">
+                {/* Fallback wash while the shader initializes (or when
+                    WebGPU is unavailable). */}
                 <div
                   aria-hidden="true"
-                  className="absolute inset-0 z-0 bg-[#fe7c74]"
+                  className="absolute inset-0 z-0"
+                  style={{
+                    background:
+                      'radial-gradient(ellipse 90% 80% at 60% 0%, #ff9c8e, transparent 70%), radial-gradient(ellipse 80% 80% at 0% 25%, #ed5fbc, transparent 60%), linear-gradient(160deg, #4823dc, #ed5fbc 55%, #ffcfc8)',
+                  }}
                 >
-                  {webgpu && (
-                    <BentoCardShader
-                      variant="ember5"
-                      reduced={reduced}
-                      showGlass={false}
-                    />
-                  )}
+                  {webgpu && <KonsultRippleShader reduced={reduced} />}
                 </div>
-                <div className="relative z-10 mt-auto p-8">
-                  <h3 className="font-display text-xl font-extrabold tracking-tight text-brand-grey">
-                    Redo att hitta rätt konsult?
+                {/* Bottom scrim keeps the copy readable while the shader
+                    stays the visual star; the hairline ring sits above it
+                    with pointer-events off so cursor ripples register
+                    across the whole card. */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-3/5 bg-gradient-to-t from-black/60 via-black/20 to-transparent"
+                />
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 z-[1] rounded-3xl shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15)] max-lg:rounded-t-4xl lg:rounded-l-4xl"
+                />
+                <div className="relative z-10 flex h-full flex-col justify-end p-8 lg:p-10">
+                  <h3 className="font-display max-w-[14ch] text-3xl font-bold tracking-tight text-balance text-white lg:text-4xl">
+                    Nå tusentals frilansare direkt.
                   </h3>
-                  <p className="mt-2 leading-[1.6] text-brand-grey">
-                    Nå ut till <MemberCount count={memberCount} /> frilansare
-                    med ditt uppdrag — gratis och direkt från källan.
+                  <p className="mt-4 max-w-[46ch] leading-[1.6] text-white/80">
+                    Beskriv ert uppdrag så når det{' '}
+                    <MemberCount count={memberCount} /> frilansare — ni väljer
+                    själva vem ni vill jobba med, utan förmedlingsavgifter och
+                    utan mellanhänder som tar en del av kakan.
                   </p>
-                  <div className="mt-6">
-                    <Button
-                      asChild
-                      variant="primary"
-                      size="none"
-                      className="bg-brand-blue text-brand-cream hover:bg-brand-blue-dark focus:shadow-[0_0_0_0.1em_var(--color-brand-coral),0_0_0_0.2em_var(--color-brand-blue)]"
-                    >
+                  <div className="mt-7">
+                    <Button asChild variant="primary" size="none">
                       <Link href="/tipsa">
                         Tipsa om konsultuppdrag
                         <ArrowRight />
                       </Link>
                     </Button>
                   </div>
+                </div>
+              </div>
+            </CardSlide>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <CardSlide reduced={reduced} delay={100}>
+              <div className="squircle flex flex-1 flex-col rounded-3xl bg-brand-blue-dark p-8 text-left text-brand-cream shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)] lg:rounded-tr-4xl">
+                <h3 className="font-display text-2xl font-bold tracking-tight">
+                  Utan mellanhänder.
+                </h3>
+                <p className="mt-3 text-sm leading-[1.6] text-brand-cream/60">
+                  Tipset går rakt ut i communityt och kontakten sker direkt
+                  mellan er och frilansaren. Inga avgifter, ingen provision.
+                </p>
+                <div className="mt-auto pt-6">
+                  <div className="flex items-center gap-3 rounded-2xl bg-white/5 p-3 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)]">
+                    <span
+                      aria-hidden="true"
+                      className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-coral"
+                    >
+                      <span className="icon-[lucide--briefcase-business] size-4 text-brand-grey" />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block truncate text-sm font-medium">
+                        Nytt uppdragstips — Frontendutvecklare
+                      </span>
+                      <span className="block truncate font-mono text-xs text-brand-cream/45">
+                        direktkontakt · 950 kr/h · #uppdrag
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </CardSlide>
+
+            <CardSlide reduced={reduced} delay={200}>
+              <div className="squircle flex flex-1 flex-col rounded-3xl bg-brand-cream p-8 text-left text-brand-blue max-lg:rounded-b-4xl lg:rounded-br-4xl">
+                <h3 className="font-display text-2xl font-bold tracking-tight">
+                  Alla kompetenser.
+                </h3>
+                <p className="mt-3 text-sm leading-[1.6] text-brand-blue/60">
+                  Utvecklare, designers, skribenter, projektledare, ekonomer —
+                  nätverket täcker de flesta kompetenser och branscher.
+                </p>
+                <div className="mt-auto flex items-center gap-4 pt-6">
+                  <div className="flex shrink-0" aria-hidden="true">
+                    {KONSULT_AVATARS.map((initials, index) => (
+                      <span
+                        key={initials}
+                        className={`font-display flex size-11 items-center justify-center rounded-full bg-brand-coral text-sm font-bold text-brand-grey ring-2 ring-brand-cream ${index > 0 ? '-ml-3' : ''}`}
+                      >
+                        {initials}
+                      </span>
+                    ))}
+                    <span className="font-display -ml-3 flex size-11 items-center justify-center rounded-full bg-brand-blue-dark text-xs font-bold text-brand-cream ring-2 ring-brand-cream">
+                      {memberCount
+                        ? `+${Math.round(memberCount / 1000)}k`
+                        : '+3k'}
+                    </span>
+                  </div>
+                  <span className="text-sm font-medium whitespace-nowrap text-brand-blue/70">
+                    frilansare i Slack
+                  </span>
                 </div>
               </div>
             </CardSlide>
