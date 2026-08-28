@@ -739,7 +739,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                   className="absolute inset-0 z-0"
                   style={{
                     background:
-                      'linear-gradient(135deg, #ffcfc8, #a8b4ff 55%, #8a5cf6)',
+                      'linear-gradient(135deg, #ffcfc8, #8a5cf6 55%, #4823dc)',
                   }}
                 >
                   {webgpu && (
@@ -756,7 +756,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                     trail still registers across the whole card. */}
                 <div
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-3/5 bg-gradient-to-t from-[#fffce3]/75 via-[#fffce3]/30 to-transparent"
+                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-3/5 bg-gradient-to-t from-[#fffce3]/60 via-[#fffce3]/20 to-transparent"
                 />
                 <div
                   aria-hidden="true"
@@ -798,7 +798,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                   className="absolute inset-0 z-0"
                   style={{
                     background:
-                      'linear-gradient(to bottom, #a8b4ff, #8a5cf6 55%, #ffcfc8)',
+                      'linear-gradient(to bottom, #a8b4ff, #8a5cf6 55%, #4823dc)',
                   }}
                 >
                   {webgpu && (
@@ -811,7 +811,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 </div>
                 <div
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/3 bg-gradient-to-t from-[#fffce3]/70 to-transparent"
+                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/3 bg-gradient-to-t from-[#fffce3]/55 to-transparent"
                 />
                 <div className="relative z-10 flex flex-1 flex-col p-8 text-brand-grey">
                   <h3 className="font-display text-2xl font-bold tracking-tight">
@@ -850,7 +850,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                   className="absolute inset-0 z-0"
                   style={{
                     background:
-                      'linear-gradient(to bottom, #ffcfc8, #ff9c8e 55%, #a8b4ff)',
+                      'linear-gradient(to bottom, #ffcfc8, #ff9c8e 55%, #8a5cf6)',
                   }}
                 >
                   {webgpu && (
@@ -863,7 +863,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 </div>
                 <div
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/3 bg-gradient-to-t from-[#fffce3]/70 to-transparent"
+                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/3 bg-gradient-to-t from-[#fffce3]/55 to-transparent"
                 />
                 <div className="relative z-10 flex flex-1 flex-col p-8 text-brand-grey">
                   <h3 className="font-display text-2xl font-bold tracking-tight">
