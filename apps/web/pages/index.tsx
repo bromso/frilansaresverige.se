@@ -28,7 +28,6 @@ import type { ReactElement, ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import type { Organization, WebSite, WithContext } from 'schema-dts'
 import type { BentoShaderVariant } from '../components/BentoCardShader'
-import KonsultChat from '../components/KonsultChat'
 import { ProgressiveBlur } from '../components/ProgressiveBlur'
 import Seo, { SITE_NAME, SITE_URL } from '../components/Seo'
 import StructuredData from '../components/StructuredData'
@@ -763,15 +762,6 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                   aria-hidden="true"
                   className="pointer-events-none absolute inset-0 z-[1] rounded-3xl shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15)] max-lg:rounded-t-4xl lg:rounded-l-4xl"
                 />
-                {/* Looping Slack-exchange illustration in the shader's
-                    open corner; pointer-events off so the cursor trail
-                    keeps tracking across the whole card. */}
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute top-8 right-8 z-[2] hidden w-[19rem] select-none md:block lg:top-10 lg:right-10"
-                >
-                  <KonsultChat reduced={reduced} />
-                </div>
                 <div className="relative z-10 flex h-full flex-col justify-end p-8 lg:p-10">
                   <h3 className="font-display max-w-[14ch] text-3xl font-bold tracking-tight text-balance text-white lg:text-4xl">
                     Nå tusentals frilansare direkt.
