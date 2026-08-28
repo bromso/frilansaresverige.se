@@ -787,63 +787,107 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
 
           <div className="flex flex-col gap-4">
             <CardSlide reduced={reduced} delay={100}>
-              <div className="squircle flex flex-1 flex-col rounded-3xl bg-brand-blue-dark p-8 text-left text-brand-cream shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)] lg:rounded-tr-4xl">
-                <h3 className="font-display text-2xl font-bold tracking-tight">
-                  Utan mellanhänder.
-                </h3>
-                <p className="mt-3 text-sm leading-[1.6] text-brand-cream/60">
-                  Tipset går rakt ut i communityt och kontakten sker direkt
-                  mellan er och frilansaren. Inga avgifter, ingen provision.
-                </p>
-                <div className="mt-auto pt-6">
-                  <div className="flex items-center gap-3 rounded-2xl bg-white/5 p-3 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)]">
-                    <span
-                      aria-hidden="true"
-                      className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-coral"
-                    >
-                      <span className="icon-[lucide--briefcase-business] size-4 text-brand-grey" />
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block truncate text-sm font-medium">
-                        Nytt uppdragstips — Frontendutvecklare
+              <div className="squircle relative flex flex-1 flex-col overflow-hidden rounded-3xl text-left lg:rounded-tr-4xl">
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 z-0"
+                  style={{
+                    background:
+                      'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255,156,142,0.25), transparent), linear-gradient(to bottom, #2601bb, #16045e)',
+                  }}
+                >
+                  {webgpu && (
+                    <BentoCardShader
+                      variant="metaballs"
+                      reduced={reduced}
+                      showGlass={false}
+                    />
+                  )}
+                </div>
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/3 bg-gradient-to-t from-[#160a4d]/80"
+                />
+                <div className="relative z-10 flex flex-1 flex-col p-8 text-[#fffce3]">
+                  <h3 className="font-display text-2xl font-bold tracking-tight">
+                    Utan mellanhänder.
+                  </h3>
+                  <p className="mt-3 text-sm leading-[1.6] text-[#fffce3]/85">
+                    Tipset går rakt ut i communityt och kontakten sker direkt
+                    mellan er och frilansaren. Inga avgifter, ingen provision.
+                  </p>
+                  <div className="mt-auto pt-6">
+                    <div className="flex items-center gap-3 rounded-2xl bg-white/10 p-3 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15)] backdrop-blur-sm">
+                      <span
+                        aria-hidden="true"
+                        className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-coral"
+                      >
+                        <span className="icon-[lucide--briefcase-business] size-4 text-brand-grey" />
                       </span>
-                      <span className="block truncate font-mono text-xs text-brand-cream/45">
-                        direktkontakt · 950 kr/h · #uppdrag
+                      <span className="min-w-0">
+                        <span className="block truncate text-sm font-medium">
+                          Nytt uppdragstips — Frontendutvecklare
+                        </span>
+                        <span className="block truncate font-mono text-xs text-[#fffce3]/45">
+                          direktkontakt · 950 kr/h · #uppdrag
+                        </span>
                       </span>
-                    </span>
+                    </div>
                   </div>
                 </div>
               </div>
             </CardSlide>
 
             <CardSlide reduced={reduced} delay={200}>
-              <div className="squircle flex flex-1 flex-col rounded-3xl bg-brand-cream p-8 text-left text-brand-blue max-lg:rounded-b-4xl lg:rounded-br-4xl">
-                <h3 className="font-display text-2xl font-bold tracking-tight">
-                  Alla kompetenser.
-                </h3>
-                <p className="mt-3 text-sm leading-[1.6] text-brand-blue/60">
-                  Utvecklare, designers, skribenter, projektledare, ekonomer —
-                  nätverket täcker de flesta kompetenser och branscher.
-                </p>
-                <div className="mt-auto flex items-center gap-4 pt-6">
-                  <div className="flex shrink-0" aria-hidden="true">
-                    {KONSULT_AVATARS.map((initials, index) => (
-                      <span
-                        key={initials}
-                        className={`font-display flex size-11 items-center justify-center rounded-full bg-brand-coral text-sm font-bold text-brand-grey ring-2 ring-brand-cream ${index > 0 ? '-ml-3' : ''}`}
-                      >
-                        {initials}
+              <div className="squircle relative flex flex-1 flex-col overflow-hidden rounded-3xl text-left max-lg:rounded-b-4xl lg:rounded-br-4xl">
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 z-0"
+                  style={{
+                    background:
+                      'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255,156,142,0.25), transparent), linear-gradient(to bottom, #16045e, #4823dc)',
+                  }}
+                >
+                  {webgpu && (
+                    <BentoCardShader
+                      variant="hemisphere"
+                      reduced={reduced}
+                      showGlass={false}
+                    />
+                  )}
+                </div>
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/3 bg-gradient-to-t from-[#160a4d]/80"
+                />
+                <div className="relative z-10 flex flex-1 flex-col p-8 text-[#fffce3]">
+                  <h3 className="font-display text-2xl font-bold tracking-tight">
+                    Alla kompetenser.
+                  </h3>
+                  <p className="mt-3 text-sm leading-[1.6] text-[#fffce3]/85">
+                    Utvecklare, designers, skribenter, projektledare, ekonomer —
+                    nätverket täcker de flesta kompetenser och branscher.
+                  </p>
+                  <div className="mt-auto flex items-center gap-4 pt-6">
+                    <div className="flex shrink-0" aria-hidden="true">
+                      {KONSULT_AVATARS.map((initials, index) => (
+                        <span
+                          key={initials}
+                          className={`font-display flex size-11 items-center justify-center rounded-full bg-brand-coral text-sm font-bold text-brand-grey ring-2 ring-[#fffce3] ${index > 0 ? '-ml-3' : ''}`}
+                        >
+                          {initials}
+                        </span>
+                      ))}
+                      <span className="font-display -ml-3 flex size-11 items-center justify-center rounded-full bg-brand-blue-dark text-xs font-bold text-[#fffce3] ring-2 ring-[#fffce3]">
+                        {memberCount
+                          ? `+${Math.round(memberCount / 1000)}k`
+                          : '+3k'}
                       </span>
-                    ))}
-                    <span className="font-display -ml-3 flex size-11 items-center justify-center rounded-full bg-brand-blue-dark text-xs font-bold text-brand-cream ring-2 ring-brand-cream">
-                      {memberCount
-                        ? `+${Math.round(memberCount / 1000)}k`
-                        : '+3k'}
+                    </div>
+                    <span className="text-sm font-medium whitespace-nowrap text-[#fffce3]/85">
+                      frilansare i Slack
                     </span>
                   </div>
-                  <span className="text-sm font-medium whitespace-nowrap text-brand-blue/70">
-                    frilansare i Slack
-                  </span>
                 </div>
               </div>
             </CardSlide>
