@@ -15,6 +15,8 @@ export interface SeoProps {
   noindex?: boolean
   /** Absolute path under public/ to a page-specific 1200×630 card. */
   image?: string
+  /** og:type — articles (news posts) say so, everything else is a website. */
+  type?: 'website' | 'article'
 }
 
 // Pure tag builder so the title/canonical/robots logic is unit-testable —
@@ -35,6 +37,7 @@ export const buildSeoTags = ({
 
 const Seo = (props: SeoProps) => {
   const tags = buildSeoTags(props)
+  const type = props.type ?? 'website'
   return (
     <Head>
       <title>{tags.title}</title>
@@ -45,7 +48,7 @@ const Seo = (props: SeoProps) => {
       <meta property="og:description" content={tags.description} />
       <meta property="og:url" content={tags.canonical} />
       <meta property="og:site_name" content={SITE_NAME} />
-      <meta property="og:type" content="website" />
+      <meta property="og:type" content={type} />
       <meta property="og:locale" content="sv_SE" />
       <meta property="og:image" content={tags.image} />
       <meta property="og:image:width" content="1200" />
