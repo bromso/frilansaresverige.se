@@ -313,8 +313,16 @@ const TESTIMONIALS: Testimonial[] = [
   },
 ]
 
+// Cards sit muted (translucent + desaturated) until hovered: the hovered
+// card snaps back to full color, lifts and scales up slightly with a soft
+// shadow, while its siblings blur and recede, so one testimonial at a
+// time gets the focus. The timing is asymmetric — the hover state carries
+// a short expo-out transition so the card responds instantly to the
+// cursor, and losing hover falls back to the base 500ms ease so cards
+// settle gently. The sibling treatment keys off a `group` class on the
+// surrounding column container.
 const TestimonialCard = ({ name, role, body }: Testimonial) => (
-  <figure className="flex min-h-[18rem] w-full flex-col rounded-3xl bg-brand-cream p-9 text-left text-brand-blue">
+  <figure className="flex min-h-[18rem] w-full flex-col rounded-3xl bg-brand-cream p-9 text-left text-brand-blue opacity-75 saturate-[0.6] transition-[opacity,filter,translate,scale,box-shadow] duration-500 ease-in-out hover:-translate-y-1.5 hover:scale-[1.02] hover:opacity-100 hover:saturate-100 hover:shadow-xl hover:shadow-brand-blue-dark/30 hover:duration-200 hover:ease-(--expo-out) group-has-[figure:hover]:not-hover:scale-[0.98] group-has-[figure:hover]:not-hover:blur-[2px] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:scale-100">
     <blockquote className="text-base leading-[1.65]">{body}</blockquote>
     <figcaption className="mt-auto flex items-center gap-3 pt-5">
       <span
@@ -335,14 +343,13 @@ const TestimonialCard = ({ name, role, body }: Testimonial) => (
   </figure>
 )
 
-// Bento grid for the "Hitta rätt konsult" section: same liquid-gradient
-// card treatment as the "Vad du får" bento (see BentoCardShader) but in
-// the warm ember palette and without the 3D glass solids. Same corner
-// treatment: the four outer corners of the grid are rounded to 2rem per
-// card position.
+// Bento grid for the "Hitta rätt konsult" section: each card runs the
+// Shaders "Drifting Contours 5" preset (see BentoCardShader) with a
+// per-card blob seed. Same corner treatment as the "Vad du får" bento:
+// the four outer corners of the grid are rounded to 2rem per card
+// position.
 interface KonsultCard {
   variant: BentoShaderVariant
-  icon: string
   title: string
   text: string
   wrapper: string
@@ -353,7 +360,6 @@ interface KonsultCard {
 const KONSULT_BENTO: KonsultCard[] = [
   {
     variant: 'ember1',
-    icon: 'icon-[lucide--building-2]',
     title: 'För företag',
     text: 'Beskriv ert uppdrag och nå tusentals frilansare direkt. Ni väljer själva vem ni vill jobba med — utan förmedlingsavgifter och utan mellanhänder som tar en del av kakan.',
     wrapper: 'lg:col-span-3',
@@ -362,7 +368,6 @@ const KONSULT_BENTO: KonsultCard[] = [
   },
   {
     variant: 'ember2',
-    icon: 'icon-[lucide--users]',
     title: 'För frilansare och byråer',
     text: 'Fullbokad, eller behöver du en underkonsult med en annan spets? Tipsa nätverket och hitta rätt kollega till projektet — ofta inom några timmar.',
     wrapper: 'lg:col-span-3',
@@ -371,7 +376,6 @@ const KONSULT_BENTO: KonsultCard[] = [
   },
   {
     variant: 'ember3',
-    icon: 'icon-[lucide--handshake]',
     title: 'Utan mellanhänder',
     text: 'Tipset går rakt ut i communityt och kontakten sker direkt mellan er och frilansaren. Inga avgifter, ingen provision.',
     wrapper: 'lg:col-span-2',
@@ -380,7 +384,6 @@ const KONSULT_BENTO: KonsultCard[] = [
   },
   {
     variant: 'ember4',
-    icon: 'icon-[lucide--sparkles]',
     title: 'Alla kompetenser',
     text: 'Utvecklare, designers, skribenter, projektledare, ekonomer — nätverket täcker de flesta kompetenser och branscher.',
     wrapper: 'lg:col-span-2',
@@ -669,14 +672,14 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
       <section className="w-full py-20 md:py-28">
         <SectionHeading eyebrow="Medlemmarna" title="Röster från communityt" />
         {reduced ? (
-          <div className="grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="group grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {TESTIMONIALS.slice(0, 6).map((testimonial) => (
               <TestimonialCard key={testimonial.name} {...testimonial} />
             ))}
           </div>
         ) : (
-          <div className="relative h-185 w-full overflow-hidden">
-            <div className="flex h-full w-full flex-row items-stretch justify-center gap-4">
+          <div className="relative h-210 w-full overflow-hidden">
+            <div className="group flex h-full w-full flex-row items-stretch justify-center gap-4">
               <VerticalMarquee
                 pauseOnHover
                 className="hidden h-full flex-1 [--duration:34s] sm:flex"
@@ -717,8 +720,19 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 ))}
               </VerticalMarquee>
             </div>
-            <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-1/4 bg-gradient-to-b from-background" />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/4 bg-gradient-to-t from-background" />
+            {/* The cards enter and exit through a progressive blur + color
+                fade at the section's edges, same treatment as the page's
+                bottom strip. */}
+            <ProgressiveBlur
+              attachment="absolute"
+              position="top"
+              height="25%"
+            />
+            <ProgressiveBlur
+              attachment="absolute"
+              position="bottom"
+              height="25%"
+            />
           </div>
         )}
       </section>
@@ -762,7 +776,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 >
                   <div
                     aria-hidden="true"
-                    className="absolute inset-0 z-0 bg-[#ff9c8e]"
+                    className="absolute inset-0 z-0 bg-[#fe7c74]"
                   >
                     {webgpu && (
                       <BentoCardShader
@@ -773,11 +787,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                     )}
                   </div>
                   <div className="relative z-10 mt-auto p-8">
-                    <span
-                      className={`${card.icon} size-8 shrink-0 text-brand-grey`}
-                      aria-hidden="true"
-                    />
-                    <h3 className="font-display mt-4 text-xl font-bold tracking-tight text-brand-grey">
+                    <h3 className="font-display text-xl font-bold tracking-tight text-brand-grey">
                       {card.title}
                     </h3>
                     <p className="mt-2 leading-[1.6] text-brand-grey">
@@ -793,7 +803,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
               <div className="squircle relative flex h-full min-h-[18rem] flex-col overflow-hidden rounded-xl text-left transition-transform duration-200 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0 max-lg:rounded-b-4xl lg:min-h-[20rem] lg:rounded-br-4xl">
                 <div
                   aria-hidden="true"
-                  className="absolute inset-0 z-0 bg-[#ff9c8e]"
+                  className="absolute inset-0 z-0 bg-[#fe7c74]"
                 >
                   {webgpu && (
                     <BentoCardShader

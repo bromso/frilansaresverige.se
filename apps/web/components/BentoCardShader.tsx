@@ -1,12 +1,16 @@
+import { type ReactNode, useEffect, useRef, useState } from 'react'
 import {
+  Blob,
+  ContourLines,
   CursorTrail,
   FilmGrain,
-  FloatingParticles,
   Glass,
   LightLeak,
   LinearGradient,
+  Liquify,
+  Plasma,
+  ProgressiveBlur,
   Shader,
-  SolidColor,
 } from 'shaders/react'
 
 // Liquid-glass card backgrounds for the "Vad du får" bento, adapted from
@@ -17,6 +21,12 @@ import {
 // diamond, metaballs, ribbon, hemisphere) come straight from the
 // reference, including the auto-animate rotation drivers, which are
 // replaced with static angles under reduced motion.
+//
+// The "Hitta rätt konsult" cards (ember1–ember5) instead use the Shaders
+// "Drifting Contours 5" preset: a coral/pink plasma wash with purple
+// topographic contour lines traced around an animated blob, warped by a
+// cursor-reactive Liquify. Each card varies the blob seed and anchor so
+// no two cards match.
 
 export type BentoShaderVariant =
   | 'torus'
@@ -39,7 +49,8 @@ const SPIN = {
   easing: 'linear',
 } as const
 
-interface VariantConfig {
+interface GlassVariantConfig {
+  contours?: undefined
   grad: [string, string, string]
   leak: {
     fringe: string
@@ -48,12 +59,7 @@ interface VariantConfig {
     pos: { x: number; y: number }
   }
   trail: [string, string]
-  // When set, the base layer is this flat color (the konsult cards use
-  // the primary button's brand coral) instead of the LinearGradient, the
-  // light leak is dialed down, and a layer of twinkling
-  // FloatingParticles drifts over the card.
-  solid?: string
-  glass?: {
+  glass: {
     center: { x: number; y: number }
     scale: number
     shapeType: string
@@ -61,6 +67,15 @@ interface VariantConfig {
     shape: (reduced: boolean) => Record<string, unknown>
   }
 }
+
+interface ContourVariantConfig {
+  contours: {
+    seed: number
+    blobCenter: { x: number; y: number }
+  }
+}
+
+type VariantConfig = GlassVariantConfig | ContourVariantConfig
 
 const VARIANTS: Record<BentoShaderVariant, VariantConfig> = {
   torus: {
@@ -165,61 +180,6 @@ const VARIANTS: Record<BentoShaderVariant, VariantConfig> = {
       }),
     },
   },
-  ember1: {
-    grad: ['#ffcfc8', '#ff9c8e', '#e0457b'],
-    solid: '#ff9c8e',
-    leak: {
-      fringe: '#fffce3',
-      hot: '#ffcfc8',
-      mid: '#e0457b',
-      pos: { x: 0.16, y: 0.92 },
-    },
-    trail: ['#fffce3', '#ff9c8e'],
-  },
-  ember2: {
-    grad: ['#ffb59f', '#f0705a', '#b3383f'],
-    solid: '#ff9c8e',
-    leak: {
-      fringe: '#ffcfc8',
-      hot: '#fffce3',
-      mid: '#d14b6a',
-      pos: { x: 1.14, y: -0.01 },
-    },
-    trail: ['#ffcfc8', '#f0705a'],
-  },
-  ember3: {
-    grad: ['#ff9c8e', '#e0567b', '#8a2540'],
-    solid: '#ff9c8e',
-    leak: {
-      fringe: '#ffcfc8',
-      hot: '#ffd9c9',
-      mid: '#e0457b',
-      pos: { x: 0.14, y: 0.12 },
-    },
-    trail: ['#ffd9c9', '#ff9c8e'],
-  },
-  ember4: {
-    grad: ['#ffd9c9', '#ff8d75', '#c74b3a'],
-    solid: '#ff9c8e',
-    leak: {
-      fringe: '#fffce3',
-      hot: '#ffcfc8',
-      mid: '#d14b6a',
-      pos: { x: 1.05, y: 0.84 },
-    },
-    trail: ['#fffce3', '#ff8d75'],
-  },
-  ember5: {
-    grad: ['#f0705a', '#d14b6a', '#701f33'],
-    solid: '#ff9c8e',
-    leak: {
-      fringe: '#ffcfc8',
-      hot: '#ffd9c9',
-      mid: '#e0567b',
-      pos: { x: 1.5, y: 0.62 },
-    },
-    trail: ['#ffcfc8', '#e0567b'],
-  },
   hemisphere: {
     grad: ['#16045e', '#4823dc', '#ff9c8e'],
     leak: {
@@ -244,6 +204,55 @@ const VARIANTS: Record<BentoShaderVariant, VariantConfig> = {
       }),
     },
   },
+  ember1: {
+    contours: { seed: 42, blobCenter: { x: 0.52, y: 1 } },
+  },
+  ember2: {
+    contours: { seed: 7, blobCenter: { x: 0.3, y: 0.95 } },
+  },
+  ember3: {
+    contours: { seed: 18, blobCenter: { x: 0.62, y: 1.05 } },
+  },
+  ember4: {
+    contours: { seed: 63, blobCenter: { x: 0.44, y: 0.9 } },
+  },
+  ember5: {
+    contours: { seed: 29, blobCenter: { x: 0.56, y: 1 } },
+  },
+}
+
+// Defers mounting its children (a <Shader> canvas) until the card has
+// scrolled within a viewport of the screen, then keeps them mounted. All
+// bento cards sit below the fold, so without this every WebGPU canvas
+// initializes during page load and Lighthouse bills it all as main-thread
+// work; the static gradient wash behind each card covers the gap.
+const MountNearViewport = ({ children }: { children: ReactNode }) => {
+  const ref = useRef<HTMLDivElement>(null)
+  const [near, setNear] = useState(false)
+
+  useEffect(() => {
+    const node = ref.current
+    if (!node || near) {
+      return
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setNear(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '100% 0px' },
+    )
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [near])
+
+  return (
+    <div ref={ref} className="h-full w-full">
+      {near && children}
+    </div>
+  )
 }
 
 const BentoCardShader = ({
@@ -258,13 +267,84 @@ const BentoCardShader = ({
   showGlass?: boolean
 }) => {
   const config = VARIANTS[variant]
+
+  if (config.contours) {
+    // "Drifting Contours 5" preset (Shaders collection "Drifting
+    // Contours"), with a particle layer on top. The particles sit after
+    // Liquify so the cursor warps the contours but the motes stay crisp.
+    return (
+      <MountNearViewport>
+        <Shader
+          className="h-full w-full"
+          toneMapping="neutral"
+          disableTelemetry
+        >
+          <Plasma
+            balance={40}
+            colorA="#ed5fbc"
+            colorB="#fe7c74"
+            density={0.9}
+            speed={reduced ? 0 : 2}
+            warp={0.3}
+          />
+          <ContourLines
+            gamma={0.1}
+            levels={30}
+            lineColor="#ff4a4a"
+            lineWidth={1.5}
+            source="alpha"
+          >
+            <Blob
+              center={config.contours.blobCenter}
+              colorA="#730db1"
+              colorB="#cf62dc"
+              deformation={0.7}
+              highlightColor="#fbffb3"
+              highlightIntensity={1}
+              highlightX={-0.5}
+              highlightY={-0.6}
+              highlightZ={-0.1}
+              seed={config.contours.seed}
+              size={0.7}
+              softness={1}
+              speed={reduced ? 0 : 0.2}
+            />
+          </ContourLines>
+          {/* The preset exports Liquify for a newer API (decay/intensity/
+            radius); translated here to the installed 3.1.x props. */}
+          {!reduced && <Liquify damping={1.5} intensity={8} radius={1.2} />}
+          {/* Legibility scrim rising from the bottom edge to ~65% of the
+            card: the contour work blurs progressively toward the bottom
+            and a near-opaque coral gradient covers it, hiding the shader
+            behind the card copy so the text stays readable. The top of
+            the card stays fully crisp. (ProgressiveBlur grows along
+            +angle from `center`, whose y is measured from the bottom:
+            angle 90 + center y 0.65 = blur from 35% down.) */}
+          <ProgressiveBlur
+            angle={90}
+            center={{ x: 0.5, y: 0.65 }}
+            falloff={0.4}
+            intensity={50}
+          />
+          <LinearGradient
+            start={{ x: 0.5, y: 0.35 }}
+            end={{ x: 0.5, y: 1 }}
+            stops={[
+              { color: '#fe7c7400', position: 0 },
+              { color: '#fe7c74e6', position: 0.4 },
+              { color: '#ff9c8e', position: 1 },
+            ]}
+          />
+        </Shader>
+      </MountNearViewport>
+    )
+  }
+
   const glass = showGlass ? config.glass : undefined
 
   return (
-    <Shader className="h-full w-full" toneMapping="neutral" disableTelemetry>
-      {config.solid ? (
-        <SolidColor color={config.solid} />
-      ) : (
+    <MountNearViewport>
+      <Shader className="h-full w-full" toneMapping="neutral" disableTelemetry>
         <LinearGradient
           colorSpace="oklab"
           start={{ x: 0.11, y: 0.03 }}
@@ -275,58 +355,45 @@ const BentoCardShader = ({
             { color: config.grad[2], position: 1 },
           ]}
         />
-      )}
-      <FilmGrain strength={0.025} />
-      <LightLeak
-        colorFringe={config.leak.fringe}
-        colorHot={config.leak.hot}
-        colorMid={config.leak.mid}
-        intensity={config.solid ? 0.12 : 0.21}
-        position={config.leak.pos}
-        spread={0.73}
-      />
-      {config.solid && (
-        <FloatingParticles
-          angleVariance={60}
-          blendMode="screen"
-          count={4}
-          opacity={0.7}
-          particleSize={1.1}
-          softness={0.25}
-          speed={reduced ? 0 : 0.15}
-          speedVariance={0.3}
-          twinkle={reduced ? 0 : 0.7}
+        <FilmGrain strength={0.025} />
+        <LightLeak
+          colorFringe={config.leak.fringe}
+          colorHot={config.leak.hot}
+          colorMid={config.leak.mid}
+          intensity={0.21}
+          position={config.leak.pos}
+          spread={0.73}
         />
-      )}
-      {!reduced && (
-        <CursorTrail
-          stops={[
-            { color: config.trail[0], position: 0 },
-            { color: config.trail[1], position: 1 },
-          ]}
-        />
-      )}
-      {glass && (
-        <Glass
-          aberration={0.61}
-          blur={20}
-          center={glass.center}
-          edgeSoftness={0.45}
-          {...(glass.fresnel !== undefined
-            ? { fresnel: glass.fresnel, fresnelSoftness: 0.4 }
-            : {})}
-          highlight={0.37}
-          highlightSoftness={0.68}
-          innerZoom={3}
-          lightAngle={284}
-          refraction={2}
-          scale={glass.scale}
-          shapeType={glass.shapeType}
-          shape={JSON.stringify(glass.shape(reduced))}
-          thickness={0.97}
-        />
-      )}
-    </Shader>
+        {!reduced && (
+          <CursorTrail
+            stops={[
+              { color: config.trail[0], position: 0 },
+              { color: config.trail[1], position: 1 },
+            ]}
+          />
+        )}
+        {glass && (
+          <Glass
+            aberration={0.61}
+            blur={20}
+            center={glass.center}
+            edgeSoftness={0.45}
+            {...(glass.fresnel !== undefined
+              ? { fresnel: glass.fresnel, fresnelSoftness: 0.4 }
+              : {})}
+            highlight={0.37}
+            highlightSoftness={0.68}
+            innerZoom={3}
+            lightAngle={284}
+            refraction={2}
+            scale={glass.scale}
+            shapeType={glass.shapeType}
+            shape={JSON.stringify(glass.shape(reduced))}
+            thickness={0.97}
+          />
+        )}
+      </Shader>
+    </MountNearViewport>
   )
 }
 
