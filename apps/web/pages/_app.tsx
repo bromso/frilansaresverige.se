@@ -44,7 +44,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
               <Component {...pageProps} />
             </main>
 
-            <SiteFooter />
+            <SiteFooter path={router.pathname} />
           </div>
         </PageTransition>
         <CookieToast />

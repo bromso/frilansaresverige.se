@@ -21,8 +21,14 @@ const Breadcrumbs = ({ path }: { path: string }) => {
     })),
   }
 
+  // Apple-style placement: a quiet directory trail in a hairline-bordered
+  // strip at the top of the global footer (see SiteFooter) rather than
+  // under each page heading.
   return (
-    <nav aria-label="Brödsmulor" className="w-full pt-6 text-sm">
+    <nav
+      aria-label="Brödsmulor"
+      className="w-full border-b border-brand-cream/10 py-5 text-sm"
+    >
       <ol className="flex flex-wrap items-center gap-1 text-brand-cream/60">
         {crumbs.map((crumb, index) => {
           const last = index === crumbs.length - 1

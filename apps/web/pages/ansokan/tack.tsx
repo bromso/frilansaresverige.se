@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { useEffect } from 'react'
-import Breadcrumbs from '../../components/Breadcrumbs'
 import Seo from '../../components/Seo'
 import { getRoute } from '../../lib/routes'
 
@@ -22,7 +21,6 @@ const AnsokanTack = () => {
         path={meta.path}
         noindex
       />
-      <Breadcrumbs path={meta.path} />
       <section className="flex w-full max-w-[44em] flex-col items-start py-16 md:py-24">
         <p className="font-display mb-3 text-sm font-bold tracking-widest text-brand-coral uppercase">
           Ansökan inskickad

@@ -1,4 +1,3 @@
-import Breadcrumbs from '../components/Breadcrumbs'
 import Seo from '../components/Seo'
 import { getRoute } from '../lib/routes'
 
@@ -7,7 +6,6 @@ const Cookies = () => {
   return (
     <>
       <Seo title={meta.title} description={meta.description} path={meta.path} />
-      <Breadcrumbs path={meta.path} />
       <section className="flex w-full max-w-[44em] flex-col py-12 md:py-16">
         <p className="font-display mb-3 text-sm font-bold tracking-widest text-brand-coral uppercase">
           Juridik
