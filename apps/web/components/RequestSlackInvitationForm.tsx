@@ -17,7 +17,14 @@ import { useRouter } from 'next/router'
 import type { ReactElement, ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { useSubmitSlackInvitationForm } from '../hooks/useSubmitSlackInvitationForm'
-import { FIELD_CLASSES, LABEL_CLASSES } from './form-classes'
+import {
+  EMAIL_PATTERN,
+  EMAIL_TITLE,
+  FIELD_CLASSES,
+  LABEL_CLASSES,
+  URL_PATTERN,
+  URL_TITLE,
+} from './form-classes'
 
 // The application is a three-step stepper on the animate-ui Tabs, same
 // treatment as the gig-tip form on /tipsa: a pill progress row, panes
@@ -187,7 +194,9 @@ const RequestSlackInvitationForm = () => {
                         id="email"
                         placeholder="anna@exempel.se…"
                         name="email"
-                        type="text"
+                        type="email"
+                        pattern={EMAIL_PATTERN}
+                        title={EMAIL_TITLE}
                         autoComplete="email"
                         required
                         className={`${FIELD_CLASSES} pl-11`}
@@ -280,6 +289,9 @@ const RequestSlackInvitationForm = () => {
                       placeholder="linkedin.com/in/anna-andersson…"
                       name="linkedin"
                       type="text"
+                      inputMode="url"
+                      pattern={URL_PATTERN}
+                      title={URL_TITLE}
                       required
                       className={`${FIELD_CLASSES} pl-11`}
                     />
@@ -296,6 +308,9 @@ const RequestSlackInvitationForm = () => {
                       placeholder="annadesign.se…"
                       name="portfolio"
                       type="text"
+                      inputMode="url"
+                      pattern={URL_PATTERN}
+                      title={URL_TITLE}
                       className={`${FIELD_CLASSES} pl-11`}
                     />
                   </IconField>

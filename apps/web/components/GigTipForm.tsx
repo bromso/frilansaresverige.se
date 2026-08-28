@@ -21,7 +21,16 @@ import { useRouter } from 'next/router'
 import type { ReactElement } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { useSubmitGigTipForm } from '../hooks/useSubmitGigTipForm'
-import { FIELD_CLASSES, LABEL_CLASSES } from './form-classes'
+import {
+  EMAIL_PATTERN,
+  EMAIL_TITLE,
+  FIELD_CLASSES,
+  LABEL_CLASSES,
+  NUMBER_PATTERN,
+  NUMBER_TITLE,
+  PHONE_PATTERN,
+  PHONE_TITLE,
+} from './form-classes'
 
 const RELATION_OPTIONS = [
   {
@@ -298,6 +307,8 @@ const GigTipForm = () => {
                     name="minRate"
                     type="text"
                     inputMode="numeric"
+                    pattern={NUMBER_PATTERN}
+                    title={NUMBER_TITLE}
                     placeholder="t.ex. 950…"
                     required
                     className={`${FIELD_CLASSES} pr-[3.5em] pl-[2.4em]`}
@@ -366,28 +377,70 @@ const GigTipForm = () => {
               </div>
 
               <div className="mt-5 flex flex-col gap-1.5">
-                <Label htmlFor="contact" className={LABEL_CLASSES}>
-                  Kontaktuppgifter till ansvarig person
+                <Label htmlFor="contactName" className={LABEL_CLASSES}>
+                  Kontaktperson
                 </Label>
-                <p
-                  id="contact-description"
-                  className="text-[0.95em] leading-[1.5]"
-                >
-                  Namn, telefonnummer m.m.
-                </p>
                 <div className="relative">
                   <span
-                    className="icon-[lucide--contact-round] pointer-events-none absolute top-[0.8em] left-[0.75em] size-[1.2em] text-brand-blue/60"
+                    className="icon-[lucide--contact-round] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/60"
                     aria-hidden="true"
                   />
-                  <Textarea
-                    id="contact"
-                    name="contact"
-                    placeholder="t.ex. Anna Andersson, 070-123 45 67, anna@acme.se…"
+                  <Input
+                    id="contactName"
+                    name="contactName"
+                    type="text"
+                    autoComplete="name"
+                    placeholder="t.ex. Anna Andersson…"
                     required
-                    aria-describedby="contact-description"
-                    className={`${FIELD_CLASSES} min-h-[5em] pl-[2.4em]`}
+                    className={`${FIELD_CLASSES} pl-[2.4em]`}
                   />
+                </div>
+              </div>
+
+              <div className="mt-5 grid gap-5 md:grid-cols-2">
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="contactPhone" className={LABEL_CLASSES}>
+                    Telefonnummer
+                  </Label>
+                  <div className="relative">
+                    <span
+                      className="icon-[lucide--phone] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/60"
+                      aria-hidden="true"
+                    />
+                    <Input
+                      id="contactPhone"
+                      name="contactPhone"
+                      type="tel"
+                      pattern={PHONE_PATTERN}
+                      title={PHONE_TITLE}
+                      placeholder="t.ex. 070-123 45 67…"
+                      required
+                      className={`${FIELD_CLASSES} pl-[2.4em]`}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="contactEmail" className={LABEL_CLASSES}>
+                    E-post
+                  </Label>
+                  <div className="relative">
+                    <span
+                      className="icon-[lucide--mail] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/60"
+                      aria-hidden="true"
+                    />
+                    <Input
+                      id="contactEmail"
+                      name="contactEmail"
+                      type="email"
+                      pattern={EMAIL_PATTERN}
+                      title={EMAIL_TITLE}
+                      autoComplete="email"
+                      placeholder="anna@acme.se…"
+                      required
+                      className={`${FIELD_CLASSES} pl-[2.4em]`}
+                    />
+                  </div>
                 </div>
               </div>
             </div>

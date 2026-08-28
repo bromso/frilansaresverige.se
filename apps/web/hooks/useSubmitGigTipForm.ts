@@ -6,7 +6,9 @@ interface GigTipFormTarget extends EventTarget {
   clientName: HTMLInputElement
   minRate: HTMLInputElement
   description: HTMLInputElement
-  contact: HTMLInputElement
+  contactName: HTMLInputElement
+  contactPhone: HTMLInputElement
+  contactEmail: HTMLInputElement
   // Radix RadioGroup renders hidden radio inputs, so the named form
   // control is a RadioNodeList whose .value is the checked item's value.
   relation: { value: string }
@@ -40,7 +42,9 @@ export const useSubmitGigTipForm = () => {
       clientName: target.clientName.value,
       minRate: target.minRate.value,
       description: target.description.value,
-      contact: target.contact.value,
+      contactName: target.contactName.value,
+      contactPhone: target.contactPhone.value,
+      contactEmail: target.contactEmail.value,
       relation: target.relation.value,
       omfattning: target.omfattning.value,
       arbetsform,

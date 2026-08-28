@@ -16,7 +16,9 @@ interface SubmitGigTipBody {
   clientName: string
   minRate: string
   description: string
-  contact: string
+  contactName: string
+  contactPhone: string
+  contactEmail: string
   relation: string
   omfattning: string
   arbetsform: string
@@ -102,7 +104,9 @@ export default async function handler(
     clientName,
     minRate,
     description,
-    contact,
+    contactName,
+    contactPhone,
+    contactEmail,
     relation,
     omfattning,
     arbetsform,
@@ -119,7 +123,9 @@ export default async function handler(
       `Uppdragsgivare: ${clientName} \n` +
       `Minimumarvode: ${minRate} kr/h \n` +
       `Beskrivning: ${description} \n` +
-      `Kontakt: ${contact} \n` +
+      `Kontaktperson: ${contactName} \n` +
+      `Telefon: ${contactPhone} \n` +
+      `E-post: ${contactEmail} \n` +
       `Relation till kunden: ${RELATION_LABELS[relation] ?? relation}`,
   }
 
