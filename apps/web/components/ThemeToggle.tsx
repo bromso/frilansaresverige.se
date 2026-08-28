@@ -1,5 +1,4 @@
 import { cn } from '@frilansaresverige/ui/lib/utils'
-import { motion } from 'motion/react'
 import { useTheme } from 'next-themes'
 import { useCallback, useEffect, useState } from 'react'
 
@@ -129,6 +128,7 @@ export const createAnimation = (
       }
       ::view-transition-new(root) {
         animation-name: reveal-${start}${blur ? '-blur' : ''};
+        animation-fill-mode: forwards;
         ${blur ? 'filter: blur(2px);' : ''}
       }
       ::view-transition-old(root),
@@ -138,6 +138,7 @@ export const createAnimation = (
       }
       .dark::view-transition-new(root) {
         animation-name: reveal-${start}${blur ? '-blur' : ''};
+        animation-fill-mode: forwards;
         ${blur ? 'filter: blur(2px);' : ''}
       }
       @keyframes reveal-${start}${blur ? '-blur' : ''} {
@@ -165,6 +166,7 @@ export const createAnimation = (
       }
       ::view-transition-new(root) {
         animation-name: reveal${blur ? '-blur' : ''};
+        animation-fill-mode: forwards;
         ${blur ? 'filter: blur(2px);' : ''}
       }
       ::view-transition-old(root),
@@ -174,6 +176,7 @@ export const createAnimation = (
       }
       .dark::view-transition-new(root) {
         animation-name: reveal${blur ? '-blur' : ''};
+        animation-fill-mode: forwards;
       }
       @keyframes reveal${blur ? '-blur' : ''} {
         from {
@@ -191,6 +194,10 @@ export const createAnimation = (
   }
 
   if (variant === 'circle-blur') {
+    // `forwards` is load-bearing: without it the scale animation reverts
+    // to the base mask-size of 0 on the frame it finishes — one frame
+    // before the transition tears down — masking the new snapshot away
+    // and flashing the old theme.
     return {
       name: `${variant}-${start}`,
       css: `
@@ -200,12 +207,12 @@ export const createAnimation = (
       ::view-transition-new(root) {
         mask: url('${svg}') ${start === 'center' ? 'center' : start.replace('-', ' ')} / 0 no-repeat;
         mask-origin: content-box;
-        animation: scale 1s;
+        animation: scale 1s forwards;
         transform-origin: ${transformOrigin};
       }
       ::view-transition-old(root),
       .dark::view-transition-old(root) {
-        animation: scale 1s;
+        animation: scale 1s forwards;
         transform-origin: ${transformOrigin};
         z-index: -1;
       }
@@ -228,6 +235,7 @@ export const createAnimation = (
       }
       ::view-transition-new(root) {
         animation-name: reveal-${start}${blur ? '-blur' : ''};
+        animation-fill-mode: forwards;
         ${blur ? 'filter: blur(2px);' : ''}
       }
       ::view-transition-old(root),
@@ -237,6 +245,7 @@ export const createAnimation = (
       }
       .dark::view-transition-new(root) {
         animation-name: reveal-${start}${blur ? '-blur' : ''};
+        animation-fill-mode: forwards;
       }
       @keyframes reveal-${start}${blur ? '-blur' : ''} {
         from {
@@ -362,6 +371,11 @@ export const useThemeToggle = ({
   return { isDark, toggleTheme }
 }
 
+// The button shows the sun/moon pair animate-ui's theme toggler uses
+// (lucide icons, via this repo's iconify classes instead of lucide-react):
+// the sun while the site is dark (inviting the switch to light) and the
+// moon in light mode. Ink and hover match the nav tabs next to it, so the
+// icon inverts with the theme like the rest of the bar.
 export const ThemeToggleButton = ({
   className = '',
   variant = 'circle',
@@ -379,38 +393,19 @@ export const ThemeToggleButton = ({
     <button
       type="button"
       className={cn(
-        'size-10 cursor-pointer rounded-full bg-black p-0 transition-all duration-300 active:scale-95',
+        'flex size-10 cursor-pointer items-center justify-center rounded-full text-brand-cream/70 transition-colors duration-300 hover:bg-brand-cream/10 hover:text-brand-cream active:scale-95',
         className,
       )}
       onClick={toggleTheme}
       aria-label="Växla mellan mörkt och ljust läge"
     >
-      <svg
-        viewBox="0 0 240 240"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+      <span
         aria-hidden="true"
-      >
-        <motion.g
-          animate={{ rotate: isDark ? -180 : 0 }}
-          transition={{ ease: 'easeInOut', duration: 0.5 }}
-        >
-          <path
-            d="M120 67.5C149.25 67.5 172.5 90.75 172.5 120C172.5 149.25 149.25 172.5 120 172.5"
-            fill="white"
-          />
-          <path
-            d="M120 67.5C90.75 67.5 67.5 90.75 67.5 120C67.5 149.25 90.75 172.5 120 172.5"
-            fill="black"
-          />
-        </motion.g>
-        <motion.path
-          animate={{ rotate: isDark ? 180 : 0 }}
-          transition={{ ease: 'easeInOut', duration: 0.5 }}
-          d="M120 3.75C55.5 3.75 3.75 55.5 3.75 120C3.75 184.5 55.5 236.25 120 236.25C184.5 236.25 236.25 184.5 236.25 120C236.25 55.5 184.5 3.75 120 3.75ZM120 214.5V172.5C90.75 172.5 67.5 149.25 67.5 120C67.5 90.75 90.75 67.5 120 67.5V25.5C172.5 25.5 214.5 67.5 214.5 120C214.5 172.5 172.5 214.5 120 214.5Z"
-          fill="white"
-        />
-      </svg>
+        className={cn(
+          'size-5',
+          isDark ? 'icon-[lucide--sun]' : 'icon-[lucide--moon]',
+        )}
+      />
     </button>
   )
 }
