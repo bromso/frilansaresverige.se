@@ -41,10 +41,6 @@ const HeroShaderBackground = dynamic(
 const BentoCardShader = dynamic(() => import('../components/BentoCardShader'), {
   ssr: false,
 })
-const KonsultRippleShader = dynamic(
-  () => import('../components/KonsultRippleShader'),
-  { ssr: false },
-)
 
 const API_BASE_URL =
   process.env.API_BASE_URL || 'https://uppdrag.frilansaresverige.se/api'
@@ -722,9 +718,11 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
 
       {/* For companies and hiring freelancers: find the right consultant.
           Layout after the Shaders "Ripple Bento Grid" section: one hero
-          card running a cursor-reactive ripple shader (2/3 width on
-          desktop), beside a column with a dark and a cream support card.
-          Same outer-corner treatment as the "Vad du får" bento. */}
+          card (2/3 width on desktop) beside a column with a dark and a
+          cream support card. The hero runs the same liquid-gradient
+          composition as the "Vad du får" cards (diamond variant) minus
+          the refractive 3D solid, so both bentos share one visual
+          language. Same outer-corner treatment as that bento. */}
       <section className="w-full pt-8 pb-24 md:pt-12 md:pb-32">
         <SectionHeading
           eyebrow="Hitta rätt konsult"
@@ -741,10 +739,16 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                   className="absolute inset-0 z-0"
                   style={{
                     background:
-                      'radial-gradient(ellipse 80% 60% at 90% 50%, rgba(255,207,200,0.6), transparent), linear-gradient(160deg, #a8b4ff, #8a5cf6 45%, #ffcfc8)',
+                      'linear-gradient(135deg, #ffcfc8, #8a5cf6 60%, #2601bb)',
                   }}
                 >
-                  {webgpu && <KonsultRippleShader reduced={reduced} />}
+                  {webgpu && (
+                    <BentoCardShader
+                      variant="diamond"
+                      reduced={reduced}
+                      showGlass={false}
+                    />
+                  )}
                 </div>
                 {/* Bottom scrim keeps the copy readable while the shader
                     stays the visual star; the hairline ring sits above it

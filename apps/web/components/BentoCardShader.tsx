@@ -217,13 +217,17 @@ const MountNearViewport = ({ children }: { children: ReactNode }) => {
 const BentoCardShader = ({
   variant,
   reduced,
+  showGlass = true,
 }: {
   variant: BentoShaderVariant
   reduced: boolean
+  // The "Hitta rätt konsult" hero reuses these compositions without the
+  // refractive 3D solid.
+  showGlass?: boolean
 }) => {
   const config = VARIANTS[variant]
 
-  const glass = config.glass
+  const glass = showGlass ? config.glass : undefined
 
   return (
     <MountNearViewport>
