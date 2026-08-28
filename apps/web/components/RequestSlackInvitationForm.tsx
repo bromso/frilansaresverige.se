@@ -160,7 +160,7 @@ const RequestSlackInvitationForm = () => {
                   paneRefs.current['om-dig'] = el
                 }}
               >
-                <div className="grid gap-5 md:grid-cols-2">
+                <div className="grid gap-5">
                   <div className="flex flex-col gap-1.5">
                     <Label htmlFor="name" className={LABEL_CLASSES}>
                       Namn
@@ -196,7 +196,7 @@ const RequestSlackInvitationForm = () => {
                   </div>
                 </div>
 
-                <div className="mt-5 grid gap-5 md:grid-cols-2">
+                <div className="mt-5 grid gap-5">
                   <div className="flex flex-col gap-1.5">
                     <Label htmlFor="roll" className={LABEL_CLASSES}>
                       Vad jobbar du med?
