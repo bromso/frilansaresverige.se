@@ -26,9 +26,11 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import type { ReactElement, ReactNode } from 'react'
 import { useEffect, useState } from 'react'
-
-import Seo from '../components/Seo'
+import type { Organization, WebSite, WithContext } from 'schema-dts'
 import type { BentoShaderVariant } from '../components/BentoCardShader'
+import { ProgressiveBlur } from '../components/ProgressiveBlur'
+import Seo, { SITE_NAME, SITE_URL } from '../components/Seo'
+import StructuredData from '../components/StructuredData'
 import { getRoute } from '../lib/routes'
 
 // The shader backgrounds run on WebGPU and can only render in the browser.
@@ -387,6 +389,28 @@ const KONSULT_BENTO: KonsultCard[] = [
   },
 ]
 
+// Site-level schema.org entities, emitted from the homepage only. Typed
+// with schema-dts so invalid shapes fail the typecheck.
+const ORG_JSON_LD: WithContext<Organization> = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: `${SITE_URL}/android-chrome-512x512.png`,
+  description:
+    'Sveriges största community för frilansare: uppdragstips, kunskap och kollegskap i Slack — gratis och utan mellanhänder.',
+  sameAs: ['https://github.com/frilansaresverige/frilansaresverige.se'],
+}
+
+const WEBSITE_JSON_LD: WithContext<WebSite> = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE_NAME,
+  url: SITE_URL,
+  inLanguage: 'sv',
+  publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
+}
+
 const STEPS = [
   {
     number: '01',
@@ -419,6 +443,8 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
   return (
     <div className="relative flex w-full max-w-[72em] flex-col items-center">
       <Seo title={meta.title} description={meta.description} path={meta.path} />
+      <StructuredData data={ORG_JSON_LD} />
+      <StructuredData data={WEBSITE_JSON_LD} />
 
       {/* Hero — copy on the left, 3D silk ribbon on the right */}
       {/* 5.5rem matches the header's height (h-14 bar + py-4). */}

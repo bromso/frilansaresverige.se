@@ -1,6 +1,8 @@
 import Link from 'next/link'
+import type { BreadcrumbList, WithContext } from 'schema-dts'
 import { getBreadcrumbs } from '../lib/routes'
 import { SITE_URL } from './Seo'
+import StructuredData from './StructuredData'
 
 const Breadcrumbs = ({ path }: { path: string }) => {
   const crumbs = getBreadcrumbs(path)
@@ -8,7 +10,7 @@ const Breadcrumbs = ({ path }: { path: string }) => {
     return null
   }
 
-  const jsonLd = {
+  const jsonLd: WithContext<BreadcrumbList> = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: crumbs.map((crumb, index) => ({
@@ -48,11 +50,7 @@ const Breadcrumbs = ({ path }: { path: string }) => {
           )
         })}
       </ol>
-      <script
-        type="application/ld+json"
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: static registry-derived breadcrumb data, no user input.
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <StructuredData data={jsonLd} />
     </nav>
   )
 }

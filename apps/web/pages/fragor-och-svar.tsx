@@ -1,12 +1,13 @@
-import Breadcrumbs from '../components/Breadcrumbs'
+import type { FAQPage, WithContext } from 'schema-dts'
 import FaqAccordion from '../components/Faq/FaqAccordion'
 import { FAQ_ITEMS } from '../components/Faq/faq-items'
 import Seo from '../components/Seo'
+import StructuredData from '../components/StructuredData'
 import { getRoute } from '../lib/routes'
 
 const FragorOchSvar = () => {
   const meta = getRoute('/fragor-och-svar')!
-  const jsonLd = {
+  const jsonLd: WithContext<FAQPage> = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: FAQ_ITEMS.map((item) => ({
@@ -19,7 +20,6 @@ const FragorOchSvar = () => {
   return (
     <>
       <Seo title={meta.title} description={meta.description} path={meta.path} />
-      <Breadcrumbs path={meta.path} />
       <section className="flex w-full max-w-[44em] flex-col py-12 md:py-16">
         <p className="font-display mb-3 text-sm font-bold tracking-widest text-brand-coral uppercase">
           Frågor och svar
@@ -35,11 +35,7 @@ const FragorOchSvar = () => {
           <FaqAccordion items={FAQ_ITEMS} />
         </div>
       </section>
-      <script
-        type="application/ld+json"
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: static FAQ registry data, no user input.
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <StructuredData data={jsonLd} />
     </>
   )
 }

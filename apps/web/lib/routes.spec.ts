@@ -25,7 +25,7 @@ function collectPageRoutes(dir: string, prefix = ''): string[] {
 
     const basename = entry.name.replace(/\.(tsx|ts)$/, '')
     if (SKIP_BASENAMES.has(basename)) continue
-    if (basename === 'sitemap.xml') continue
+    if (basename === 'sitemap.xml' || basename === 'llms.txt') continue
 
     routes.push(basename === 'index' ? prefix || '/' : `${prefix}/${basename}`)
   }
