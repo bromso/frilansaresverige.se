@@ -76,3 +76,31 @@
     scroll-behavior: smooth;
   }
 }
+
+/* CSS-only liquid-glass look for the header surfaces (logo pill, nav
+   pill, theme toggle): frosted backdrop blur with a saturation/brightness
+   lift, a hairline border and inset top/bottom highlights that mimic a
+   glass rim catching light. Kept as a utility so all surfaces match. */
+@utility glass-surface {
+  background: rgb(255 255 255 / 0.1);
+  border: 1px solid rgb(255 255 255 / 0.2);
+  /* No hand-written -webkit- fallback: Lightning CSS collapses the pair
+     into the last-written declaration, which shipped ONLY the prefixed
+     property — and Chrome no longer honors -webkit-backdrop-filter, so
+     the blur vanished. The compiler adds prefixes itself when targets
+     need them. */
+  backdrop-filter: blur(12px) saturate(1.8) brightness(1.15);
+  box-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.25),
+    inset 0 -1px 0 0 rgb(255 255 255 / 0.08),
+    0 8px 32px 0 rgb(17 17 26 / 0.2);
+
+  .light & {
+    background: rgb(255 255 255 / 0.25);
+    border-color: rgb(255 255 255 / 0.3);
+    box-shadow:
+      inset 0 1px 0 0 rgb(255 255 255 / 0.4),
+      inset 0 -1px 0 0 rgb(255 255 255 / 0.2),
+      0 8px 32px 0 rgb(31 38 135 / 0.2);
+  }
+}

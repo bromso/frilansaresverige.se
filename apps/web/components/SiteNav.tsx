@@ -6,6 +6,8 @@ import Router from 'next/router'
 import { useEffect, useId, useRef, useState } from 'react'
 import useMeasure from 'react-use-measure'
 import { NAV_TABS } from '../lib/routes'
+import LogoMark from './LogoMark'
+import { ThemeToggleButton } from './ThemeToggle'
 
 // Site navigation adapted from Skiper UI's Skiper96 expandable tabs
 // (skiper-ui.com): five icon tabs that expand to show their label on
@@ -14,6 +16,10 @@ import { NAV_TABS } from '../lib/routes'
 // lucide-react → iconify classes, usehooks-ts click-outside → a local
 // pointerdown listener, plus Escape/route-change closing, aria-expanded
 // for keyboard users, and instant transitions under reduced motion.
+// The bar also carries the logo (left) and the theme toggle (right) so
+// the header is a single glass pill; every element inside shares the
+// pill's 40px inner row (h-14 minus p-2). Text and hovers use the brand
+// tokens, which .light swaps, so the ink inverts with the background.
 const transition = {
   delay: 0.1,
   type: 'spring' as const,
@@ -64,8 +70,11 @@ const SiteNav = () => {
 
   const tab = selected === null ? null : NAV_TABS[selected]
 
+  // The root reserves the bar's 56px in the sticky header while the glass
+  // container below grows past it, so expanding the panel overlays the
+  // page instead of pushing it down.
   return (
-    <div ref={containerRef} className="relative">
+    <div ref={containerRef} className="relative h-14">
       <MotionConfig
         transition={
           reduced
@@ -73,60 +82,89 @@ const SiteNav = () => {
             : { duration: 0.5, type: 'spring', bounce: 0 }
         }
       >
-        <nav
-          aria-label="Huvudmeny"
-          className="flex h-10 items-center gap-1 rounded-2xl bg-brand-cream/5 p-1"
-        >
-          {NAV_TABS.map((navTab, index) => (
-            <motion.button
-              key={navTab.title}
-              type="button"
-              initial={false}
-              animate={{
-                gap: selected === index ? '.5rem' : 0,
-                paddingLeft: selected === index ? '1rem' : '.5rem',
-                paddingRight: selected === index ? '1rem' : '.5rem',
-              }}
-              onClick={() => selectTab(index)}
-              aria-expanded={selected === index}
-              aria-controls={panelId}
-              className={cn(
-                'flex h-full items-center justify-center rounded-xl text-sm font-medium transition-colors duration-300',
-                selected === index
-                  ? 'bg-brand-cream/10 text-brand-cream'
-                  : 'text-brand-cream/70 hover:bg-brand-cream/10 hover:text-brand-cream',
-              )}
-            >
-              <span
-                aria-hidden="true"
-                className={cn(navTab.icon, 'size-4 shrink-0')}
-              />
-              <AnimatePresence initial={false}>
-                {selected === index ? (
-                  <motion.span
-                    initial={{ width: 0, opacity: 0 }}
-                    animate={{ width: 'auto', opacity: 1 }}
-                    exit={{ width: 0, opacity: 0 }}
-                    transition={reduced ? { duration: 0 } : transition}
-                    className="overflow-hidden font-medium tracking-tight whitespace-nowrap"
-                  >
-                    {navTab.title}
-                  </motion.span>
-                ) : (
-                  <span className="sr-only">{navTab.title}</span>
-                )}
-              </AnimatePresence>
-            </motion.button>
-          ))}
-        </nav>
-
+        {/* One morphing surface, like the Skiper96 demo: the tab row and
+            the link panel share this glass container, whose height
+            animates from the bare bar (56px) to bar + measured panel.
+            The 28px radius equals the closed bar's pill radius. */}
         <motion.div
-          id={panelId}
           initial={false}
-          animate={{ height: tab ? bounds.height : 0 }}
-          className="absolute top-full right-0 left-0 z-20 mt-2 overflow-hidden rounded-2xl bg-brand-blue-dark shadow-lg"
+          animate={{ height: tab ? 56 + bounds.height : 56 }}
+          className="glass-surface relative overflow-hidden rounded-[1.75rem]"
         >
-          <div ref={panelRef}>
+          <nav
+            aria-label="Huvudmeny"
+            className="flex h-14 items-center gap-1 p-2"
+          >
+            <Link
+              href="/"
+              title="Gå till startsidan"
+              className="flex h-full items-center gap-2 rounded-full px-3 transition-colors duration-300 hover:bg-brand-cream/10"
+            >
+              <LogoMark className="h-7 w-auto" />
+              <span className="sr-only">Frilansare Sverige</span>
+            </Link>
+
+            <span
+              aria-hidden="true"
+              className="mx-1 h-6 w-px bg-brand-cream/15"
+            />
+
+            {NAV_TABS.map((navTab, index) => (
+              <motion.button
+                key={navTab.title}
+                type="button"
+                initial={false}
+                animate={{
+                  gap: selected === index ? '.5rem' : 0,
+                  paddingLeft: selected === index ? '1rem' : '.5rem',
+                  paddingRight: selected === index ? '1rem' : '.5rem',
+                }}
+                onClick={() => selectTab(index)}
+                aria-expanded={selected === index}
+                aria-controls={panelId}
+                className={cn(
+                  'flex h-full items-center justify-center rounded-full text-sm font-medium transition-colors duration-300',
+                  selected === index
+                    ? 'bg-brand-cream/10 text-brand-cream'
+                    : 'text-brand-cream/70 hover:bg-brand-cream/10 hover:text-brand-cream',
+                )}
+              >
+                <span
+                  aria-hidden="true"
+                  className={cn(navTab.icon, 'size-5 shrink-0')}
+                />
+                {/* The accessible name lives outside AnimatePresence: a
+                    fallback span inside it would share the label's
+                    implicit presence key, making AnimatePresence treat
+                    the entering label as already present and skip its
+                    width/opacity animation entirely. */}
+                <span className="sr-only">{navTab.title}</span>
+                <AnimatePresence initial={false}>
+                  {selected === index && (
+                    <motion.span
+                      aria-hidden="true"
+                      initial={{ width: 0, opacity: 0 }}
+                      animate={{ width: 'auto', opacity: 1 }}
+                      exit={{ width: 0, opacity: 0 }}
+                      transition={reduced ? { duration: 0 } : transition}
+                      className="overflow-hidden font-medium tracking-tight whitespace-nowrap"
+                    >
+                      {navTab.title}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </motion.button>
+            ))}
+
+            <span
+              aria-hidden="true"
+              className="mx-1 h-6 w-px bg-brand-cream/15"
+            />
+
+            <ThemeToggleButton variant="circle-blur" start="top-center" />
+          </nav>
+
+          <div ref={panelRef} id={panelId}>
             <AnimatePresence
               mode="popLayout"
               initial={false}
@@ -140,7 +178,7 @@ const SiteNav = () => {
                   initial="initial"
                   animate="active"
                   exit="exit"
-                  className="flex flex-col gap-0.5 p-2"
+                  className="flex flex-col gap-0.5 px-2 pb-2"
                 >
                   <li>
                     <Link

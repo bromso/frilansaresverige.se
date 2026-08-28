@@ -421,11 +421,12 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
       <Seo title={meta.title} description={meta.description} path={meta.path} />
 
       {/* Hero — copy on the left, 3D silk ribbon on the right */}
-      <section className="relative flex min-h-[calc(100dvh-4.5rem)] w-full flex-col justify-center py-16 md:py-20">
+      {/* 5.5rem matches the header's height (h-14 bar + py-4). */}
+      <section className="relative flex min-h-[calc(100dvh-5.5rem)] w-full flex-col justify-center py-16 md:py-20">
         {webgpu && (
           <div
             aria-hidden="true"
-            className="absolute -top-[4.5rem] bottom-0 left-1/2 -z-[1] w-screen -translate-x-1/2 overflow-hidden"
+            className="absolute -top-[5.5rem] bottom-0 left-1/2 -z-[1] w-screen -translate-x-1/2 overflow-hidden"
           >
             <HeroShaderBackground reduced={reduced} />
             {/* Left-to-right scrim over the copy side so the hero text
