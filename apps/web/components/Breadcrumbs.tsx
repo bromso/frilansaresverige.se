@@ -4,8 +4,23 @@ import { getBreadcrumbs } from '../lib/routes'
 import { SITE_URL } from './Seo'
 import StructuredData from './StructuredData'
 
-const Breadcrumbs = ({ path }: { path: string }) => {
-  const crumbs = getBreadcrumbs(path)
+// Dynamic content pages (e.g. /nyheter/[slug]) aren't in the routes
+// registry, so they supply their own leaf: the section anchors the trail
+// and the label comes from the content's frontmatter. Pages return
+// `crumb` from getStaticProps and _app forwards it here via SiteFooter.
+export interface LeafCrumb {
+  section: string
+  path: string
+  label: string
+}
+
+const Breadcrumbs = ({ path, crumb }: { path: string; crumb?: LeafCrumb }) => {
+  const crumbs = crumb
+    ? [
+        ...getBreadcrumbs(crumb.section),
+        { path: crumb.path, label: crumb.label },
+      ]
+    : getBreadcrumbs(path)
   if (crumbs.length < 2) {
     return null
   }

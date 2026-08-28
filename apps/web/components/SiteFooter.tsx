@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { LEGAL_ROUTES, NAV_TABS } from '../lib/routes'
-import Breadcrumbs from './Breadcrumbs'
+import Breadcrumbs, { type LeafCrumb } from './Breadcrumbs'
 import LogoMark from './LogoMark'
 
 const GITHUB_URL = 'https://github.com/frilansaresverige/frilansaresverige.se/'
@@ -15,11 +15,17 @@ const GITHUB_URL = 'https://github.com/frilansaresverige/frilansaresverige.se/'
 // as it does in unit tests). Breadcrumbs sit at the top of the footer
 // (Apple-style); on routes without a parent chain — including the '/'
 // default — the component renders nothing.
-const SiteFooter = ({ path = '/' }: { path?: string }) => {
+const SiteFooter = ({
+  path = '/',
+  crumb,
+}: {
+  path?: string
+  crumb?: LeafCrumb
+}) => {
   return (
     <footer className="relative z-[2] mt-auto w-full bg-brand-blue-dark/70">
       <div className="mx-auto w-full max-w-[72em] px-[min(2em,4vw)]">
-        <Breadcrumbs path={path} />
+        <Breadcrumbs path={path} crumb={crumb} />
 
         {/* Brand blurb + link columns */}
         <div className="pt-12 pb-12 xl:grid xl:grid-cols-3 xl:gap-8">

@@ -28,6 +28,25 @@ describe('Breadcrumbs', () => {
     expect(data.itemListElement[2].name).toBe('Uppförandekod')
   })
 
+  it('renders a dynamic leaf via the crumb prop', () => {
+    render(
+      <Breadcrumbs
+        path="/nyheter/[slug]"
+        crumb={{
+          section: '/nyheter',
+          path: '/nyheter/hej',
+          label: 'Hej världen',
+        }}
+      />,
+    )
+    expect(screen.getByRole('link', { name: 'Nyheter' })).toHaveAttribute(
+      'href',
+      '/nyheter',
+    )
+    expect(screen.getByText('Hej världen')).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Hej världen' })).toBeNull()
+  })
+
   it('renders nothing on the home page', () => {
     const { container } = render(<Breadcrumbs path="/" />)
     expect(container.innerHTML).toBe('')
