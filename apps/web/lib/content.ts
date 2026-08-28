@@ -5,6 +5,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import matter from 'gray-matter'
+import { load as loadYaml } from 'js-yaml'
 
 export interface PostMeta {
   slug: string
@@ -196,9 +197,19 @@ const listSlugs = (section: string): string[] =>
     .map((file) => file.replace(/\.mdx$/, ''))
     .sort()
 
+// The repo pins js-yaml to v4 (root package.json overrides), whose API
+// dropped the safeLoad function gray-matter's built-in engine calls —
+// so hand gray-matter a v4 engine explicitly.
+const MATTER_OPTIONS = {
+  engines: {
+    yaml: (source: string) => loadYaml(source) as Record<string, unknown>,
+  },
+}
+
 const readEntry = (section: string, slug: string) =>
   matter(
     fs.readFileSync(path.join(CONTENT_DIR, section, `${slug}.mdx`), 'utf8'),
+    MATTER_OPTIONS,
   )
 
 export const getPostSlugs = (): string[] => listSlugs('nyheter')
