@@ -4,11 +4,14 @@ import {
   formatEventDate,
   formatEventTime,
   formatPostDate,
+  formatScore,
   GIG_ROLES,
   parseEventMeta,
   parseGigMeta,
   parseLocalDate,
   parsePostMeta,
+  parseReviewMeta,
+  REVIEW_CATEGORIES,
   sortPosts,
   splitEvents,
 } from './content'
@@ -16,9 +19,11 @@ import {
   getAllEvents,
   getAllGigs,
   getAllPosts,
+  getAllReviews,
   getEvent,
   getGig,
   getPost,
+  getReview,
 } from './content.server'
 
 const post = (slug: string, date: string) =>
@@ -116,6 +121,61 @@ describe('parseGigMeta', () => {
   })
 })
 
+describe('parseReviewMeta', () => {
+  const data = (scores: Record<string, unknown>) => ({
+    title: 'Konsultio',
+    excerpt: 'E',
+    date: '2026-08-20',
+    category: 'Konsultmäklare',
+    website: 'https://example.se',
+    scores,
+  })
+
+  it('computes the overall score as the criteria average', () => {
+    const meta = parseReviewMeta(
+      'konsultio',
+      data({ villkor: 4, transparens: 4.5, bemotande: 4.5 }),
+    )
+    expect(meta.overall).toBe(4.3)
+    expect(meta.website).toBe('https://example.se')
+    expect(REVIEW_CATEGORIES).toContain(meta.category)
+  })
+
+  it('rejects scores outside 1–5 or off the half-step grid', () => {
+    expect(() =>
+      parseReviewMeta(
+        'fel',
+        data({ villkor: 5.5, transparens: 4, bemotande: 4 }),
+      ),
+    ).toThrow(/villkor/)
+    expect(() =>
+      parseReviewMeta(
+        'fel',
+        data({ villkor: 3.7, transparens: 4, bemotande: 4 }),
+      ),
+    ).toThrow(/villkor/)
+  })
+
+  it('rejects missing criteria and unknown categories', () => {
+    expect(() =>
+      parseReviewMeta('fel', data({ villkor: 4, transparens: 4 })),
+    ).toThrow(/bemotande/)
+    expect(() =>
+      parseReviewMeta('fel', {
+        ...data({ villkor: 4, transparens: 4, bemotande: 4 }),
+        category: 'Bemanning',
+      }),
+    ).toThrow(/Bemanning/)
+  })
+})
+
+describe('formatScore', () => {
+  it('renders one decimal with a Swedish comma', () => {
+    expect(formatScore(4.3)).toBe('4,3')
+    expect(formatScore(4)).toBe('4,0')
+  })
+})
+
 describe('sortPosts', () => {
   it('sorts newest first', () => {
     const sorted = sortPosts([post('a', '2026-01-01'), post('b', '2026-06-01')])
@@ -207,5 +267,15 @@ describe('content directory', () => {
     const gigs = getAllGigs()
     const dates = gigs.map((g) => g.date)
     expect(dates).toEqual([...dates].sort().reverse())
+  })
+
+  it('parses every review on disk, sorted best first', () => {
+    const reviews = getAllReviews()
+    expect(reviews.length).toBeGreaterThanOrEqual(6)
+    for (const r of reviews) {
+      expect(getReview(r.slug).content.length).toBeGreaterThan(100)
+    }
+    const overalls = reviews.map((r) => r.overall)
+    expect(overalls).toEqual([...overalls].sort((a, b) => b - a))
   })
 })

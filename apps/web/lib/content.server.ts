@@ -14,6 +14,8 @@ import {
   parseEventMeta,
   parseGigMeta,
   parsePostMeta,
+  parseReviewMeta,
+  type ReviewMeta,
   sortPosts,
 } from './content'
 
@@ -44,6 +46,7 @@ const readEntry = (section: string, slug: string) =>
 export const getPostSlugs = (): string[] => listSlugs('nyheter')
 export const getEventSlugs = (): string[] => listSlugs('event')
 export const getGigSlugs = (): string[] => listSlugs('uppdrag')
+export const getReviewSlugs = (): string[] => listSlugs('recensioner')
 
 export const getAllPosts = (): PostMeta[] =>
   sortPosts(
@@ -67,6 +70,21 @@ export const getAllGigs = (): GigMeta[] =>
 export const getGig = (slug: string): { meta: GigMeta; content: string } => {
   const { data, content } = readEntry('uppdrag', slug)
   return { meta: parseGigMeta(slug, data), content }
+}
+
+// Best score first — a ranking, unlike the date-ordered sections.
+export const getAllReviews = (): ReviewMeta[] =>
+  getReviewSlugs()
+    .map((slug) => parseReviewMeta(slug, readEntry('recensioner', slug).data))
+    .sort(
+      (a, b) => b.overall - a.overall || a.title.localeCompare(b.title, 'sv'),
+    )
+
+export const getReview = (
+  slug: string,
+): { meta: ReviewMeta; content: string } => {
+  const { data, content } = readEntry('recensioner', slug)
+  return { meta: parseReviewMeta(slug, data), content }
 }
 
 export const getPost = (slug: string): { meta: PostMeta; content: string } => {

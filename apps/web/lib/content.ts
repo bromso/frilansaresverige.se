@@ -52,6 +52,42 @@ export interface GigMeta {
   applyUrl?: string
 }
 
+// Review categories and criteria are fixed sets for the same reason as
+// GIG_ROLES: they drive filter chips and score panels, so a typo fails
+// the content test instead of rendering a broken UI.
+export const REVIEW_CATEGORIES = [
+  'Konsultmäklare',
+  'Rekrytering',
+  'HR-tjänster',
+] as const
+
+export type ReviewCategory = (typeof REVIEW_CATEGORIES)[number]
+
+export const REVIEW_CRITERIA = [
+  { key: 'villkor', label: 'Villkor' },
+  { key: 'transparens', label: 'Transparens' },
+  { key: 'bemotande', label: 'Bemötande' },
+] as const
+
+export type ReviewCriterion = (typeof REVIEW_CRITERIA)[number]['key']
+
+export type ReviewScores = Record<ReviewCriterion, number>
+
+export interface ReviewMeta {
+  slug: string
+  /** Company name */
+  title: string
+  /** One-line verdict */
+  excerpt: string
+  /** "YYYY-MM-DD" — when the review was published */
+  date: string
+  category: ReviewCategory
+  website?: string
+  scores: ReviewScores
+  /** Average of the criteria, one decimal — computed, never authored. */
+  overall: number
+}
+
 const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?$/
 
 /** Parses "YYYY-MM-DD[THH:mm]" as local time (avoids the UTC shift that
@@ -164,6 +200,63 @@ export const parseGigMeta = (
     ...optionalFields(data, slug, ['client', 'applyUrl']),
   }
 }
+
+const scoreField = (
+  scores: Record<string, unknown>,
+  key: string,
+  slug: string,
+): number => {
+  const value = scores[key]
+  if (typeof value !== 'number') {
+    throw new Error(`${slug}: scores saknar "${key}" (tal 1–5)`)
+  }
+  if (value < 1 || value > 5 || (value * 2) % 1 !== 0) {
+    throw new Error(
+      `${slug}: "${key}" måste vara 1–5 i halva steg, fick ${value}`,
+    )
+  }
+  return value
+}
+
+export const parseReviewMeta = (
+  slug: string,
+  data: Record<string, unknown>,
+): ReviewMeta => {
+  const category = field(data, 'category', slug, true) as string
+  if (!(REVIEW_CATEGORIES as readonly string[]).includes(category)) {
+    throw new Error(
+      `${slug}: okänd kategori "${category}" — använd ${REVIEW_CATEGORIES.join(', ')}`,
+    )
+  }
+  const rawScores = data.scores
+  if (typeof rawScores !== 'object' || rawScores === null) {
+    throw new Error(`${slug}: frontmatter saknar "scores"`)
+  }
+  const scores = Object.fromEntries(
+    REVIEW_CRITERIA.map(({ key }) => [
+      key,
+      scoreField(rawScores as Record<string, unknown>, key, slug),
+    ]),
+  ) as ReviewScores
+  const values = Object.values(scores)
+  const overall =
+    Math.round((values.reduce((sum, v) => sum + v, 0) / values.length) * 10) /
+    10
+  return {
+    slug,
+    title: field(data, 'title', slug, true) as string,
+    excerpt: field(data, 'excerpt', slug, true) as string,
+    date: dateField(data, 'date', slug, true) as string,
+    category: category as ReviewCategory,
+    ...optionalFields(data, slug, ['website']),
+    scores,
+    overall,
+  }
+}
+
+/** "4.3" → "4,3" — always one decimal, Swedish comma. */
+export const formatScore = (score: number): string =>
+  score.toFixed(1).replace('.', ',')
 
 export const sortPosts = <T extends { date: string; slug: string }>(
   posts: T[],
