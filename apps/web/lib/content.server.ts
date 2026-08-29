@@ -9,8 +9,10 @@ import matter from 'gray-matter'
 import { load as loadYaml } from 'js-yaml'
 import {
   type EventMeta,
+  type GigMeta,
   type PostMeta,
   parseEventMeta,
+  parseGigMeta,
   parsePostMeta,
   sortPosts,
 } from './content'
@@ -41,6 +43,7 @@ const readEntry = (section: string, slug: string) =>
 
 export const getPostSlugs = (): string[] => listSlugs('nyheter')
 export const getEventSlugs = (): string[] => listSlugs('event')
+export const getGigSlugs = (): string[] => listSlugs('uppdrag')
 
 export const getAllPosts = (): PostMeta[] =>
   sortPosts(
@@ -53,6 +56,18 @@ export const getAllEvents = (): EventMeta[] =>
   getEventSlugs().map((slug) =>
     parseEventMeta(slug, readEntry('event', slug).data),
   )
+
+export const getAllGigs = (): GigMeta[] =>
+  sortPosts(
+    getGigSlugs().map((slug) =>
+      parseGigMeta(slug, readEntry('uppdrag', slug).data),
+    ),
+  )
+
+export const getGig = (slug: string): { meta: GigMeta; content: string } => {
+  const { data, content } = readEntry('uppdrag', slug)
+  return { meta: parseGigMeta(slug, data), content }
+}
 
 export const getPost = (slug: string): { meta: PostMeta; content: string } => {
   const { data, content } = readEntry('nyheter', slug)

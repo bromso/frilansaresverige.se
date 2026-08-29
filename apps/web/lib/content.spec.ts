@@ -4,13 +4,22 @@ import {
   formatEventDate,
   formatEventTime,
   formatPostDate,
+  GIG_ROLES,
   parseEventMeta,
+  parseGigMeta,
   parseLocalDate,
   parsePostMeta,
   sortPosts,
   splitEvents,
 } from './content'
-import { getAllEvents, getAllPosts, getEvent, getPost } from './content.server'
+import {
+  getAllEvents,
+  getAllGigs,
+  getAllPosts,
+  getEvent,
+  getGig,
+  getPost,
+} from './content.server'
 
 const post = (slug: string, date: string) =>
   parsePostMeta(slug, {
@@ -73,6 +82,37 @@ describe('parseEventMeta', () => {
         city: 'C',
       }),
     ).toThrow(/Ogiltigt datum/)
+  })
+})
+
+describe('parseGigMeta', () => {
+  it('returns a validated GigMeta with optionals', () => {
+    const meta = parseGigMeta('frontend', {
+      title: 'Frontendutvecklare',
+      excerpt: 'E',
+      date: '2026-08-26',
+      role: 'Utveckling',
+      city: 'Distans',
+      scope: 'Heltid',
+      client: 'Fintechbolag',
+      applyUrl: 'mailto:jobb@example.se',
+    })
+    expect(meta.role).toBe('Utveckling')
+    expect(meta.client).toBe('Fintechbolag')
+  })
+
+  it('rejects roles outside the fixed set', () => {
+    expect(() =>
+      parseGigMeta('konstig', {
+        title: 'T',
+        excerpt: 'E',
+        date: '2026-08-26',
+        role: 'Trollkarl',
+        city: 'Distans',
+        scope: 'Heltid',
+      }),
+    ).toThrow(/Trollkarl/)
+    expect(GIG_ROLES).toContain('Utveckling')
   })
 })
 
@@ -145,16 +185,27 @@ describe('date formatting (sv-SE)', () => {
 })
 
 describe('content directory', () => {
-  it('parses every post and event on disk', () => {
+  it('parses every post, event and gig on disk', () => {
     const posts = getAllPosts()
     const events = getAllEvents()
+    const gigs = getAllGigs()
     expect(posts.length).toBeGreaterThanOrEqual(6)
     expect(events.length).toBeGreaterThanOrEqual(4)
+    expect(gigs.length).toBeGreaterThanOrEqual(7)
     for (const p of posts) {
       expect(getPost(p.slug).content.length).toBeGreaterThan(100)
     }
     for (const e of events) {
       expect(getEvent(e.slug).content.length).toBeGreaterThan(100)
     }
+    for (const g of gigs) {
+      expect(getGig(g.slug).content.length).toBeGreaterThan(100)
+    }
+  })
+
+  it('lists gigs newest first', () => {
+    const gigs = getAllGigs()
+    const dates = gigs.map((g) => g.date)
+    expect(dates).toEqual([...dates].sort().reverse())
   })
 })

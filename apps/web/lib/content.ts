@@ -27,6 +27,31 @@ export interface EventMeta {
   image?: string
 }
 
+// Fixed role set: drives both frontmatter validation and the archive's
+// filter chips, so a typo'd role fails the content test instead of
+// silently rendering an unfilterable listing.
+export const GIG_ROLES = [
+  'Utveckling',
+  'Design',
+  'Innehåll',
+  'Projektledning',
+] as const
+
+export type GigRole = (typeof GIG_ROLES)[number]
+
+export interface GigMeta {
+  slug: string
+  title: string
+  excerpt: string
+  /** "YYYY-MM-DD" — the day the tip was published */
+  date: string
+  role: GigRole
+  city: string
+  scope: string
+  client?: string
+  applyUrl?: string
+}
+
 const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?$/
 
 /** Parses "YYYY-MM-DD[THH:mm]" as local time (avoids the UTC shift that
@@ -118,7 +143,31 @@ export const parseEventMeta = (
   }
 }
 
-export const sortPosts = (posts: PostMeta[]): PostMeta[] =>
+export const parseGigMeta = (
+  slug: string,
+  data: Record<string, unknown>,
+): GigMeta => {
+  const role = field(data, 'role', slug, true) as string
+  if (!(GIG_ROLES as readonly string[]).includes(role)) {
+    throw new Error(
+      `${slug}: okänd roll "${role}" — använd ${GIG_ROLES.join(', ')}`,
+    )
+  }
+  return {
+    slug,
+    title: field(data, 'title', slug, true) as string,
+    excerpt: field(data, 'excerpt', slug, true) as string,
+    date: dateField(data, 'date', slug, true) as string,
+    role: role as GigRole,
+    city: field(data, 'city', slug, true) as string,
+    scope: field(data, 'scope', slug, true) as string,
+    ...optionalFields(data, slug, ['client', 'applyUrl']),
+  }
+}
+
+export const sortPosts = <T extends { date: string; slug: string }>(
+  posts: T[],
+): T[] =>
   [...posts].sort(
     (a, b) => b.date.localeCompare(a.date) || a.slug.localeCompare(b.slug),
   )
