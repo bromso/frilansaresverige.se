@@ -83,6 +83,8 @@ export interface ReviewMeta {
   date: string
   category: ReviewCategory
   website?: string
+  /** Path under public/ to the company's logo mark. */
+  logo?: string
   scores: ReviewScores
   /** Average of the criteria, one decimal — computed, never authored. */
   overall: number
@@ -248,7 +250,7 @@ export const parseReviewMeta = (
     excerpt: field(data, 'excerpt', slug, true) as string,
     date: dateField(data, 'date', slug, true) as string,
     category: category as ReviewCategory,
-    ...optionalFields(data, slug, ['website']),
+    ...optionalFields(data, slug, ['website', 'logo']),
     scores,
     overall,
   }
