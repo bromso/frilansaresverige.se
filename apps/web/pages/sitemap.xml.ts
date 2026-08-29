@@ -1,6 +1,6 @@
 import type { GetServerSideProps } from 'next'
 import { SITE_URL } from '../components/Seo'
-import { getEventSlugs, getPostSlugs } from '../lib/content.server'
+import { getEventSlugs, getGigSlugs, getPostSlugs } from '../lib/content.server'
 import { buildSitemapXml } from '../lib/sitemap'
 
 // The registry is static, so the XML is too — but a real page route (not
@@ -16,6 +16,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const extras = [
     ...getPostSlugs().map((slug) => `/nyheter/${slug}`),
     ...getEventSlugs().map((slug) => `/event/${slug}`),
+    ...getGigSlugs().map((slug) => `/uppdrag/${slug}`),
   ]
   res.write(buildSitemapXml(SITE_URL, extras))
   res.end()
