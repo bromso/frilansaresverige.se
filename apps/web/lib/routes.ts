@@ -107,6 +107,13 @@ export const ROUTES: RouteMeta[] = [
       'Guider, verktyg och svar för dig som frilansar i Sverige — från fakturering och skatt till timpris och avtal.',
   },
 
+  {
+    path: '/recensioner',
+    title: 'Recensioner',
+    description:
+      'Communityts recensioner av konsultmäklare, rekryterare och HR-bolag — villkor, transparens och bemötande betygsatt av frilansare.',
+  },
+
   // Community
   {
     path: '/nyheter',
@@ -198,7 +205,10 @@ export const NAV_TABS: NavTab[] = [
     title: 'Kunskap',
     icon: 'icon-[lucide--book-open]',
     hub: '/kunskap',
-    items: [{ path: '/fragor-och-svar', label: 'Frågor och svar' }],
+    items: [
+      { path: '/recensioner', label: 'Recensioner' },
+      { path: '/fragor-och-svar', label: 'Frågor och svar' },
+    ],
   },
   {
     title: 'Community',

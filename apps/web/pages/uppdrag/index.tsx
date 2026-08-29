@@ -1,6 +1,7 @@
 import type { GetStaticProps } from 'next'
 import Link from 'next/link'
 import { useState } from 'react'
+import FilterChip from '../../components/FilterChip'
 import Seo from '../../components/Seo'
 import GigCard from '../../components/uppdrag/GigCard'
 import { GIG_ROLES, type GigMeta, type GigRole } from '../../lib/content'
@@ -14,29 +15,6 @@ interface Props {
 export const getStaticProps: GetStaticProps<Props> = async () => ({
   props: { gigs: getAllGigs() },
 })
-
-const FilterChip = ({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean
-  onClick: () => void
-  children: string
-}) => (
-  <button
-    type="button"
-    aria-pressed={active}
-    onClick={onClick}
-    className={`font-display rounded-full px-4 py-2 text-sm font-bold transition-colors ${
-      active
-        ? 'bg-brand-coral text-brand-grey'
-        : 'bg-brand-cream/10 text-brand-cream/80 hover:bg-brand-cream/15'
-    }`}
-  >
-    {children}
-  </button>
-)
 
 // Job-board take on the nyheter archive skeleton: heading + intro, a
 // role-filter chip row, then dense listing rows instead of cover tiles.
