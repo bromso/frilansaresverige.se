@@ -1,0 +1,36 @@
+name: Buggrapport
+description: Något på sajten är trasigt eller beter sig fel
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: Vad hände?
+      description: Beskriv buggen och vad du förväntade dig i stället.
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: På vilken sida?
+      placeholder: https://frilansaresverige.se/...
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steg för att återskapa
+      placeholder: |
+        1. Gå till …
+        2. Klicka på …
+        3. Se felet
+  - type: input
+    id: env
+    attributes:
+      label: Webbläsare och enhet
+      placeholder: t.ex. Safari 18 på iPhone, Chrome på macOS
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Skärmdump
+      description: En bild säger mer än tusen ord — klistra in en om du kan.
