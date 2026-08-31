@@ -347,7 +347,25 @@ const TestimonialCard = ({ name, role, body }: Testimonial) => (
 
 // The avatar stack in the konsult bento's cream card reuses the
 // testimonial initials idiom.
-const KONSULT_AVATARS = ['SL', 'JE', 'AH']
+// Avatar portraits get the same duotone treatment as the nyheter covers:
+// a brand gradient underneath, the photo blended with mix-blend-luminosity
+// so every hue stays on palette.
+const KONSULT_AVATARS = [
+  {
+    src: '/images/avatars/avatar-1.jpg',
+    gradient:
+      'radial-gradient(120% 160% at 85% 15%, #ffcfc8 0%, #ff9c8e 30%, #4823dc 75%)',
+  },
+  {
+    src: '/images/avatars/avatar-2.jpg',
+    gradient: 'linear-gradient(135deg, #2601bb 0%, #4823dc 45%, #ff9c8e 100%)',
+  },
+  {
+    src: '/images/avatars/avatar-3.jpg',
+    gradient:
+      'radial-gradient(140% 140% at 15% 85%, #ff9c8e 0%, #2601bb 60%, #4823dc 100%)',
+  },
+]
 
 // Site-level schema.org entities, emitted from the homepage only. Typed
 // with schema-dts so invalid shapes fail the typecheck.
@@ -872,12 +890,18 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                   </p>
                   <div className="mt-auto flex items-center gap-4 pt-6">
                     <div className="flex shrink-0" aria-hidden="true">
-                      {KONSULT_AVATARS.map((initials, index) => (
+                      {KONSULT_AVATARS.map((avatar, index) => (
                         <span
-                          key={initials}
-                          className={`font-display flex size-11 items-center justify-center rounded-full bg-[#fffce3] text-sm font-bold text-brand-grey ring-2 ring-white/70 ${index > 0 ? '-ml-3' : ''}`}
+                          key={avatar.src}
+                          className={`isolate size-11 overflow-hidden rounded-full ring-2 ring-white/70 ${index > 0 ? '-ml-3' : ''}`}
+                          style={{ background: avatar.gradient }}
                         >
-                          {initials}
+                          <img
+                            alt=""
+                            src={avatar.src}
+                            loading="lazy"
+                            className="size-full object-cover opacity-90 mix-blend-luminosity"
+                          />
                         </span>
                       ))}
                       <span className="font-display -ml-3 flex size-11 items-center justify-center rounded-full bg-brand-blue-dark text-xs font-bold text-[#fffce3] ring-2 ring-white/70">
