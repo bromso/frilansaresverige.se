@@ -1,6 +1,6 @@
+import { FilterChip } from '@frilansaresverige/ui/ui/filter-chip'
 import type { GetStaticProps } from 'next'
 import { useState } from 'react'
-import FilterChip from '../../components/FilterChip'
 import ItemListJsonLd from '../../components/ItemListJsonLd'
 import ReviewCard from '../../components/recensioner/ReviewCard'
 import Seo from '../../components/Seo'

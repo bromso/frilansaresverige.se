@@ -1,10 +1,10 @@
+import { DuotoneCover } from '@frilansaresverige/ui/ui/duotone-cover'
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 import type { NewsArticle, WithContext } from 'schema-dts'
 import type { LeafCrumb } from '../../components/Breadcrumbs'
 import ArticleCard from '../../components/nyheter/ArticleCard'
-import ArticleCover from '../../components/nyheter/ArticleCover'
 import { MDX_COMPONENTS } from '../../components/nyheter/MdxContent'
 import Seo, { SITE_NAME, SITE_URL } from '../../components/Seo'
 import StructuredData from '../../components/StructuredData'
@@ -84,7 +84,7 @@ const Artikel = ({ meta, source, more }: Props) => {
           {meta.excerpt}
         </p>
         <div className="mt-8 aspect-[16/9] overflow-hidden rounded-3xl">
-          <ArticleCover slug={meta.slug} image={meta.image} eager />
+          <DuotoneCover seed={meta.slug} image={meta.image} eager />
         </div>
         <div className="mt-2">
           <MDXRemote {...source} components={MDX_COMPONENTS} />

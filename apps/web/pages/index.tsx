@@ -13,6 +13,7 @@ import {
   RotatingTextContainer,
 } from '@frilansaresverige/ui/animate-ui/primitives/texts/rotating'
 import { SlidingNumber } from '@frilansaresverige/ui/animate-ui/primitives/texts/sliding-number'
+import { useNearViewport } from '@frilansaresverige/ui/lib/use-near-viewport'
 import { useReducedMotion } from '@frilansaresverige/ui/lib/use-reduced-motion'
 import {
   Marquee,
@@ -32,7 +33,6 @@ import GigToastStack from '../components/GigToastStack'
 import { ProgressiveBlur } from '../components/ProgressiveBlur'
 import Seo, { SITE_NAME, SITE_URL } from '../components/Seo'
 import StructuredData from '../components/StructuredData'
-import { useNearViewport } from '../hooks/useNearViewport'
 import { getRoute } from '../lib/routes'
 
 // The shader backgrounds run on WebGPU and can only render in the browser.

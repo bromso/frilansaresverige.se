@@ -3,8 +3,8 @@ import { type RefObject, useEffect, useRef, useState } from 'react'
 // Tracks whether an element is within (or near) the viewport, so
 // continuously-animating decorations — marquees and the like — can pause
 // while offscreen instead of burning frames the visitor never sees.
-// Unlike BentoCardShader's mount-once gate this keeps observing, so the
-// animation pauses again when the section scrolls back out.
+// The observer keeps observing (not once-only), so the animation pauses
+// again whenever the element scrolls back out.
 export function useNearViewport<T extends HTMLElement>(
   rootMargin = '25% 0px',
 ): { ref: RefObject<T | null>; near: boolean } {

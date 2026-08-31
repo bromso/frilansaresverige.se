@@ -1,6 +1,8 @@
-// Archive filter chip (used by /uppdrag and /recensioner): coral when
-// active, quiet cream tint otherwise.
-const FilterChip = ({
+'use client'
+
+// Archive filter chip (used by the /uppdrag and /recensioner archives):
+// coral when active, quiet cream tint otherwise.
+export const FilterChip = ({
   active,
   onClick,
   children,
@@ -22,5 +24,3 @@ const FilterChip = ({
     {children}
   </button>
 )
-
-export default FilterChip
