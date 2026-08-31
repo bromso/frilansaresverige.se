@@ -1,0 +1,25 @@
+name: Förslag
+description: En idé som skulle göra sajten bättre
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Vilket problem löser det?
+      description: Börja i behovet snarare än lösningen — vem hjälper det, och när?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Förslag
+      description: Hur skulle det kunna fungera? Skisser och exempel välkomna.
+  - type: dropdown
+    id: discussed
+    attributes:
+      label: Har det diskuterats i Slacken?
+      options:
+        - Ja, i "#frilansaresverigese"
+        - Nej, inte än
+    validations:
+      required: true

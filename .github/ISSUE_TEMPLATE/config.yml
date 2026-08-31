@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Fråga i Slacken
+    url: https://frilansaresverige.se/community
+    about: Idéer och diskussion trivs bäst i #frilansaresverigese i communityts Slack.
+  - name: Frågor och svar
+    url: https://frilansaresverige.se/fragor-och-svar
+    about: Vanliga frågor om medlemskap och communityt besvaras på sajten.
+  - name: Säkerhetsproblem
+    url: https://github.com/bromso/frilansaresverige.se/security/advisories/new
+    about: Rapportera sårbarheter privat — aldrig i ett öppet ärende.

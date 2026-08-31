@@ -12,6 +12,7 @@ The website for [Frilansare Sverige](https://frilansaresverige.se/) — Sweden's
 [![Biome](https://img.shields.io/github/package-json/dependency-version/bromso/frilansaresverige.se/dev/@biomejs/biome?logo=biome&logoColor=white&label=Biome&color=60a5fa)](https://biomejs.dev/)
 [![Bun](https://img.shields.io/badge/Bun-workspaces-f9f1e1?logo=bun&logoColor=14151a)](https://bun.sh/)
 [![Docker](https://img.shields.io/badge/Docker-standalone-2496ed?logo=docker&logoColor=white)](https://www.docker.com/)
+[![CI](https://img.shields.io/github/actions/workflow/status/bromso/frilansaresverige.se/ci.yml?label=CI&logo=githubactions&logoColor=white)](https://github.com/bromso/frilansaresverige.se/actions/workflows/ci.yml)
 [![Last commit](https://img.shields.io/github/last-commit/bromso/frilansaresverige.se?label=last%20commit&color=4823dc)](https://github.com/bromso/frilansaresverige.se/commits/)
 
 ## What this is
@@ -115,6 +116,6 @@ Bigger changes are designed before they are built. Specs live in `docs/superpowe
 
 ## Contributing
 
-Bring your ideas to `#frilansaresverigese` in our Slack, or open an issue.
+Bring your ideas to `#frilansaresverigese` in our Slack, or open an issue. [CONTRIBUTING.md](CONTRIBUTING.md) covers the workflow, commit style and what different kinds of contributions need; security issues go through the [security policy](.github/SECURITY.md), never public issues.
 
 Fork & pull request — attach a screenshot of the effect of your change so it is easy to review 👍
