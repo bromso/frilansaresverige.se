@@ -87,7 +87,12 @@ const GigToastStack = ({ reduced }: { reduced: boolean }) => {
   }
 
   return (
-    <div ref={ref} aria-hidden="true" className="relative h-[5.75rem]">
+    // overflow-hidden lets the entering toast slide up from behind the
+    // container edge at full opacity — animating an ancestor's opacity
+    // would isolate the backdrop-filter's sampling group, so the glass
+    // blur wouldn't apply until the fade finished (it popped in late).
+    // Only the receding back toasts fade, where the artifact can't show.
+    <div ref={ref} aria-hidden="true" className="relative h-24 overflow-hidden">
       <AnimatePresence initial={false}>
         {toasts.map((id, index) => {
           const message = MESSAGES[id % MESSAGES.length]
@@ -97,7 +102,7 @@ const GigToastStack = ({ reduced }: { reduced: boolean }) => {
               key={id}
               className="absolute inset-x-0 bottom-0 origin-bottom will-change-transform"
               style={{ zIndex: MAX_VISIBLE - index }}
-              initial={{ opacity: 0, y: 48, scale: 0.9 }}
+              initial={{ y: 72, scale: 0.95 }}
               animate={{
                 opacity: inStack ? 1 - index * STACK_OPACITY : 0,
                 y: -index * STACK_OFFSET_Y,
