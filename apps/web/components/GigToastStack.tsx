@@ -40,7 +40,7 @@ const MAX_VISIBLE = 3
 const INTERVAL_MS = 2600
 const STACK_OFFSET_Y = 10
 const STACK_SCALE = 0.06
-const STACK_OPACITY = 0.3
+const STACK_OPACITY = 0.35
 
 const NotificationRow = ({
   icon,
@@ -77,7 +77,7 @@ const GigToastStack = ({ reduced }: { reduced: boolean }) => {
       return
     }
     const timer = setInterval(() => {
-      setToasts((prev) => [++nextId.current, ...prev].slice(0, MAX_VISIBLE + 1))
+      setToasts((prev) => [++nextId.current, ...prev].slice(0, MAX_VISIBLE))
     }, INTERVAL_MS)
     return () => clearInterval(timer)
   }, [reduced, near])
@@ -88,23 +88,24 @@ const GigToastStack = ({ reduced }: { reduced: boolean }) => {
 
   return (
     // overflow-hidden lets the entering toast slide up from behind the
-    // container edge at full opacity — animating an ancestor's opacity
-    // would isolate the backdrop-filter's sampling group, so the glass
-    // blur wouldn't apply until the fade finished (it popped in late).
-    // Only the receding back toasts fade, where the artifact can't show.
+    // container edge at full opacity — nothing in the stack ever holds
+    // an opacity below 1 (see the wrapper comment), so the glass blur
+    // is present from the first frame and never cuts out mid-cycle.
     <div ref={ref} aria-hidden="true" className="relative h-24 overflow-hidden">
       <AnimatePresence initial={false}>
         {toasts.map((id, index) => {
           const message = MESSAGES[id % MESSAGES.length]
-          const inStack = index < MAX_VISIBLE
           return (
+            // The wrapper never animates opacity: any ancestor opacity
+            // below 1 isolates backdrop-filter's sampling group and the
+            // glass blur cuts out. Depth is faded by the tint overlay
+            // BELOW instead — a child on top can fade freely.
             <motion.div
               key={id}
               className="absolute inset-x-0 bottom-0 origin-bottom will-change-transform"
               style={{ zIndex: MAX_VISIBLE - index }}
               initial={{ y: 72, scale: 0.95 }}
               animate={{
-                opacity: inStack ? 1 - index * STACK_OPACITY : 0,
                 y: -index * STACK_OFFSET_Y,
                 scale: 1 - index * STACK_SCALE,
               }}
@@ -122,6 +123,13 @@ const GigToastStack = ({ reduced }: { reduced: boolean }) => {
               }}
             >
               <NotificationRow {...message} />
+              <motion.div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 rounded-2xl bg-[#ffe4df]"
+                initial={false}
+                animate={{ opacity: index * STACK_OPACITY }}
+                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+              />
             </motion.div>
           )
         })}
