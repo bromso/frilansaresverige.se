@@ -30,7 +30,7 @@ const ReviewCard = ({ review }: { review: ReviewMeta }) => (
         </span>
       )}
       <span className="flex min-w-0 flex-1 flex-col">
-        <span className="font-display text-xs font-bold tracking-widest text-brand-coral uppercase">
+        <span className="font-display text-xs font-bold tracking-widest text-eyebrow uppercase">
           {review.category}
         </span>
         <span className="font-display mt-0.5 truncate text-xl font-bold tracking-tight text-brand-cream">

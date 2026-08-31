@@ -3,6 +3,7 @@ import '../styles/globals.css'
 import { MotionConfig } from 'motion/react'
 import type { AppProps } from 'next/app'
 import { Bricolage_Grotesque } from 'next/font/google'
+import Head from 'next/head'
 import { ThemeProvider } from 'next-themes'
 
 import CookieToast from '../components/CookieToast'
@@ -26,6 +27,11 @@ function MyApp({ Component, pageProps, router }: AppProps) {
       disableTransitionOnChange
     >
       <MotionConfig reducedMotion="user">
+        <Head>
+          {/* Lighthouse flags the default viewport as tap-delay prone;
+              initial-scale=1 removes the up-to-300ms delay on mobile. */}
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+        </Head>
         <SquircleFilter />
         <ProgressiveBlur position="bottom" />
         <PageTransition>

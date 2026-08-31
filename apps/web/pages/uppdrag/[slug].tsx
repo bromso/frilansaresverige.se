@@ -82,7 +82,7 @@ const EnskiltUppdrag = ({ meta, source }: Props) => {
       <Seo title={meta.title} description={meta.excerpt} path={path} />
       <StructuredData data={jsonLd} />
       <article className="w-full max-w-[42em] py-12 md:py-16">
-        <p className="font-display text-sm font-bold tracking-widest text-brand-coral uppercase">
+        <p className="font-display text-sm font-bold tracking-widest text-eyebrow uppercase">
           {meta.role}
         </p>
         <h1 className="font-display mt-3 text-4xl font-extrabold tracking-tight text-brand-cream md:text-5xl">

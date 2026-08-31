@@ -6,6 +6,12 @@
   --color-brand-blue-dark: #2601bb;
   --color-brand-grey: #333333;
 
+  /* Eyebrow labels (the small uppercase coral kickers). Plain brand
+     coral fails WCAG contrast on the blue ground (~3.4:1), so eyebrows
+     use the light coral in the dark theme (~6:1) and a burnt coral on
+     the cream ground in light mode (~4.7:1). */
+  --color-eyebrow: #ffcfc8;
+
   --color-background: var(--color-brand-blue);
   --color-foreground: var(--color-brand-cream);
   --color-card: var(--color-brand-cream);
@@ -35,6 +41,7 @@
   --color-brand-blue: #fffce3;
   --color-brand-cream: #4823dc;
   --color-brand-blue-dark: #f1e8c8;
+  --color-eyebrow: #c8442b;
 }
 
 /* A theme --animate-* variable would resolve var(--duration) against :root

@@ -106,7 +106,9 @@
    Lighthouse bills as multi-second LCP on slow connections. Stagger with
    an inline animation-delay. */
 @utility hero-enter {
-  animation: hero-enter 0.8s var(--expo-out) both;
+  /* 0.55s, not longer: the hero paragraph is the LCP element and this
+     animation's duration is billed straight into the LCP metric. */
+  animation: hero-enter 0.55s var(--expo-out) both;
 
   @media (prefers-reduced-motion: reduce) {
     animation: none;

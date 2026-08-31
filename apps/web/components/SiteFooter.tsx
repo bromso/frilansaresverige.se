@@ -40,18 +40,18 @@ const SiteFooter = ({
                 Frilansare Sverige
               </span>
             </Link>
-            <p className="mt-4 leading-relaxed text-brand-cream/70">
+            <p className="mt-4 leading-relaxed text-brand-cream/85">
               Sveriges största community för frilansare. Vi främjar
               kontaktskapande och uppdragstipsande mellan frilansare — helt
               gratis, utan mellanhänder.
             </p>
-            <p className="mt-3 leading-relaxed text-brand-cream/70">
+            <p className="mt-3 leading-relaxed text-brand-cream/85">
               Sajten byggs av communityt och koden är öppen —{' '}
               <a
                 href={GITHUB_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-brand-cream hover:underline"
+                className="text-brand-cream underline hover:no-underline"
               >
                 bidra gärna
               </a>
@@ -65,7 +65,7 @@ const SiteFooter = ({
           >
             {NAV_TABS.map((tab) => (
               <div key={tab.hub}>
-                <h3 className="font-display text-sm font-bold tracking-widest text-brand-coral uppercase">
+                <h3 className="font-display text-sm font-bold tracking-widest text-eyebrow uppercase">
                   <Link href={tab.hub} className="hover:underline">
                     {tab.title}
                   </Link>
@@ -107,7 +107,7 @@ const SiteFooter = ({
               href={GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-brand-cream/60 hover:text-brand-cream"
+              className="text-brand-cream/75 hover:text-brand-cream"
             >
               <span className="sr-only">GitHub</span>
               <span
@@ -116,7 +116,7 @@ const SiteFooter = ({
               />
             </a>
           </div>
-          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-brand-cream/60 md:order-1 md:mt-0">
+          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-brand-cream/75 md:order-1 md:mt-0">
             <span>© {new Date().getFullYear()} Frilansare Sverige</span>
             {LEGAL_ROUTES.map((legal) => (
               <Link

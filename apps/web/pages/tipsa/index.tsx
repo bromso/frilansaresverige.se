@@ -12,7 +12,7 @@ const Tipsa: NextPage = () => {
     <div className="w-full max-w-[44em] pt-10 pb-24 md:pt-16">
       <Seo title={meta.title} description={meta.description} path={meta.path} />
 
-      <p className="font-display mb-3 text-sm font-bold tracking-widest text-brand-coral uppercase">
+      <p className="font-display mb-3 text-sm font-bold tracking-widest text-eyebrow uppercase">
         Konsultuppdrag
       </p>
       <h1 className="font-display text-4xl font-extrabold tracking-tight text-brand-cream md:text-5xl">
@@ -30,7 +30,7 @@ const Tipsa: NextPage = () => {
         aria-label="Vanliga frågor om uppdragstips"
         className="mt-16 w-full"
       >
-        <h2 className="font-display mb-2 text-sm font-bold tracking-widest text-brand-coral uppercase">
+        <h2 className="font-display mb-2 text-sm font-bold tracking-widest text-eyebrow uppercase">
           Vanliga frågor
         </h2>
         <p className="font-display mb-6 text-2xl font-extrabold tracking-tight text-brand-cream md:text-3xl">

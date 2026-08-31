@@ -33,7 +33,7 @@ const HubPage = ({
     <>
       <Seo title={meta.title} description={meta.description} path={path} />
       <section className="flex w-full max-w-[60em] flex-col py-12 md:py-16">
-        <p className="font-display mb-3 text-sm font-bold tracking-widest text-brand-coral uppercase">
+        <p className="font-display mb-3 text-sm font-bold tracking-widest text-eyebrow uppercase">
           {eyebrow}
         </p>
         <h1 className="font-display max-w-[16em] text-4xl font-extrabold tracking-tight text-brand-cream md:text-5xl">
