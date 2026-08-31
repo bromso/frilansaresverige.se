@@ -18,6 +18,7 @@ const ReviewCard = ({ review }: { review: ReviewMeta }) => (
         <img
           alt=""
           src={review.logo}
+          loading="lazy"
           className="size-14 shrink-0 rounded-2xl"
         />
       ) : (

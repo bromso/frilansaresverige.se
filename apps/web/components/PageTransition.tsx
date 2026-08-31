@@ -1,5 +1,3 @@
-import gsap from 'gsap'
-import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin'
 import Router from 'next/router'
 import type { ReactNode } from 'react'
 import { useEffect, useRef } from 'react'
@@ -24,141 +22,165 @@ const PageTransition = ({ children }: { children: ReactNode }) => {
       return
     }
 
-    gsap.registerPlugin(DrawSVGPlugin)
+    // GSAP only matters once the visitor navigates, so it loads after
+    // hydration instead of riding in every page's shared bundle. Until
+    // the import resolves, link clicks fall through to the default
+    // instant navigation — a graceful start, not a broken one.
+    let disposed = false
+    let teardown: (() => void) | undefined
 
-    const overlay = overlayRef.current
-    const path = pathRef.current
-    if (!overlay || !path) {
-      return
-    }
+    void Promise.all([import('gsap'), import('gsap/DrawSVGPlugin')]).then(
+      ([{ gsap }, { DrawSVGPlugin }]) => {
+        if (disposed) {
+          return
+        }
 
-    gsap.set(path, { drawSVG: '0%', strokeWidth: 2 })
+        gsap.registerPlugin(DrawSVGPlugin)
 
-    let leaveTl: gsap.core.Timeline | null = null
-    let enterTl: gsap.core.Timeline | null = null
-    // True while a click-held navigation is in flight: the cover already
-    // played (or is playing), so routeChangeStart must not restart it.
-    let holding = false
+        const overlay = overlayRef.current
+        const path = pathRef.current
+        if (!overlay || !path) {
+          return
+        }
 
-    const reset = () => {
-      leaveTl?.kill()
-      enterTl?.kill()
-      leaveTl = null
-      enterTl = null
-      holding = false
-      gsap.set(overlay, { opacity: 0 })
-      gsap.set(path, { drawSVG: '0%', strokeWidth: 2 })
-    }
+        gsap.set(path, { drawSVG: '0%', strokeWidth: 2 })
 
-    const playLeave = (onLeaveComplete?: () => void) => {
-      leaveTl?.kill()
-      enterTl?.kill()
-      gsap.set(overlay, { opacity: 0 })
-      gsap.set(path, { drawSVG: '0%', strokeWidth: 2 })
-      leaveTl = gsap
-        .timeline({ onComplete: onLeaveComplete })
-        .to(overlay, { opacity: 1, duration: 0.4, ease: 'power2.inOut' })
-        .to(
-          path,
-          {
-            drawSVG: '100%',
-            strokeWidth: 300,
-            duration: 1,
-            ease: 'power2.inOut',
-          },
-          0,
-        )
-    }
+        let leaveTl: gsap.core.Timeline | null = null
+        let enterTl: gsap.core.Timeline | null = null
+        // True while a click-held navigation is in flight: the cover already
+        // played (or is playing), so routeChangeStart must not restart it.
+        let holding = false
 
-    const onStart = (_url: string, { shallow }: { shallow: boolean }) => {
-      if (shallow || holding) {
-        return
-      }
-      playLeave()
-    }
+        const reset = () => {
+          leaveTl?.kill()
+          enterTl?.kill()
+          leaveTl = null
+          enterTl = null
+          holding = false
+          gsap.set(overlay, { opacity: 0 })
+          gsap.set(path, { drawSVG: '0%', strokeWidth: 2 })
+        }
 
-    const playEnter = () => {
-      enterTl = gsap
-        .timeline()
-        .to(path, {
-          drawSVG: '100% 100%',
-          strokeWidth: 2,
-          duration: 1,
-          ease: 'power2.inOut',
-        })
-        .to(overlay, { opacity: 0, duration: 0.4, ease: 'power2.inOut' }, 0.6)
-        .set(path, { drawSVG: '0%', strokeWidth: 2 })
-    }
+        const playLeave = (onLeaveComplete?: () => void) => {
+          leaveTl?.kill()
+          enterTl?.kill()
+          gsap.set(overlay, { opacity: 0 })
+          gsap.set(path, { drawSVG: '0%', strokeWidth: 2 })
+          leaveTl = gsap
+            .timeline({ onComplete: onLeaveComplete })
+            .to(overlay, { opacity: 1, duration: 0.4, ease: 'power2.inOut' })
+            .to(
+              path,
+              {
+                drawSVG: '100%',
+                strokeWidth: 300,
+                duration: 1,
+                ease: 'power2.inOut',
+              },
+              0,
+            )
+        }
 
-    const onComplete = () => {
-      holding = false
-      if (leaveTl?.isActive()) {
-        leaveTl.eventCallback('onComplete', playEnter)
-      } else if (leaveTl) {
-        playEnter()
-      }
-    }
+        const onStart = (_url: string, { shallow }: { shallow: boolean }) => {
+          if (shallow || holding) {
+            return
+          }
+          playLeave()
+        }
 
-    // Capture-phase so this runs before next/link's own click handler.
-    // Only plain left-clicks on same-origin page links are held back;
-    // modified clicks, new-tab targets, downloads, hash jumps and
-    // same-page links keep their default behavior.
-    const onClick = (event: MouseEvent) => {
-      if (
-        event.defaultPrevented ||
-        event.button !== 0 ||
-        event.metaKey ||
-        event.ctrlKey ||
-        event.shiftKey ||
-        event.altKey
-      ) {
-        return
-      }
-      const anchor = (event.target as Element).closest?.('a')
-      if (
-        !anchor?.href ||
-        (anchor.target && anchor.target !== '_self') ||
-        anchor.hasAttribute('download')
-      ) {
-        return
-      }
-      const url = new URL(anchor.href)
-      if (url.origin !== window.location.origin) {
-        return
-      }
-      if (
-        url.pathname === window.location.pathname &&
-        url.search === window.location.search
-      ) {
-        return
-      }
-      event.preventDefault()
-      event.stopPropagation()
-      if (holding || leaveTl?.isActive()) {
-        // A transition is already covering the screen; swallow the click.
-        return
-      }
-      holding = true
-      const href = url.pathname + url.search + url.hash
-      playLeave(() => {
-        void Router.push(href)
-      })
-    }
+        const playEnter = () => {
+          enterTl = gsap
+            .timeline()
+            .to(path, {
+              drawSVG: '100% 100%',
+              strokeWidth: 2,
+              duration: 1,
+              ease: 'power2.inOut',
+            })
+            .to(
+              overlay,
+              { opacity: 0, duration: 0.4, ease: 'power2.inOut' },
+              0.6,
+            )
+            .set(path, { drawSVG: '0%', strokeWidth: 2 })
+        }
 
-    // The Router singleton's events, not useRouter()'s — the hook returns
-    // a fresh object identity per navigation, and an effect keyed on it
-    // would tear down (and kill the running timelines) mid-transition.
-    Router.events.on('routeChangeStart', onStart)
-    Router.events.on('routeChangeComplete', onComplete)
-    Router.events.on('routeChangeError', reset)
-    document.addEventListener('click', onClick, true)
+        const onComplete = () => {
+          holding = false
+          if (leaveTl?.isActive()) {
+            leaveTl.eventCallback('onComplete', playEnter)
+          } else if (leaveTl) {
+            playEnter()
+          }
+        }
+
+        // Capture-phase so this runs before next/link's own click handler.
+        // Only plain left-clicks on same-origin page links are held back;
+        // modified clicks, new-tab targets, downloads, hash jumps and
+        // same-page links keep their default behavior.
+        const onClick = (event: MouseEvent) => {
+          if (
+            event.defaultPrevented ||
+            event.button !== 0 ||
+            event.metaKey ||
+            event.ctrlKey ||
+            event.shiftKey ||
+            event.altKey
+          ) {
+            return
+          }
+          const anchor = (event.target as Element).closest?.('a')
+          if (
+            !anchor?.href ||
+            (anchor.target && anchor.target !== '_self') ||
+            anchor.hasAttribute('download')
+          ) {
+            return
+          }
+          const url = new URL(anchor.href)
+          if (url.origin !== window.location.origin) {
+            return
+          }
+          if (
+            url.pathname === window.location.pathname &&
+            url.search === window.location.search
+          ) {
+            return
+          }
+          event.preventDefault()
+          event.stopPropagation()
+          if (holding || leaveTl?.isActive()) {
+            // A transition is already covering the screen; swallow the click.
+            return
+          }
+          holding = true
+          const href = url.pathname + url.search + url.hash
+          playLeave(() => {
+            void Router.push(href)
+          })
+        }
+
+        // The Router singleton's events, not useRouter()'s — the hook returns
+        // a fresh object identity per navigation, and an effect keyed on it
+        // would tear down (and kill the running timelines) mid-transition.
+        Router.events.on('routeChangeStart', onStart)
+        Router.events.on('routeChangeComplete', onComplete)
+        Router.events.on('routeChangeError', reset)
+        document.addEventListener('click', onClick, true)
+
+        teardown = () => {
+          Router.events.off('routeChangeStart', onStart)
+          Router.events.off('routeChangeComplete', onComplete)
+          Router.events.off('routeChangeError', reset)
+          document.removeEventListener('click', onClick, true)
+          reset()
+        }
+      },
+    )
 
     return () => {
-      Router.events.off('routeChangeStart', onStart)
-      Router.events.off('routeChangeComplete', onComplete)
-      Router.events.off('routeChangeError', reset)
-      document.removeEventListener('click', onClick, true)
-      reset()
+      disposed = true
+      teardown?.()
     }
   }, [])
 
