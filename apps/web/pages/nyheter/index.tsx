@@ -1,4 +1,5 @@
 import type { GetStaticProps } from 'next'
+import ItemListJsonLd from '../../components/ItemListJsonLd'
 import ArticleCard from '../../components/nyheter/ArticleCard'
 import Seo from '../../components/Seo'
 import type { PostMeta } from '../../lib/content'
@@ -21,6 +22,13 @@ const Nyheter = ({ posts }: Props) => {
   return (
     <>
       <Seo title={meta.title} description={meta.description} path="/nyheter" />
+      <ItemListJsonLd
+        name="Nyheter från Frilansare Sverige"
+        items={posts.map((post) => ({
+          path: `/nyheter/${post.slug}`,
+          name: post.title,
+        }))}
+      />
       <section className="flex w-full max-w-[60em] flex-col py-12 md:py-16">
         <h1 className="font-display text-4xl font-extrabold tracking-tight text-brand-cream md:text-5xl">
           Nyheter
