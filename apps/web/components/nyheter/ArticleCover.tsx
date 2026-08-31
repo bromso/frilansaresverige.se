@@ -1,9 +1,11 @@
-// Cover art for posts and events. Until a piece has real imagery (the
-// `image` frontmatter field), it gets one of a few curated brand
-// gradients, picked deterministically from the slug so archives vary
-// without shipping binary assets. Colors are the fixed brand hex values
-// (not theme tokens) — the covers are artwork and keep their look in
-// both themes.
+// Cover art for posts and events. Every cover stands on one of a few
+// curated brand gradients, picked deterministically from the slug so
+// archives vary without configuration. When a photo exists (the `image`
+// frontmatter field) it renders on top blended with mix-blend-luminosity:
+// the photo contributes light/dark structure while every hue comes from
+// the gradient — a duotone that keeps photography on brand. Colors are
+// the fixed brand hex values (not theme tokens) — the covers are artwork
+// and keep their look in both themes.
 const GRADIENTS = [
   'radial-gradient(120% 160% at 85% 15%, #ffcfc8 0%, #ff9c8e 30%, #4823dc 75%)',
   'radial-gradient(140% 140% at 15% 85%, #ff9c8e 0%, #2601bb 60%, #4823dc 100%)',
@@ -20,16 +22,24 @@ const hash = (value: string): number => {
   return h
 }
 
-const ArticleCover = ({ slug, image }: { slug: string; image?: string }) =>
-  image ? (
-    // Covers are decorative — the adjacent heading carries the meaning.
-    <img alt="" src={image} className="size-full object-cover" />
-  ) : (
-    <div
-      aria-hidden="true"
-      className="size-full"
-      style={{ background: GRADIENTS[hash(slug) % GRADIENTS.length] }}
-    />
-  )
+const ArticleCover = ({ slug, image }: { slug: string; image?: string }) => (
+  // Covers are decorative — the adjacent heading carries the meaning.
+  // `isolate` keeps the blend inside the cover instead of sampling
+  // whatever the card renders beneath it.
+  <div
+    aria-hidden="true"
+    className="relative isolate size-full"
+    style={{ background: GRADIENTS[hash(slug) % GRADIENTS.length] }}
+  >
+    {image && (
+      <img
+        alt=""
+        src={image}
+        loading="lazy"
+        className="size-full object-cover opacity-90 mix-blend-luminosity"
+      />
+    )}
+  </div>
+)
 
 export default ArticleCover
