@@ -10,8 +10,8 @@
   ],
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "build": "next build && cp -r .next/static .next/standalone/apps/web/.next/static && cp -r public .next/standalone/apps/web/public",
+    "start": "node .next/standalone/apps/web/server.js",
     "test": "bun test --preload ../../test-setup.ts"
   },
   "dependencies": {
