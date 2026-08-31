@@ -11,9 +11,12 @@ import {
   parseLocalDate,
   parsePostMeta,
   parseReviewMeta,
+  parseSidaMeta,
   REVIEW_CATEGORIES,
+  slugifyHeading,
   sortPosts,
   splitEvents,
+  splitSections,
 } from './content'
 import {
   getAllEvents,
@@ -24,6 +27,7 @@ import {
   getGig,
   getPost,
   getReview,
+  getSida,
 } from './content.server'
 
 const post = (slug: string, date: string) =>
@@ -169,6 +173,56 @@ describe('parseReviewMeta', () => {
   })
 })
 
+describe('slugifyHeading', () => {
+  it('lowercases, folds Swedish letters and dashes the rest', () => {
+    expect(slugifyHeading('Så använder vi lagring i webbläsaren')).toBe(
+      'sa-anvander-vi-lagring-i-webblasaren',
+    )
+    expect(slugifyHeading('Cookies & statistik')).toBe('cookies-statistik')
+  })
+})
+
+describe('splitSections', () => {
+  it('splits markdown into sections on h2 headings', () => {
+    const sections = splitSections(
+      '## Första delen\n\nText ett.\n\nMer text.\n\n## Andra delen\n\nText två.\n',
+    )
+    expect(sections).toEqual([
+      {
+        id: 'forsta-delen',
+        title: 'Första delen',
+        body: 'Text ett.\n\nMer text.',
+      },
+      { id: 'andra-delen', title: 'Andra delen', body: 'Text två.' },
+    ])
+  })
+
+  it('ignores content before the first heading', () => {
+    const sections = splitSections('Inledning.\n\n## Rubrik\n\nBrödtext.')
+    expect(sections).toHaveLength(1)
+    expect(sections[0].title).toBe('Rubrik')
+  })
+})
+
+describe('parseSidaMeta', () => {
+  it('validates heading and eyebrow, keeps optionals', () => {
+    const meta = parseSidaMeta('cookies', {
+      heading: 'Cookies och lokal lagring',
+      eyebrow: 'Juridik',
+      intro: 'Så använder vi cookies.',
+      updated: '2026-08-25',
+    })
+    expect(meta.heading).toBe('Cookies och lokal lagring')
+    expect(meta.updated).toBe('2026-08-25')
+  })
+
+  it('throws on missing heading', () => {
+    expect(() => parseSidaMeta('trasig', { eyebrow: 'Juridik' })).toThrow(
+      /trasig/,
+    )
+  })
+})
+
 describe('formatScore', () => {
   it('renders one decimal with a Swedish comma', () => {
     expect(formatScore(4.3)).toBe('4,3')
@@ -267,6 +321,23 @@ describe('content directory', () => {
     const gigs = getAllGigs()
     const dates = gigs.map((g) => g.date)
     expect(dates).toEqual([...dates].sort().reverse())
+  })
+
+  it('parses the static sidor with their sections', () => {
+    for (const slug of [
+      'cookies',
+      'integritetspolicy',
+      'villkor',
+      'uppforandekod',
+    ]) {
+      const { meta, sections } = getSida(slug)
+      expect(meta.heading.length).toBeGreaterThan(0)
+      expect(sections.length).toBeGreaterThanOrEqual(3)
+      for (const section of sections) {
+        expect(section.id).toMatch(/^[a-z0-9-]+$/)
+        expect(section.body.length).toBeGreaterThan(20)
+      }
+    }
   })
 
   it('parses every review on disk, sorted best first', () => {

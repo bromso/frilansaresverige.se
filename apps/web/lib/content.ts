@@ -90,6 +90,23 @@ export interface ReviewMeta {
   overall: number
 }
 
+// Static "sidor" (legal pages, uppförandekoden): MDX documents whose h2
+// headings become scrollspy sections in SectionedPage.
+export interface SidaMeta {
+  slug: string
+  heading: string
+  eyebrow: string
+  intro?: string
+  /** "YYYY-MM-DD" — shown as "Senast uppdaterad". */
+  updated?: string
+}
+
+export interface SidaSection {
+  id: string
+  title: string
+  body: string
+}
+
 const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?$/
 
 /** Parses "YYYY-MM-DD[THH:mm]" as local time (avoids the UTC shift that
@@ -254,6 +271,53 @@ export const parseReviewMeta = (
     scores,
     overall,
   }
+}
+
+export const parseSidaMeta = (
+  slug: string,
+  data: Record<string, unknown>,
+): SidaMeta => ({
+  slug,
+  heading: field(data, 'heading', slug, true) as string,
+  eyebrow: field(data, 'eyebrow', slug, true) as string,
+  ...optionalFields(data, slug, ['intro']),
+  ...(dateField(data, 'updated', slug, false) && {
+    updated: dateField(data, 'updated', slug, false),
+  }),
+})
+
+export const slugifyHeading = (heading: string): string =>
+  heading
+    .toLowerCase()
+    .replace(/[åä]/g, 'a')
+    .replace(/ö/g, 'o')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+
+/** Splits markdown into scrollspy sections on `## ` headings; anything
+ * before the first heading is dropped (intros live in frontmatter). */
+export const splitSections = (markdown: string): SidaSection[] => {
+  const sections: SidaSection[] = []
+  let current: SidaSection | null = null
+  const lines: string[] = []
+  const flush = () => {
+    if (current) {
+      sections.push({ ...current, body: lines.join('\n').trim() })
+      lines.length = 0
+    }
+  }
+  for (const line of markdown.split('\n')) {
+    const heading = line.match(/^## (.+)$/)
+    if (heading) {
+      flush()
+      const title = heading[1].trim()
+      current = { id: slugifyHeading(title), title, body: '' }
+    } else if (current) {
+      lines.push(line)
+    }
+  }
+  flush()
+  return sections
 }
 
 /** "4.3" → "4,3" — always one decimal, Swedish comma. */

@@ -15,8 +15,12 @@ import {
   parseGigMeta,
   parsePostMeta,
   parseReviewMeta,
+  parseSidaMeta,
   type ReviewMeta,
+  type SidaMeta,
+  type SidaSection,
   sortPosts,
+  splitSections,
 } from './content'
 
 const CONTENT_DIR = path.join(process.cwd(), 'content')
@@ -85,6 +89,13 @@ export const getReview = (
 ): { meta: ReviewMeta; content: string } => {
   const { data, content } = readEntry('recensioner', slug)
   return { meta: parseReviewMeta(slug, data), content }
+}
+
+export const getSida = (
+  slug: string,
+): { meta: SidaMeta; sections: SidaSection[] } => {
+  const { data, content } = readEntry('sidor', slug)
+  return { meta: parseSidaMeta(slug, data), sections: splitSections(content) }
 }
 
 export const getPost = (slug: string): { meta: PostMeta; content: string } => {
