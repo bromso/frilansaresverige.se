@@ -2,17 +2,17 @@
 
 The website for [Frilansare Sverige](https://frilansaresverige.se/) — Sweden's largest freelancer community. Community-run, no middlemen, and open source: the site is built by its members in the open.
 
-[![Next.js](https://img.shields.io/github/package-json/dependency-version/frilansaresverige/frilansaresverige.se/next?filename=apps%2Fweb%2Fpackage.json&logo=nextdotjs&logoColor=white&label=Next.js&color=000000)](https://nextjs.org/)
-[![React](https://img.shields.io/github/package-json/dependency-version/frilansaresverige/frilansaresverige.se/react?filename=apps%2Fweb%2Fpackage.json&logo=react&logoColor=white&label=React&color=087ea4)](https://react.dev/)
-[![TypeScript](https://img.shields.io/github/package-json/dependency-version/frilansaresverige/frilansaresverige.se/dev/typescript?filename=apps%2Fweb%2Fpackage.json&logo=typescript&logoColor=white&label=TypeScript&color=3178c6)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/github/package-json/dependency-version/frilansaresverige/frilansaresverige.se/dev/tailwindcss?filename=apps%2Fweb%2Fpackage.json&logo=tailwindcss&logoColor=white&label=Tailwind&color=06b6d4)](https://tailwindcss.com/)
-[![Motion](https://img.shields.io/github/package-json/dependency-version/frilansaresverige/frilansaresverige.se/motion?filename=packages%2Fui%2Fpackage.json&logo=framer&logoColor=white&label=Motion&color=fff42b&logoSize=auto)](https://motion.dev/)
-[![MDX](https://img.shields.io/github/package-json/dependency-version/frilansaresverige/frilansaresverige.se/next-mdx-remote?filename=apps%2Fweb%2Fpackage.json&logo=mdx&logoColor=white&label=MDX&color=1b1f24)](https://mdxjs.com/)
-[![Storybook](https://img.shields.io/github/package-json/dependency-version/frilansaresverige/frilansaresverige.se/dev/storybook?filename=apps%2Fstory%2Fpackage.json&logo=storybook&logoColor=white&label=Storybook&color=ff4785)](https://storybook.js.org/)
-[![Biome](https://img.shields.io/github/package-json/dependency-version/frilansaresverige/frilansaresverige.se/dev/@biomejs/biome?logo=biome&logoColor=white&label=Biome&color=60a5fa)](https://biomejs.dev/)
+[![Next.js](https://img.shields.io/github/package-json/dependency-version/bromso/frilansaresverige.se/next?filename=apps%2Fweb%2Fpackage.json&logo=nextdotjs&logoColor=white&label=Next.js&color=000000)](https://nextjs.org/)
+[![React](https://img.shields.io/github/package-json/dependency-version/bromso/frilansaresverige.se/react?filename=apps%2Fweb%2Fpackage.json&logo=react&logoColor=white&label=React&color=087ea4)](https://react.dev/)
+[![TypeScript](https://img.shields.io/github/package-json/dependency-version/bromso/frilansaresverige.se/dev/typescript?filename=apps%2Fweb%2Fpackage.json&logo=typescript&logoColor=white&label=TypeScript&color=3178c6)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/github/package-json/dependency-version/bromso/frilansaresverige.se/dev/tailwindcss?filename=apps%2Fweb%2Fpackage.json&logo=tailwindcss&logoColor=white&label=Tailwind&color=06b6d4)](https://tailwindcss.com/)
+[![Motion](https://img.shields.io/github/package-json/dependency-version/bromso/frilansaresverige.se/motion?filename=packages%2Fui%2Fpackage.json&logo=framer&logoColor=white&label=Motion&color=fff42b&logoSize=auto)](https://motion.dev/)
+[![MDX](https://img.shields.io/github/package-json/dependency-version/bromso/frilansaresverige.se/next-mdx-remote?filename=apps%2Fweb%2Fpackage.json&logo=mdx&logoColor=white&label=MDX&color=1b1f24)](https://mdxjs.com/)
+[![Storybook](https://img.shields.io/github/package-json/dependency-version/bromso/frilansaresverige.se/dev/storybook?filename=apps%2Fstory%2Fpackage.json&logo=storybook&logoColor=white&label=Storybook&color=ff4785)](https://storybook.js.org/)
+[![Biome](https://img.shields.io/github/package-json/dependency-version/bromso/frilansaresverige.se/dev/@biomejs/biome?logo=biome&logoColor=white&label=Biome&color=60a5fa)](https://biomejs.dev/)
 [![Bun](https://img.shields.io/badge/Bun-workspaces-f9f1e1?logo=bun&logoColor=14151a)](https://bun.sh/)
 [![Docker](https://img.shields.io/badge/Docker-standalone-2496ed?logo=docker&logoColor=white)](https://www.docker.com/)
-[![Last commit](https://img.shields.io/github/last-commit/frilansaresverige/frilansaresverige.se?label=last%20commit&color=4823dc)](https://github.com/frilansaresverige/frilansaresverige.se/commits/)
+[![Last commit](https://img.shields.io/github/last-commit/bromso/frilansaresverige.se?label=last%20commit&color=4823dc)](https://github.com/bromso/frilansaresverige.se/commits/)
 
 ## What this is
 
