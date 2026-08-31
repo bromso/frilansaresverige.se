@@ -171,7 +171,7 @@ const SectionHeading = ({
   title: string
 }) => (
   <div className="mb-10 max-w-[30em] text-left">
-    <p className="font-display mb-3 text-sm font-bold tracking-widest text-brand-coral uppercase">
+    <p className="font-display mb-3 text-sm font-bold tracking-widest text-eyebrow uppercase">
       {eyebrow}
     </p>
     <h2 className="font-display text-3xl font-extrabold tracking-tight text-brand-cream md:text-4xl">

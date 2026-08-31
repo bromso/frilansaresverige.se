@@ -17,7 +17,7 @@ const Ansokan: NextPage = () => {
         aria-label="Vanliga frågor om medlemskapet"
         className="mx-auto mt-8 mb-16 w-full max-w-[44em]"
       >
-        <h2 className="font-display mb-2 text-sm font-bold tracking-widest text-brand-coral uppercase">
+        <h2 className="font-display mb-2 text-sm font-bold tracking-widest text-eyebrow uppercase">
           Vanliga frågor
         </h2>
         <p className="font-display mb-6 text-2xl font-extrabold tracking-tight text-brand-cream md:text-3xl">

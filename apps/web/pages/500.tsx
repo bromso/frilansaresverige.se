@@ -10,7 +10,7 @@ const Custom500 = () => (
       path="/500"
       noindex
     />
-    <p className="font-display mb-3 text-sm font-bold tracking-widest text-brand-coral uppercase">
+    <p className="font-display mb-3 text-sm font-bold tracking-widest text-eyebrow uppercase">
       500
     </p>
     <h1 className="font-display text-4xl font-extrabold tracking-tight text-brand-cream md:text-5xl">

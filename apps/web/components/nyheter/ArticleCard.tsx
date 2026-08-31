@@ -24,7 +24,7 @@ const ArticleCard = ({
     <div
       className={featured ? 'flex flex-col p-7 md:p-9' : 'flex flex-col p-6'}
     >
-      <p className="font-display text-xs font-bold tracking-widest text-brand-coral uppercase">
+      <p className="font-display text-xs font-bold tracking-widest text-eyebrow uppercase">
         {post.category}
       </p>
       <h3

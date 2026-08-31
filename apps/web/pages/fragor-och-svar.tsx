@@ -21,7 +21,7 @@ const FragorOchSvar = () => {
     <>
       <Seo title={meta.title} description={meta.description} path={meta.path} />
       <section className="flex w-full max-w-[44em] flex-col py-12 md:py-16">
-        <p className="font-display mb-3 text-sm font-bold tracking-widest text-brand-coral uppercase">
+        <p className="font-display mb-3 text-sm font-bold tracking-widest text-eyebrow uppercase">
           Frågor och svar
         </p>
         <h1 className="font-display text-4xl font-extrabold tracking-tight text-brand-cream md:text-5xl">

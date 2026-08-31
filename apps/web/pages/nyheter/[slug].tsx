@@ -70,7 +70,7 @@ const Artikel = ({ meta, source, more }: Props) => {
       <StructuredData data={jsonLd} />
       <article className="w-full max-w-[42em] py-12 md:py-16">
         <div className="flex items-baseline gap-4">
-          <p className="font-display text-sm font-bold tracking-widest text-brand-coral uppercase">
+          <p className="font-display text-sm font-bold tracking-widest text-eyebrow uppercase">
             {meta.category}
           </p>
           <time dateTime={meta.date} className="text-sm text-brand-cream/60">

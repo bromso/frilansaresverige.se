@@ -11,7 +11,7 @@ const Custom404 = () => (
       path="/404"
       noindex
     />
-    <p className="font-display mb-3 text-sm font-bold tracking-widest text-brand-coral uppercase">
+    <p className="font-display mb-3 text-sm font-bold tracking-widest text-eyebrow uppercase">
       404
     </p>
     <h1 className="font-display text-4xl font-extrabold tracking-tight text-brand-cream md:text-5xl">

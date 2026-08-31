@@ -26,7 +26,7 @@ const EventCard = ({
         <span className="font-display text-2xl leading-none font-extrabold text-brand-cream">
           {badge.day}
         </span>
-        <span className="font-display mt-0.5 text-xs font-bold tracking-widest text-brand-coral uppercase">
+        <span className="font-display mt-0.5 text-xs font-bold tracking-widest text-eyebrow uppercase">
           {badge.month}
         </span>
       </span>

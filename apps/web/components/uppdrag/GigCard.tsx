@@ -10,7 +10,7 @@ const GigCard = ({ gig }: { gig: GigMeta }) => (
     className="flex flex-col gap-3 rounded-3xl bg-brand-cream/5 p-6 transition-colors hover:bg-brand-cream/10 sm:p-7"
   >
     <span className="flex items-baseline justify-between gap-4">
-      <span className="font-display text-xs font-bold tracking-widest text-brand-coral uppercase">
+      <span className="font-display text-xs font-bold tracking-widest text-eyebrow uppercase">
         {gig.role}
       </span>
       <time dateTime={gig.date} className="text-sm text-brand-cream/60">
