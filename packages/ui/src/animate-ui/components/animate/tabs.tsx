@@ -38,7 +38,14 @@ type TabsListProps = TabsListPrimitiveProps
 
 function TabsList({ className, ...props }: TabsListProps) {
   return (
-    <TabsHighlightPrimitive className="absolute inset-0 z-0 rounded-full bg-brand-blue shadow-sm">
+    <TabsHighlightPrimitive
+      className="absolute inset-0 z-0 rounded-full bg-brand-blue shadow-sm"
+      // Snappy on purpose: the triggers recolor on their own CSS clock
+      // (duration-150 below), so a slow pill leaves the outgoing label
+      // dark-on-dark and the incoming label light-on-light mid-flight —
+      // seen as flicker. Keep both under ~150ms so they can't disagree.
+      transition={{ type: 'spring', stiffness: 700, damping: 50 }}
+    >
       <TabsListPrimitive
         className={cn(
           'inline-flex h-11 w-full items-center justify-center gap-1 rounded-full bg-brand-blue/5 p-1',
@@ -57,7 +64,7 @@ function TabsTrigger({ className, ...props }: TabsTriggerProps) {
     <TabsHighlightItemPrimitive value={props.value} className="h-full flex-1">
       <TabsTriggerPrimitive
         className={cn(
-          'inline-flex h-full w-full flex-1 items-center justify-center gap-1.5 rounded-full px-2 text-sm font-medium whitespace-nowrap text-brand-blue/70 transition-colors duration-300 ease-in-out data-[state=active]:text-brand-cream focus:shadow-[0_0_0_0.1em_var(--color-brand-cream),0_0_0_0.2em_var(--color-brand-blue)] focus:outline-none disabled:pointer-events-none disabled:opacity-40',
+          'inline-flex h-full w-full flex-1 items-center justify-center gap-1.5 rounded-full px-2 text-sm font-medium whitespace-nowrap text-brand-blue/70 transition-colors duration-150 ease-in-out data-[state=active]:text-brand-cream focus:shadow-[0_0_0_0.1em_var(--color-brand-cream),0_0_0_0.2em_var(--color-brand-blue)] focus:outline-none disabled:pointer-events-none disabled:opacity-40',
           className,
         )}
         {...props}
