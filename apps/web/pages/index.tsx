@@ -28,6 +28,7 @@ import type { ReactElement, ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import type { Organization, WebSite, WithContext } from 'schema-dts'
 import type { BentoShaderVariant } from '../components/BentoCardShader'
+import GigToastStack from '../components/GigToastStack'
 import { ProgressiveBlur } from '../components/ProgressiveBlur'
 import Seo, { SITE_NAME, SITE_URL } from '../components/Seo'
 import StructuredData from '../components/StructuredData'
@@ -833,22 +834,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                     mellan er och frilansaren. Inga avgifter, ingen provision.
                   </p>
                   <div className="mt-auto pt-6">
-                    <div className="flex items-center gap-3 rounded-2xl bg-white/45 p-3 shadow-[inset_0_0_0_1px_rgba(51,51,51,0.15)] backdrop-blur-sm">
-                      <span
-                        aria-hidden="true"
-                        className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-blue-dark"
-                      >
-                        <span className="icon-[lucide--briefcase-business] size-4 text-[#fffce3]" />
-                      </span>
-                      <span className="min-w-0 text-brand-grey">
-                        <span className="block truncate text-sm font-medium">
-                          Nytt uppdragstips — Frontendutvecklare
-                        </span>
-                        <span className="block truncate font-mono text-xs text-brand-grey/60">
-                          direktkontakt · 950 kr/h · #uppdrag
-                        </span>
-                      </span>
-                    </div>
+                    <GigToastStack reduced={reduced} />
                   </div>
                 </div>
               </div>
