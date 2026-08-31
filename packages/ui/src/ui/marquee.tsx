@@ -1,10 +1,18 @@
 'use client'
 
-import type { HTMLAttributes } from 'react'
+import type { ComponentType, HTMLAttributes } from 'react'
 import type { MarqueeProps as FastMarqueeProps } from 'react-fast-marquee'
-import FastMarquee from 'react-fast-marquee'
+import FastMarqueeDefault from 'react-fast-marquee'
 
 import { cn } from '../lib/utils'
+
+// react-fast-marquee ships CJS-only (`exports.default = Marquee`, no
+// `exports` map). Bundlers disagree on the default-import interop for
+// that shape — Next unwraps it, while Vite (Storybook) can hand over the
+// module namespace object, and React then throws "Element type is
+// invalid … got: object". Unwrap whichever shape arrives.
+const FastMarquee = ((FastMarqueeDefault as unknown as { default?: unknown })
+  .default ?? FastMarqueeDefault) as ComponentType<FastMarqueeProps>
 
 export type MarqueeProps = HTMLAttributes<HTMLDivElement>
 
