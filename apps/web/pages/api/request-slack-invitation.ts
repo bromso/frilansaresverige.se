@@ -7,9 +7,12 @@ const slackWebHookURL: string | undefined =
 interface RequestSlackInvitationBody {
   name: string
   email: string
+  roll: string
+  ort: string
   howlong: string
   companyName: string
   linkedin: string
+  portfolio: string
   motivation: string
 }
 
@@ -87,7 +90,17 @@ export default async function handler(
   }
 
   const body: RequestSlackInvitationBody = req.body
-  const { name, email, howlong, companyName, linkedin, motivation } = body
+  const {
+    name,
+    email,
+    roll,
+    ort,
+    howlong,
+    companyName,
+    linkedin,
+    portfolio,
+    motivation,
+  } = body
   const companySearchUrl = `https://www.allabolag.se/what/${encodeURI(
     companyName,
   )}`
@@ -98,9 +111,12 @@ export default async function handler(
       'Ny frilansare på ingång! \n' +
       `Namn: ${name} \n` +
       `Email: ${email} \n` +
+      `Roll: ${roll} \n` +
+      `Ort: ${ort} \n` +
       `Tid som frilansare: ${howlong} \n` +
       `Företagsnamn: ${companyName}, ${companySearchUrl} \n` +
       `LinkedIn: ${linkedin} \n` +
+      `Portfolio: ${portfolio || '—'} \n` +
       `Motivering: ${motivation}`,
   }
 

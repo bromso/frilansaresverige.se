@@ -1,5 +1,5 @@
+import { Button } from '@frilansaresverige/ui/animate-ui/components/buttons/button'
 import Link from 'next/link'
-import Breadcrumbs from '../components/Breadcrumbs'
 import Seo from '../components/Seo'
 import { getRoute } from '../lib/routes'
 
@@ -8,7 +8,6 @@ const Om = () => {
   return (
     <>
       <Seo title={meta.title} description={meta.description} path={meta.path} />
-      <Breadcrumbs path={meta.path} />
       <section className="flex w-full max-w-[44em] flex-col py-12 md:py-16">
         <p className="font-display mb-3 text-sm font-bold tracking-widest text-brand-coral uppercase">
           Om oss
@@ -44,12 +43,9 @@ const Om = () => {
           !
         </p>
         <div className="mt-10">
-          <Link
-            href="/ansokan"
-            className="inline-block rounded-full bg-brand-coral px-6 py-3 font-bold text-brand-grey"
-          >
-            Ansök om medlemskap
-          </Link>
+          <Button asChild variant="primary" size="none">
+            <Link href="/ansokan">Ansök om medlemskap</Link>
+          </Button>
         </div>
       </section>
     </>

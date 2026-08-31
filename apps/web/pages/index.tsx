@@ -26,9 +26,11 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import type { ReactElement, ReactNode } from 'react'
 import { useEffect, useState } from 'react'
-
-import Seo from '../components/Seo'
+import type { Organization, WebSite, WithContext } from 'schema-dts'
 import type { BentoShaderVariant } from '../components/BentoCardShader'
+import { ProgressiveBlur } from '../components/ProgressiveBlur'
+import Seo, { SITE_NAME, SITE_URL } from '../components/Seo'
+import StructuredData from '../components/StructuredData'
 import { getRoute } from '../lib/routes'
 
 // The shader backgrounds run on WebGPU and can only render in the browser.
@@ -311,8 +313,16 @@ const TESTIMONIALS: Testimonial[] = [
   },
 ]
 
+// Cards sit muted (translucent + desaturated) until hovered: the hovered
+// card snaps back to full color, lifts and scales up slightly with a soft
+// shadow, while its siblings blur and recede, so one testimonial at a
+// time gets the focus. The timing is asymmetric — the hover state carries
+// a short expo-out transition so the card responds instantly to the
+// cursor, and losing hover falls back to the base 500ms ease so cards
+// settle gently. The sibling treatment keys off a `group` class on the
+// surrounding column container.
 const TestimonialCard = ({ name, role, body }: Testimonial) => (
-  <figure className="flex min-h-[18rem] w-full flex-col rounded-3xl bg-brand-cream p-9 text-left text-brand-blue">
+  <figure className="flex min-h-[18rem] w-full flex-col rounded-3xl bg-brand-cream p-9 text-left text-brand-blue opacity-75 saturate-[0.6] transition-[opacity,filter,translate,scale,box-shadow] duration-500 ease-in-out hover:-translate-y-1.5 hover:scale-[1.02] hover:opacity-100 hover:saturate-100 hover:shadow-xl hover:shadow-brand-blue-dark/30 hover:duration-200 hover:ease-(--expo-out) group-has-[figure:hover]:not-hover:scale-[0.98] group-has-[figure:hover]:not-hover:blur-[2px] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:scale-100">
     <blockquote className="text-base leading-[1.65]">{body}</blockquote>
     <figcaption className="mt-auto flex items-center gap-3 pt-5">
       <span
@@ -333,59 +343,31 @@ const TestimonialCard = ({ name, role, body }: Testimonial) => (
   </figure>
 )
 
-// Bento grid for the "Hitta rätt konsult" section: same liquid-gradient
-// card treatment as the "Vad du får" bento (see BentoCardShader) but in
-// the warm ember palette and without the 3D glass solids. Same corner
-// treatment: the four outer corners of the grid are rounded to 2rem per
-// card position.
-interface KonsultCard {
-  variant: BentoShaderVariant
-  icon: string
-  title: string
-  text: string
-  wrapper: string
-  corners: string
-  height: string
+// The avatar stack in the konsult bento's cream card reuses the
+// testimonial initials idiom.
+const KONSULT_AVATARS = ['SL', 'JE', 'AH']
+
+// Site-level schema.org entities, emitted from the homepage only. Typed
+// with schema-dts so invalid shapes fail the typecheck.
+const ORG_JSON_LD: WithContext<Organization> = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: `${SITE_URL}/android-chrome-512x512.png`,
+  description:
+    'Sveriges största community för frilansare: uppdragstips, kunskap och kollegskap i Slack — gratis och utan mellanhänder.',
+  sameAs: ['https://github.com/frilansaresverige/frilansaresverige.se'],
 }
 
-const KONSULT_BENTO: KonsultCard[] = [
-  {
-    variant: 'ember1',
-    icon: 'icon-[lucide--building-2]',
-    title: 'För företag',
-    text: 'Beskriv ert uppdrag och nå tusentals frilansare direkt. Ni väljer själva vem ni vill jobba med — utan förmedlingsavgifter och utan mellanhänder som tar en del av kakan.',
-    wrapper: 'lg:col-span-3',
-    corners: 'max-lg:rounded-t-4xl lg:rounded-tl-4xl',
-    height: 'min-h-[20rem] lg:min-h-[22rem]',
-  },
-  {
-    variant: 'ember2',
-    icon: 'icon-[lucide--users]',
-    title: 'För frilansare och byråer',
-    text: 'Fullbokad, eller behöver du en underkonsult med en annan spets? Tipsa nätverket och hitta rätt kollega till projektet — ofta inom några timmar.',
-    wrapper: 'lg:col-span-3',
-    corners: 'lg:rounded-tr-4xl',
-    height: 'min-h-[20rem] lg:min-h-[22rem]',
-  },
-  {
-    variant: 'ember3',
-    icon: 'icon-[lucide--handshake]',
-    title: 'Utan mellanhänder',
-    text: 'Tipset går rakt ut i communityt och kontakten sker direkt mellan er och frilansaren. Inga avgifter, ingen provision.',
-    wrapper: 'lg:col-span-2',
-    corners: 'lg:rounded-bl-4xl',
-    height: 'min-h-[18rem] lg:min-h-[20rem]',
-  },
-  {
-    variant: 'ember4',
-    icon: 'icon-[lucide--sparkles]',
-    title: 'Alla kompetenser',
-    text: 'Utvecklare, designers, skribenter, projektledare, ekonomer — nätverket täcker de flesta kompetenser och branscher.',
-    wrapper: 'lg:col-span-2',
-    corners: '',
-    height: 'min-h-[18rem] lg:min-h-[20rem]',
-  },
-]
+const WEBSITE_JSON_LD: WithContext<WebSite> = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE_NAME,
+  url: SITE_URL,
+  inLanguage: 'sv',
+  publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
+}
 
 const STEPS = [
   {
@@ -419,13 +401,16 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
   return (
     <div className="relative flex w-full max-w-[72em] flex-col items-center">
       <Seo title={meta.title} description={meta.description} path={meta.path} />
+      <StructuredData data={ORG_JSON_LD} />
+      <StructuredData data={WEBSITE_JSON_LD} />
 
       {/* Hero — copy on the left, 3D silk ribbon on the right */}
-      <section className="relative flex min-h-[calc(100dvh-4.5rem)] w-full flex-col justify-center py-16 md:py-20">
+      {/* 5.5rem matches the header's height (h-14 bar + py-4). */}
+      <section className="relative flex min-h-[calc(100dvh-5.5rem)] w-full flex-col justify-center py-16 md:py-20">
         {webgpu && (
           <div
             aria-hidden="true"
-            className="absolute -top-[4.5rem] bottom-0 left-1/2 -z-[1] w-screen -translate-x-1/2 overflow-hidden"
+            className="absolute -top-[5.5rem] bottom-0 left-1/2 -z-[1] w-screen -translate-x-1/2 overflow-hidden"
           >
             <HeroShaderBackground reduced={reduced} />
             {/* Left-to-right scrim over the copy side so the hero text
@@ -437,14 +422,18 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
           </div>
         )}
 
+        {/* The hero copy enters with the CSS hero-enter animation (not the
+            JS Reveal wrapper): the paragraph below is the page's LCP
+            element, and a hydration-gated fade would hold its first paint
+            until all JavaScript has loaded. */}
         <div className="max-w-[50em] text-left">
-          <Reveal reduced={reduced}>
+          <div className="hero-enter">
             <p className="mb-6 inline-block rounded-full border border-brand-cream/30 px-4 py-1.5 text-sm tracking-wide text-brand-cream/90">
               Sveriges största frilanscommunity
             </p>
-          </Reveal>
+          </div>
 
-          <Reveal reduced={reduced} delay={100}>
+          <div className="hero-enter" style={{ animationDelay: '100ms' }}>
             <h1 className="font-display text-5xl leading-[1.05] font-extrabold tracking-tight text-brand-cream md:text-6xl lg:text-7xl">
               Att frilansa är bättre{' '}
               {reduced ? (
@@ -462,9 +451,9 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 />
               )}
             </h1>
-          </Reveal>
+          </div>
 
-          <Reveal reduced={reduced} delay={200}>
+          <div className="hero-enter" style={{ animationDelay: '200ms' }}>
             <div className="mt-6 flex items-baseline gap-[0.35em] text-xl text-brand-cream/90 md:text-2xl">
               <span>För</span>
               {reduced ? (
@@ -481,18 +470,18 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 </RotatingTextContainer>
               )}
             </div>
-          </Reveal>
+          </div>
 
-          <Reveal reduced={reduced} delay={300}>
+          <div className="hero-enter" style={{ animationDelay: '300ms' }}>
             <p className="mt-8 max-w-[38em] text-lg leading-[1.6] text-brand-cream/85 md:text-xl">
               Vi är <MemberCount count={memberCount} /> frilansare som delar
               uppdrag, kunskap och kollegskap i Slack. Vårt syfte är att främja
               kontaktskapande och uppdragstipsande mellan frilansare — helt
               gratis, utan mellanhänder.
             </p>
-          </Reveal>
+          </div>
 
-          <Reveal reduced={reduced} delay={400}>
+          <div className="hero-enter" style={{ animationDelay: '400ms' }}>
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <Button asChild variant="primary" size="none">
                 <Link href="/ansokan">
@@ -504,13 +493,13 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 <Link href="/tipsa">Tipsa om konsultuppdrag</Link>
               </Button>
             </div>
-          </Reveal>
+          </div>
 
-          <Reveal reduced={reduced} delay={500}>
+          <div className="hero-enter" style={{ animationDelay: '500ms' }}>
             <p className="mt-7 text-sm text-brand-cream/60">
               Gratis · Inga mellanhänder · Vi ses i Slack
             </p>
-          </Reveal>
+          </div>
         </div>
       </section>
 
@@ -638,14 +627,14 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
       <section className="w-full py-20 md:py-28">
         <SectionHeading eyebrow="Medlemmarna" title="Röster från communityt" />
         {reduced ? (
-          <div className="grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="group grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {TESTIMONIALS.slice(0, 6).map((testimonial) => (
               <TestimonialCard key={testimonial.name} {...testimonial} />
             ))}
           </div>
         ) : (
-          <div className="relative h-185 w-full overflow-hidden">
-            <div className="flex h-full w-full flex-row items-stretch justify-center gap-4">
+          <div className="relative h-210 w-full overflow-hidden">
+            <div className="group flex h-full w-full flex-row items-stretch justify-center gap-4">
               <VerticalMarquee
                 pauseOnHover
                 className="hidden h-full flex-1 [--duration:34s] sm:flex"
@@ -686,8 +675,19 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 ))}
               </VerticalMarquee>
             </div>
-            <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-1/4 bg-gradient-to-b from-background" />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/4 bg-gradient-to-t from-background" />
+            {/* The cards enter and exit through a progressive blur + color
+                fade at the section's edges, same treatment as the page's
+                bottom strip. */}
+            <ProgressiveBlur
+              attachment="absolute"
+              position="top"
+              height="25%"
+            />
+            <ProgressiveBlur
+              attachment="absolute"
+              position="bottom"
+              height="25%"
+            />
           </div>
         )}
       </section>
@@ -716,71 +716,63 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
         </Reveal>
       </section>
 
-      {/* For companies and hiring freelancers: find the right consultant */}
+      {/* For companies and hiring freelancers: find the right consultant.
+          Layout after the Shaders "Ripple Bento Grid" section: one hero
+          card (2/3 width on desktop) beside a column with a dark and a
+          cream support card. The hero runs the same liquid-gradient
+          composition as the "Vad du får" cards (diamond variant) minus
+          the refractive 3D solid, so both bentos share one visual
+          language. Same outer-corner treatment as that bento. */}
       <section className="w-full pt-8 pb-24 md:pt-12 md:pb-32">
         <SectionHeading
           eyebrow="Hitta rätt konsult"
           title="Rätt frilansare för nästa uppdrag"
         />
-        <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-6 lg:grid-rows-2">
-          {KONSULT_BENTO.map((card, index) => (
-            <div key={card.title} className={`relative ${card.wrapper}`}>
-              <CardSlide reduced={reduced} delay={index * 100}>
-                <div
-                  className={`squircle relative flex h-full flex-col overflow-hidden rounded-xl text-left transition-transform duration-200 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${card.height} ${card.corners}`}
-                >
-                  <div
-                    aria-hidden="true"
-                    className="absolute inset-0 z-0 bg-[#ff9c8e]"
-                  >
-                    {webgpu && (
-                      <BentoCardShader
-                        variant={card.variant}
-                        reduced={reduced}
-                        showGlass={false}
-                      />
-                    )}
-                  </div>
-                  <div className="relative z-10 mt-auto p-8">
-                    <span
-                      className={`${card.icon} size-8 shrink-0 text-brand-grey`}
-                      aria-hidden="true"
-                    />
-                    <h3 className="font-display mt-4 text-xl font-bold tracking-tight text-brand-grey">
-                      {card.title}
-                    </h3>
-                    <p className="mt-2 leading-[1.6] text-brand-grey">
-                      {card.text}
-                    </p>
-                  </div>
-                </div>
-              </CardSlide>
-            </div>
-          ))}
+        <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-3">
           <div className="relative lg:col-span-2">
-            <CardSlide reduced={reduced} delay={400}>
-              <div className="squircle relative flex h-full min-h-[18rem] flex-col overflow-hidden rounded-xl text-left transition-transform duration-200 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0 max-lg:rounded-b-4xl lg:min-h-[20rem] lg:rounded-br-4xl">
+            <CardSlide reduced={reduced} delay={0}>
+              <div className="squircle relative flex h-full min-h-[28.75rem] flex-col overflow-hidden rounded-3xl text-left max-lg:rounded-t-4xl lg:min-h-[35rem] lg:rounded-l-4xl">
+                {/* Fallback wash while the shader initializes (or when
+                    WebGPU is unavailable). */}
                 <div
                   aria-hidden="true"
-                  className="absolute inset-0 z-0 bg-[#ff9c8e]"
+                  className="absolute inset-0 z-0"
+                  style={{
+                    background:
+                      'linear-gradient(to bottom left, #fe7c74, #ff9c8e 55%, #ffcfc8)',
+                  }}
                 >
                   {webgpu && (
                     <BentoCardShader
-                      variant="ember5"
+                      variant="aurora"
                       reduced={reduced}
                       showGlass={false}
                     />
                   )}
                 </div>
-                <div className="relative z-10 mt-auto p-8">
-                  <h3 className="font-display text-xl font-extrabold tracking-tight text-brand-grey">
-                    Redo att hitta rätt konsult?
+                {/* Cream bottom scrim keeps the dark copy readable while
+                    the shader stays the visual star; the hairline ring
+                    sits above it with pointer-events off so the cursor
+                    trail still registers across the whole card. */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-3/5 bg-gradient-to-t from-[#fffce3]/75 via-[#fffce3]/30 to-transparent"
+                />
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 z-[1] rounded-3xl shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15)] max-lg:rounded-t-4xl lg:rounded-l-4xl"
+                />
+                <div className="relative z-10 flex h-full flex-col justify-end p-8 lg:p-10">
+                  <h3 className="font-display max-w-[14ch] text-3xl font-bold tracking-tight text-balance text-brand-grey lg:text-4xl">
+                    Nå tusentals frilansare direkt.
                   </h3>
-                  <p className="mt-2 leading-[1.6] text-brand-grey">
-                    Nå ut till <MemberCount count={memberCount} /> frilansare
-                    med ditt uppdrag — gratis och direkt från källan.
+                  <p className="mt-4 max-w-[46ch] leading-[1.6] text-brand-grey/85">
+                    Beskriv ert uppdrag så når det{' '}
+                    <MemberCount count={memberCount} /> frilansare — ni väljer
+                    själva vem ni vill jobba med, utan förmedlingsavgifter och
+                    utan mellanhänder som tar en del av kakan.
                   </p>
-                  <div className="mt-6">
+                  <div className="mt-7">
                     <Button
                       asChild
                       variant="primary"
@@ -792,6 +784,114 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                         <ArrowRight />
                       </Link>
                     </Button>
+                  </div>
+                </div>
+              </div>
+            </CardSlide>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <CardSlide reduced={reduced} delay={100}>
+              <div className="squircle relative flex flex-1 flex-col overflow-hidden rounded-3xl text-left lg:rounded-tr-4xl">
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 z-0"
+                  style={{
+                    background:
+                      'linear-gradient(to bottom right, #ffcfc8, #ff9c8e 55%, #fe7c74)',
+                  }}
+                >
+                  {webgpu && (
+                    <BentoCardShader
+                      variant="haze"
+                      reduced={reduced}
+                      showGlass={false}
+                    />
+                  )}
+                </div>
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/3 bg-gradient-to-t from-[#ffcfc8]/70 to-transparent"
+                />
+                <div className="relative z-10 flex flex-1 flex-col p-8 text-brand-grey">
+                  <h3 className="font-display text-2xl font-bold tracking-tight">
+                    Utan mellanhänder.
+                  </h3>
+                  <p className="mt-3 text-sm leading-[1.6] text-brand-grey/85">
+                    Tipset går rakt ut i communityt och kontakten sker direkt
+                    mellan er och frilansaren. Inga avgifter, ingen provision.
+                  </p>
+                  <div className="mt-auto pt-6">
+                    <div className="flex items-center gap-3 rounded-2xl bg-white/45 p-3 shadow-[inset_0_0_0_1px_rgba(51,51,51,0.15)] backdrop-blur-sm">
+                      <span
+                        aria-hidden="true"
+                        className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-blue-dark"
+                      >
+                        <span className="icon-[lucide--briefcase-business] size-4 text-[#fffce3]" />
+                      </span>
+                      <span className="min-w-0 text-brand-grey">
+                        <span className="block truncate text-sm font-medium">
+                          Nytt uppdragstips — Frontendutvecklare
+                        </span>
+                        <span className="block truncate font-mono text-xs text-brand-grey/60">
+                          direktkontakt · 950 kr/h · #uppdrag
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardSlide>
+
+            <CardSlide reduced={reduced} delay={200}>
+              <div className="squircle relative flex flex-1 flex-col overflow-hidden rounded-3xl text-left max-lg:rounded-b-4xl lg:rounded-br-4xl">
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 z-0"
+                  style={{
+                    background:
+                      'linear-gradient(to bottom right, #fe7c74, #ff9c8e 55%, #ffcfc8)',
+                  }}
+                >
+                  {webgpu && (
+                    <BentoCardShader
+                      variant="dawn"
+                      reduced={reduced}
+                      showGlass={false}
+                    />
+                  )}
+                </div>
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/3 bg-gradient-to-t from-[#fffce3]/70 to-transparent"
+                />
+                <div className="relative z-10 flex flex-1 flex-col p-8 text-brand-grey">
+                  <h3 className="font-display text-2xl font-bold tracking-tight">
+                    Alla kompetenser.
+                  </h3>
+                  <p className="mt-3 text-sm leading-[1.6] text-brand-grey/85">
+                    Utvecklare, designers, skribenter, projektledare, ekonomer —
+                    nätverket täcker de flesta kompetenser och branscher.
+                  </p>
+                  <div className="mt-auto flex items-center gap-4 pt-6">
+                    <div className="flex shrink-0" aria-hidden="true">
+                      {KONSULT_AVATARS.map((initials, index) => (
+                        <span
+                          key={initials}
+                          className={`font-display flex size-11 items-center justify-center rounded-full bg-[#fffce3] text-sm font-bold text-brand-grey ring-2 ring-white/70 ${index > 0 ? '-ml-3' : ''}`}
+                        >
+                          {initials}
+                        </span>
+                      ))}
+                      <span className="font-display -ml-3 flex size-11 items-center justify-center rounded-full bg-brand-blue-dark text-xs font-bold text-[#fffce3] ring-2 ring-white/70">
+                        {memberCount
+                          ? `+${Math.round(memberCount / 1000)}k`
+                          : '+3k'}
+                      </span>
+                    </div>
+                    <span className="text-sm font-medium whitespace-nowrap text-brand-grey/85">
+                      frilansare i Slack
+                    </span>
                   </div>
                 </div>
               </div>

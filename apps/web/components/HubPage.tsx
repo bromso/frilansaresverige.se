@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { getRoute } from '../lib/routes'
-import Breadcrumbs from './Breadcrumbs'
 import Seo from './Seo'
 
 export interface HubLink {
@@ -33,7 +32,6 @@ const HubPage = ({
   return (
     <>
       <Seo title={meta.title} description={meta.description} path={path} />
-      <Breadcrumbs path={path} />
       <section className="flex w-full max-w-[60em] flex-col py-12 md:py-16">
         <p className="font-display mb-3 text-sm font-bold tracking-widest text-brand-coral uppercase">
           {eyebrow}

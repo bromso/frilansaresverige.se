@@ -33,8 +33,11 @@ const createMockFormEvent = (data: Record<string, { value: string }> = {}) => ({
     clientName: { value: 'clientName' },
     minRate: { value: '1000' },
     description: { value: 'description' },
-    contact: { value: 'contact' },
+    contactName: { value: 'contactName' },
+    contactPhone: { value: '0701234567' },
+    contactEmail: { value: 'contact@example.se' },
     relation: { value: 'direktavtal' },
+    omfattning: { value: 'Heltid' },
     ...data,
   },
 })

@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
-import Breadcrumbs from '../../components/Breadcrumbs'
 import FaqAccordion from '../../components/Faq/FaqAccordion'
 import { FAQ_ITEMS } from '../../components/Faq/faq-items'
 import RequestSlackInvitationForm from '../../components/RequestSlackInvitationForm'
@@ -12,7 +11,6 @@ const Ansokan: NextPage = () => {
   return (
     <>
       <Seo title={meta.title} description={meta.description} path={meta.path} />
-      <Breadcrumbs path={meta.path} />
 
       <RequestSlackInvitationForm />
       <section

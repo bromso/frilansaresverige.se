@@ -1,100 +1,137 @@
 import Link from 'next/link'
 import { LEGAL_ROUTES, NAV_TABS } from '../lib/routes'
+import Breadcrumbs, { type LeafCrumb } from './Breadcrumbs'
 import LogoMark from './LogoMark'
 
-const SiteFooter = () => (
-  <footer className="relative z-[2] mt-auto w-full bg-brand-blue-dark/70">
-    {/* The fixed progressive-blur strip covers the bottom ~150px of the
-        viewport, so the footer needs extra bottom padding to keep its
-        last row readable above the blur. That padding lives on this
-        content row (pb-40); the legal row below it only needs pb-10. */}
-    <div className="mx-auto flex w-full max-w-[72em] flex-wrap justify-between gap-10 px-[min(2em,4vw)] pt-12 pb-40">
-      <div className="max-w-[24em]">
-        <Link
-          href="/"
-          title="Gå till startsidan"
-          className="flex items-center gap-3"
-        >
-          <LogoMark className="h-8 w-auto" />
-          <span className="font-display text-lg font-bold tracking-tight">
-            Frilansare Sverige
-          </span>
-        </Link>
-        <p className="mt-4 leading-relaxed text-brand-cream/70">
-          Sveriges största community för frilansare. Vi främjar kontaktskapande
-          och uppdragstipsande mellan frilansare — helt gratis, utan
-          mellanhänder.
-        </p>
-      </div>
+const GITHUB_URL = 'https://github.com/frilansaresverige/frilansaresverige.se/'
 
-      <nav aria-label="Sidfot" className="flex flex-wrap gap-10">
-        {NAV_TABS.map((tab) => (
-          <div key={tab.hub}>
-            <h2 className="font-display mb-4 text-sm font-bold tracking-widest text-brand-coral uppercase">
-              <Link href={tab.hub} className="hover:underline">
-                {tab.title}
-              </Link>
-            </h2>
-            <ul className="flex flex-col gap-2 text-brand-cream/85">
-              {tab.items.map((item) => (
-                <li key={item.path}>
-                  <Link
-                    href={item.path}
-                    className="hover:text-brand-cream hover:underline"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-              {tab.hub === '/uppdrag' && (
-                <li>
-                  <a
-                    href="https://uppdrag.frilansaresverige.se/"
-                    className="hover:text-brand-cream hover:underline"
-                  >
-                    Uppdragsportalen
-                  </a>
-                </li>
-              )}
-            </ul>
+// Layout after the Tailwind Plus 4-column footer: the brand blurb beside
+// the link columns, and a hairline-divided bottom bar carrying copyright,
+// legal links and social icons. Recolored to the site's ink-on-ground
+// tokens.
+//
+// `path` is the current route's pathname, passed down from _app's router
+// prop (useRouter() throws when the footer renders outside a Next router,
+// as it does in unit tests). Breadcrumbs sit at the top of the footer
+// (Apple-style); on routes without a parent chain — including the '/'
+// default — the component renders nothing.
+const SiteFooter = ({
+  path = '/',
+  crumb,
+}: {
+  path?: string
+  crumb?: LeafCrumb
+}) => {
+  return (
+    <footer className="relative z-[2] mt-auto w-full bg-brand-blue-dark/70">
+      <div className="mx-auto w-full max-w-[72em] px-[min(2em,4vw)]">
+        <Breadcrumbs path={path} crumb={crumb} />
+
+        {/* Brand blurb + link columns */}
+        <div className="pt-12 pb-12 xl:grid xl:grid-cols-3 xl:gap-8">
+          <div className="max-w-[24em]">
+            <Link
+              href="/"
+              title="Gå till startsidan"
+              className="flex items-center gap-3"
+            >
+              <LogoMark className="h-8 w-auto" />
+              <span className="font-display text-lg font-bold tracking-tight">
+                Frilansare Sverige
+              </span>
+            </Link>
+            <p className="mt-4 leading-relaxed text-brand-cream/70">
+              Sveriges största community för frilansare. Vi främjar
+              kontaktskapande och uppdragstipsande mellan frilansare — helt
+              gratis, utan mellanhänder.
+            </p>
+            <p className="mt-3 leading-relaxed text-brand-cream/70">
+              Sajten byggs av communityt och koden är öppen —{' '}
+              <a
+                href={GITHUB_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-brand-cream hover:underline"
+              >
+                bidra gärna
+              </a>
+              .
+            </p>
           </div>
-        ))}
-      </nav>
 
-      <div className="max-w-[20em]">
-        <h2 className="font-display mb-4 text-sm font-bold tracking-widest text-brand-coral uppercase">
-          Öppen källkod
-        </h2>
-        <p className="mb-3 leading-relaxed text-brand-cream/70">
-          Den här sidan byggs av communityt. Bidra gärna!
-        </p>
-        <a
-          href="https://github.com/frilansaresverige/frilansaresverige.se/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-brand-cream hover:underline"
-        >
-          GitHub
-          <span
-            className="icon-[simple-icons--github] size-5"
-            aria-hidden="true"
-          />
-        </a>
+          <nav
+            aria-label="Sidfot"
+            className="mt-16 grid grid-cols-2 gap-8 md:grid-cols-3 xl:col-span-2 xl:mt-0"
+          >
+            {NAV_TABS.map((tab) => (
+              <div key={tab.hub}>
+                <h3 className="font-display text-sm font-bold tracking-widest text-brand-coral uppercase">
+                  <Link href={tab.hub} className="hover:underline">
+                    {tab.title}
+                  </Link>
+                </h3>
+                <ul className="mt-6 space-y-4 text-sm text-brand-cream/85">
+                  {tab.items.map((item) => (
+                    <li key={item.path}>
+                      <Link
+                        href={item.path}
+                        className="hover:text-brand-cream hover:underline"
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+                  {tab.hub === '/uppdrag' && (
+                    <li>
+                      <a
+                        href="https://uppdrag.frilansaresverige.se/"
+                        className="hover:text-brand-cream hover:underline"
+                      >
+                        Uppdragsportalen
+                      </a>
+                    </li>
+                  )}
+                </ul>
+              </div>
+            ))}
+          </nav>
+        </div>
+
+        {/* Bottom bar: copyright + legal links left, social right. The
+            fixed progressive-blur strip covers the bottom ~150px of the
+            viewport, so the generous pb-40 keeps this row readable above
+            the blur. */}
+        <div className="border-t border-brand-cream/10 pt-8 pb-40 md:flex md:items-center md:justify-between">
+          <div className="flex gap-x-6 md:order-2">
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-brand-cream/60 hover:text-brand-cream"
+            >
+              <span className="sr-only">GitHub</span>
+              <span
+                className="icon-[simple-icons--github] size-6"
+                aria-hidden="true"
+              />
+            </a>
+          </div>
+          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-brand-cream/60 md:order-1 md:mt-0">
+            <span>© {new Date().getFullYear()} Frilansare Sverige</span>
+            {LEGAL_ROUTES.map((legal) => (
+              <Link
+                key={legal.path}
+                href={legal.path}
+                className="hover:text-brand-cream hover:underline"
+              >
+                {legal.label}
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div className="mx-auto flex w-full max-w-[72em] flex-wrap gap-x-6 gap-y-2 px-[min(2em,4vw)] pb-10 text-sm text-brand-cream/60">
-      {LEGAL_ROUTES.map((legal) => (
-        <Link
-          key={legal.path}
-          href={legal.path}
-          className="hover:text-brand-cream hover:underline"
-        >
-          {legal.label}
-        </Link>
-      ))}
-    </div>
-  </footer>
-)
+    </footer>
+  )
+}
 
 export default SiteFooter

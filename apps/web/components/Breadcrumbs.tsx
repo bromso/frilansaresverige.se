@@ -1,14 +1,31 @@
 import Link from 'next/link'
+import type { BreadcrumbList, WithContext } from 'schema-dts'
 import { getBreadcrumbs } from '../lib/routes'
 import { SITE_URL } from './Seo'
+import StructuredData from './StructuredData'
 
-const Breadcrumbs = ({ path }: { path: string }) => {
-  const crumbs = getBreadcrumbs(path)
+// Dynamic content pages (e.g. /nyheter/[slug]) aren't in the routes
+// registry, so they supply their own leaf: the section anchors the trail
+// and the label comes from the content's frontmatter. Pages return
+// `crumb` from getStaticProps and _app forwards it here via SiteFooter.
+export interface LeafCrumb {
+  section: string
+  path: string
+  label: string
+}
+
+const Breadcrumbs = ({ path, crumb }: { path: string; crumb?: LeafCrumb }) => {
+  const crumbs = crumb
+    ? [
+        ...getBreadcrumbs(crumb.section),
+        { path: crumb.path, label: crumb.label },
+      ]
+    : getBreadcrumbs(path)
   if (crumbs.length < 2) {
     return null
   }
 
-  const jsonLd = {
+  const jsonLd: WithContext<BreadcrumbList> = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: crumbs.map((crumb, index) => ({
@@ -19,8 +36,14 @@ const Breadcrumbs = ({ path }: { path: string }) => {
     })),
   }
 
+  // Apple-style placement: a quiet directory trail in a hairline-bordered
+  // strip at the top of the global footer (see SiteFooter) rather than
+  // under each page heading.
   return (
-    <nav aria-label="Brödsmulor" className="w-full pt-6 text-sm">
+    <nav
+      aria-label="Brödsmulor"
+      className="w-full border-b border-brand-cream/10 py-5 text-sm"
+    >
       <ol className="flex flex-wrap items-center gap-1 text-brand-cream/60">
         {crumbs.map((crumb, index) => {
           const last = index === crumbs.length - 1
@@ -48,11 +71,7 @@ const Breadcrumbs = ({ path }: { path: string }) => {
           )
         })}
       </ol>
-      <script
-        type="application/ld+json"
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: static registry-derived breadcrumb data, no user input.
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <StructuredData data={jsonLd} />
     </nav>
   )
 }

@@ -16,8 +16,12 @@ interface SubmitGigTipBody {
   clientName: string
   minRate: string
   description: string
-  contact: string
+  contactName: string
+  contactPhone: string
+  contactEmail: string
   relation: string
+  omfattning: string
+  arbetsform: string
 }
 
 interface ErrorResponse {
@@ -100,8 +104,12 @@ export default async function handler(
     clientName,
     minRate,
     description,
-    contact,
+    contactName,
+    contactPhone,
+    contactEmail,
     relation,
+    omfattning,
+    arbetsform,
   } = body
 
   const newMessage: MessageBody = {
@@ -110,10 +118,14 @@ export default async function handler(
       'Nytt tips om konsultuppdrag! \n' +
       `Titel: ${title} \n` +
       `Plats: ${location} \n` +
+      `Omfattning: ${omfattning} \n` +
+      `Arbetsform: ${arbetsform || '—'} \n` +
       `Uppdragsgivare: ${clientName} \n` +
       `Minimumarvode: ${minRate} kr/h \n` +
       `Beskrivning: ${description} \n` +
-      `Kontakt: ${contact} \n` +
+      `Kontaktperson: ${contactName} \n` +
+      `Telefon: ${contactPhone} \n` +
+      `E-post: ${contactEmail} \n` +
       `Relation till kunden: ${RELATION_LABELS[relation] ?? relation}`,
   }
 

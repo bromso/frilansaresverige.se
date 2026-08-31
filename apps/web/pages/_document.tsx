@@ -4,11 +4,10 @@ export default class MyDocument extends Document {
   render() {
     return (
       // next-themes stamps the theme class on <html> before hydration.
-      <Html suppressHydrationWarning>
+      <Html lang="sv" suppressHydrationWarning>
         <Head>
-          <meta name="viewport" content="width=device-width,initial-scale=1" />
           <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-          <link rel="icon" type="image/ico" href="favicon.ico" />
+          <link rel="icon" type="image/ico" href="/favicon.ico" />
           <link
             rel="apple-touch-icon"
             sizes="180x180"
@@ -28,15 +27,19 @@ export default class MyDocument extends Document {
           />
 
           <link rel="manifest" href="/site.webmanifest" />
-          {/* Global Site Tag (gtag.js) - Google Analytics */}
-          <script
-            async
-            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GOOGLE_ANALYTICS_ID}`}
-          />
-          <script
-            // biome-ignore lint/security/noDangerouslySetInnerHtml: Google Analytics gtag bootstrap requires an inline script; the content is a static literal with no user input.
-            dangerouslySetInnerHTML={{
-              __html: `
+          {/* Global Site Tag (gtag.js) - Google Analytics. Only rendered
+              when an ID is configured — otherwise the page would request
+              gtag/js?id=undefined on every load. */}
+          {process.env.GOOGLE_ANALYTICS_ID && (
+            <>
+              <script
+                async
+                src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GOOGLE_ANALYTICS_ID}`}
+              />
+              <script
+                // biome-ignore lint/security/noDangerouslySetInnerHtml: Google Analytics gtag bootstrap requires an inline script; the content is a static literal with no user input.
+                dangerouslySetInnerHTML={{
+                  __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
@@ -44,8 +47,10 @@ export default class MyDocument extends Document {
               page_path: window.location.pathname,
             });
           `,
-            }}
-          />
+                }}
+              />
+            </>
+          )}
         </Head>
         <body>
           <Main />

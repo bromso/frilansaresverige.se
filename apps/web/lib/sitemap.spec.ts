@@ -15,6 +15,12 @@ describe('buildSitemapXml', () => {
     expect(xml).not.toContain('/tipsa/tack')
   })
 
+  it('appends extra paths after the registry routes', () => {
+    const withExtras = buildSitemapXml('https://example.se', ['/nyheter/hej'])
+    expect(withExtras).toContain('<loc>https://example.se/nyheter/hej</loc>')
+    expect(xml).not.toContain('/nyheter/hej')
+  })
+
   it('is a urlset document', () => {
     expect(xml.startsWith('<?xml version="1.0" encoding="UTF-8"?>')).toBe(true)
     expect(xml).toContain(

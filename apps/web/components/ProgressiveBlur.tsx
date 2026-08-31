@@ -12,6 +12,10 @@ type ProgressiveBlurProps = {
   position?: 'top' | 'bottom'
   height?: string
   blurAmount?: string
+  /** 'fixed' pins the strip to the viewport edge (the site-wide bottom
+      strip); 'absolute' pins it to the nearest positioned ancestor, for
+      fading content in and out at a section's edges. */
+  attachment?: 'fixed' | 'absolute'
 }
 
 export const ProgressiveBlur = ({
@@ -20,6 +24,7 @@ export const ProgressiveBlur = ({
   position = 'bottom',
   height = '150px',
   blurAmount = '4px',
+  attachment = 'fixed',
 }: ProgressiveBlurProps) => {
   const isTop = position === 'top'
 
@@ -39,7 +44,7 @@ export const ProgressiveBlur = ({
   return (
     <div
       aria-hidden="true"
-      className={`pointer-events-none fixed left-0 z-40 w-full select-none ${className}`}
+      className={`pointer-events-none ${attachment === 'fixed' ? 'fixed z-40' : 'absolute z-10'} left-0 w-full select-none ${className}`}
       style={style}
     />
   )

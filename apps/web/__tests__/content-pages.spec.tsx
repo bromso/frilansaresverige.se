@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it } from 'bun:test'
 import { cleanup, render, screen } from '@testing-library/react'
+import { loadSida } from '../lib/sidor.server'
 import Community from '../pages/community'
 import Kontakt from '../pages/kontakt'
 import Kunskap from '../pages/kunskap'
@@ -20,5 +21,10 @@ describe('content pages', () => {
   it('community', () => rendersH1(Community, /communityt/i))
   it('om', () => rendersH1(Om, /Om Frilansare Sverige/))
   it('kontakt', () => rendersH1(Kontakt, /Kontakt/))
-  it('uppforandekod', () => rendersH1(Uppforandekod, /Uppförandekod/))
+  it('uppforandekod', async () => {
+    render(<Uppforandekod {...(await loadSida('uppforandekod'))} />)
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      /Uppförandekod/,
+    )
+  })
 })

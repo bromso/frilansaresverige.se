@@ -6,10 +6,13 @@ interface GigTipFormTarget extends EventTarget {
   clientName: HTMLInputElement
   minRate: HTMLInputElement
   description: HTMLInputElement
-  contact: HTMLInputElement
+  contactName: HTMLInputElement
+  contactPhone: HTMLInputElement
+  contactEmail: HTMLInputElement
   // Radix RadioGroup renders hidden radio inputs, so the named form
   // control is a RadioNodeList whose .value is the checked item's value.
   relation: { value: string }
+  omfattning: { value: string }
 }
 interface Data {
   success?: boolean
@@ -25,14 +28,26 @@ export const useSubmitGigTipForm = () => {
     setIsLoading(true)
 
     const target = event.target as GigTipFormTarget
+    // The arbetsform checkboxes share a name and only checked ones land
+    // in FormData, so reading them there gives the selected set directly.
+    // (The instanceof guard keeps unit tests with plain-object mock
+    // targets working.)
+    const arbetsform =
+      target instanceof HTMLFormElement
+        ? new FormData(target).getAll('arbetsform').map(String).join(', ')
+        : ''
     const requestBody = {
       title: target.title.value,
       location: target.location.value,
       clientName: target.clientName.value,
       minRate: target.minRate.value,
       description: target.description.value,
-      contact: target.contact.value,
+      contactName: target.contactName.value,
+      contactPhone: target.contactPhone.value,
+      contactEmail: target.contactEmail.value,
       relation: target.relation.value,
+      omfattning: target.omfattning.value,
+      arbetsform,
     }
 
     await fetch('/api/submit-gig-tip', {
