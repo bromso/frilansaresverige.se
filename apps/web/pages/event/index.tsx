@@ -1,5 +1,6 @@
 import type { GetStaticProps } from 'next'
 import EventCard from '../../components/event/EventCard'
+import ItemListJsonLd from '../../components/ItemListJsonLd'
 import Seo from '../../components/Seo'
 import { type EventMeta, splitEvents } from '../../lib/content'
 import { getAllEvents } from '../../lib/content.server'
@@ -22,6 +23,13 @@ const Event = ({ upcoming, past }: Props) => {
   return (
     <>
       <Seo title={meta.title} description={meta.description} path="/event" />
+      <ItemListJsonLd
+        name="Event från Frilansare Sverige"
+        items={[...upcoming, ...past].map((event) => ({
+          path: `/event/${event.slug}`,
+          name: event.title,
+        }))}
+      />
       <section className="flex w-full max-w-[60em] flex-col py-12 md:py-16">
         <h1 className="font-display text-4xl font-extrabold tracking-tight text-brand-cream md:text-5xl">
           Event

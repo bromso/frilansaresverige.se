@@ -2,6 +2,7 @@ import type { GetStaticProps } from 'next'
 import Link from 'next/link'
 import { useState } from 'react'
 import FilterChip from '../../components/FilterChip'
+import ItemListJsonLd from '../../components/ItemListJsonLd'
 import Seo from '../../components/Seo'
 import GigCard from '../../components/uppdrag/GigCard'
 import { GIG_ROLES, type GigMeta, type GigRole } from '../../lib/content'
@@ -26,6 +27,13 @@ const Uppdrag = ({ gigs }: Props) => {
   return (
     <>
       <Seo title={meta.title} description={meta.description} path="/uppdrag" />
+      <ItemListJsonLd
+        name="Lediga frilans- och konsultuppdrag"
+        items={gigs.map((gig) => ({
+          path: `/uppdrag/${gig.slug}`,
+          name: gig.title,
+        }))}
+      />
       <section className="flex w-full max-w-[60em] flex-col py-12 md:py-16">
         <h1 className="font-display max-w-[16em] text-4xl font-extrabold tracking-tight text-brand-cream md:text-5xl">
           Lediga frilans- och konsultuppdrag

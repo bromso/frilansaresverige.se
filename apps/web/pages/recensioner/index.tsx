@@ -1,6 +1,7 @@
 import type { GetStaticProps } from 'next'
 import { useState } from 'react'
 import FilterChip from '../../components/FilterChip'
+import ItemListJsonLd from '../../components/ItemListJsonLd'
 import ReviewCard from '../../components/recensioner/ReviewCard'
 import Seo from '../../components/Seo'
 import {
@@ -36,6 +37,13 @@ const Recensioner = ({ reviews }: Props) => {
         title={meta.title}
         description={meta.description}
         path="/recensioner"
+      />
+      <ItemListJsonLd
+        name="Recensioner av konsultmäklare och rekryterare"
+        items={reviews.map((review) => ({
+          path: `/recensioner/${review.slug}`,
+          name: review.title,
+        }))}
       />
       <section className="flex w-full max-w-[60em] flex-col py-12 md:py-16">
         <h1 className="font-display max-w-[16em] text-4xl font-extrabold tracking-tight text-brand-cream md:text-5xl">
