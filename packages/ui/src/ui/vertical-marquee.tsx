@@ -11,6 +11,8 @@ export interface VerticalMarqueeProps extends HTMLAttributes<HTMLDivElement> {
   /** How many copies of the children to render; must fill the visible
       height at least twice for the loop to be seamless. */
   repeat?: number
+  /** Pause the scroll (e.g. while the marquee is outside the viewport). */
+  play?: boolean
 }
 
 export const VerticalMarquee = ({
@@ -18,6 +20,7 @@ export const VerticalMarquee = ({
   reverse = false,
   pauseOnHover = false,
   repeat = 4,
+  play = true,
   children,
   ...props
 }: VerticalMarqueeProps) => (
@@ -36,6 +39,7 @@ export const VerticalMarquee = ({
           'flex shrink-0 animate-marquee-vertical flex-col justify-around [gap:var(--gap)] motion-reduce:[animation-play-state:paused]',
           reverse && '[animation-direction:reverse]',
           pauseOnHover && 'group-hover:[animation-play-state:paused]',
+          !play && '[animation-play-state:paused]',
         )}
       >
         {children}

@@ -22,7 +22,17 @@ const hash = (value: string): number => {
   return h
 }
 
-const ArticleCover = ({ slug, image }: { slug: string; image?: string }) => (
+const ArticleCover = ({
+  slug,
+  image,
+  eager = false,
+}: {
+  slug: string
+  image?: string
+  /** The featured card and article hero are the page's LCP candidates —
+   * they must load eagerly; everything below the fold stays lazy. */
+  eager?: boolean
+}) => (
   // Covers are decorative — the adjacent heading carries the meaning.
   // `isolate` keeps the blend inside the cover instead of sampling
   // whatever the card renders beneath it.
@@ -35,7 +45,8 @@ const ArticleCover = ({ slug, image }: { slug: string; image?: string }) => (
       <img
         alt=""
         src={image}
-        loading="lazy"
+        loading={eager ? 'eager' : 'lazy'}
+        fetchPriority={eager ? 'high' : 'auto'}
         className="size-full object-cover opacity-90 mix-blend-luminosity"
       />
     )}

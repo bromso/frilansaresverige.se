@@ -108,7 +108,9 @@ After running `shadcn add` inside `packages/ui`, rewrite any emitted `@/…` imp
 
 ## Deployment
 
-Production is a standalone Next.js build in Docker (`node:24-alpine`), shipped by `deploy.sh`: it builds for `linux/amd64`, streams the image over SSH and restarts the compose service on the server. Note for anything that reads files at request time (like the sitemap reading `content/`): the standalone output only includes what's traced, so such paths must be listed in `outputFileTracingIncludes` in `next.config.js`.
+Production is a standalone Next.js build. `bun run build` assembles the complete standalone tree (server, static assets and `public/`) and `bun run start` runs it with `node` — so PaaS platforms that auto-detect Bun (Dokploy/Nixpacks, Railway, etc.) work out of the box, as does the `Dockerfile` at the repo root. `deploy.sh` ships the Docker image (`node:24-alpine`, built for `linux/amd64`) over SSH and restarts the compose service on the server.
+
+Note for anything that reads files at request time (like the sitemap reading `content/`): the standalone output only includes what's traced, so such paths must be listed in `outputFileTracingIncludes` in `next.config.js`.
 
 ## Design docs
 

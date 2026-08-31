@@ -84,7 +84,7 @@ const Artikel = ({ meta, source, more }: Props) => {
           {meta.excerpt}
         </p>
         <div className="mt-8 aspect-[16/9] overflow-hidden rounded-3xl">
-          <ArticleCover slug={meta.slug} image={meta.image} />
+          <ArticleCover slug={meta.slug} image={meta.image} eager />
         </div>
         <div className="mt-2">
           <MDXRemote {...source} components={MDX_COMPONENTS} />

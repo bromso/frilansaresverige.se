@@ -28,9 +28,11 @@ import type { ReactElement, ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import type { Organization, WebSite, WithContext } from 'schema-dts'
 import type { BentoShaderVariant } from '../components/BentoCardShader'
+import GigToastStack from '../components/GigToastStack'
 import { ProgressiveBlur } from '../components/ProgressiveBlur'
 import Seo, { SITE_NAME, SITE_URL } from '../components/Seo'
 import StructuredData from '../components/StructuredData'
+import { useNearViewport } from '../hooks/useNearViewport'
 import { getRoute } from '../lib/routes'
 
 // The shader backgrounds run on WebGPU and can only render in the browser.
@@ -389,6 +391,10 @@ const STEPS = [
 
 const Home: NextPage<HomeProps> = ({ memberCount }) => {
   const reduced = useReducedMotion()
+  // Marquees below the fold pause until (and whenever) their section is
+  // outside the viewport — no frames burned on decoration nobody sees.
+  const logos = useNearViewport<HTMLDivElement>()
+  const testimonials = useNearViewport<HTMLElement>()
   const meta = getRoute('/')!
 
   // The hero shader needs WebGPU; browsers without it just keep the flat
@@ -509,31 +515,33 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
           Medlemmarna har gjort uppdrag för bland andra
         </p>
         <TooltipProvider>
-          <Marquee>
-            <MarqueeContent play={!reduced} speed={40}>
-              {CLIENT_LOGOS.map((logo) => (
-                <MarqueeItem key={logo.name} className="mx-8 md:mx-12">
-                  <Tooltip side="top" sideOffset={8}>
-                    <TooltipTrigger asChild>
-                      <button
-                        type="button"
-                        aria-label={logo.name}
-                        className="flex cursor-default items-center"
-                      >
-                        <span
-                          className={`${logo.icon} size-14 text-brand-cream/60 transition-colors duration-200 hover:text-brand-cream md:size-16`}
-                          aria-hidden="true"
-                        />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent>{logo.name}</TooltipContent>
-                  </Tooltip>
-                </MarqueeItem>
-              ))}
-            </MarqueeContent>
-            <MarqueeFade side="left" />
-            <MarqueeFade side="right" />
-          </Marquee>
+          <div ref={logos.ref}>
+            <Marquee>
+              <MarqueeContent play={!reduced && logos.near} speed={40}>
+                {CLIENT_LOGOS.map((logo) => (
+                  <MarqueeItem key={logo.name} className="mx-8 md:mx-12">
+                    <Tooltip side="top" sideOffset={8}>
+                      <TooltipTrigger asChild>
+                        <button
+                          type="button"
+                          aria-label={logo.name}
+                          className="flex cursor-default items-center"
+                        >
+                          <span
+                            className={`${logo.icon} size-14 text-brand-cream/60 transition-colors duration-200 hover:text-brand-cream md:size-16`}
+                            aria-hidden="true"
+                          />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>{logo.name}</TooltipContent>
+                    </Tooltip>
+                  </MarqueeItem>
+                ))}
+              </MarqueeContent>
+              <MarqueeFade side="left" />
+              <MarqueeFade side="right" />
+            </Marquee>
+          </div>
         </TooltipProvider>
       </Reveal>
 
@@ -624,7 +632,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
       </section>
 
       {/* Testimonials */}
-      <section className="w-full py-20 md:py-28">
+      <section ref={testimonials.ref} className="w-full py-20 md:py-28">
         <SectionHeading eyebrow="Medlemmarna" title="Röster från communityt" />
         {reduced ? (
           <div className="group grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -636,6 +644,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
           <div className="relative h-210 w-full overflow-hidden">
             <div className="group flex h-full w-full flex-row items-stretch justify-center gap-4">
               <VerticalMarquee
+                play={testimonials.near}
                 pauseOnHover
                 className="hidden h-full flex-1 [--duration:34s] sm:flex"
               >
@@ -646,6 +655,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 )}
               </VerticalMarquee>
               <VerticalMarquee
+                play={testimonials.near}
                 reverse
                 pauseOnHover
                 className="hidden h-full flex-1 [--duration:40s] sm:flex"
@@ -657,6 +667,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 )}
               </VerticalMarquee>
               <VerticalMarquee
+                play={testimonials.near}
                 pauseOnHover
                 className="hidden h-full flex-1 [--duration:30s] lg:flex"
               >
@@ -667,6 +678,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 )}
               </VerticalMarquee>
               <VerticalMarquee
+                play={testimonials.near}
                 pauseOnHover
                 className="flex h-full flex-1 [--duration:60s] sm:hidden"
               >
@@ -822,22 +834,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                     mellan er och frilansaren. Inga avgifter, ingen provision.
                   </p>
                   <div className="mt-auto pt-6">
-                    <div className="flex items-center gap-3 rounded-2xl bg-white/45 p-3 shadow-[inset_0_0_0_1px_rgba(51,51,51,0.15)] backdrop-blur-sm">
-                      <span
-                        aria-hidden="true"
-                        className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-blue-dark"
-                      >
-                        <span className="icon-[lucide--briefcase-business] size-4 text-[#fffce3]" />
-                      </span>
-                      <span className="min-w-0 text-brand-grey">
-                        <span className="block truncate text-sm font-medium">
-                          Nytt uppdragstips — Frontendutvecklare
-                        </span>
-                        <span className="block truncate font-mono text-xs text-brand-grey/60">
-                          direktkontakt · 950 kr/h · #uppdrag
-                        </span>
-                      </span>
-                    </div>
+                    <GigToastStack reduced={reduced} />
                   </div>
                 </div>
               </div>
