@@ -2,16 +2,18 @@ import type { CSSProperties } from 'react'
 
 // Adapted from Skiper UI's Skiper41 progressive blur (skiper-ui.com,
 // inspired by devouringdetails.com): a strip that fades to the page
-// background while progressively blurring whatever scrolls beneath it.
-// Changes from upstream: `fixed` positioning so one instance covers the
-// viewport edge for the whole page, and the background defaults to the
-// brand background token so it follows the light/dark theme.
+// background at the viewport edge. Changes from upstream: `fixed`
+// positioning so one instance covers the viewport edge for the whole
+// page, the background defaults to the brand background token so it
+// follows the light/dark theme — and the backdrop-filter is GONE. A
+// fixed full-width blur forces the GPU to re-blur everything scrolling
+// beneath it on every frame, which is scroll jank on weak hardware;
+// the masked gradient alone keeps the fade-out look at zero cost.
 type ProgressiveBlurProps = {
   className?: string
   backgroundColor?: string
   position?: 'top' | 'bottom'
   height?: string
-  blurAmount?: string
   /** 'fixed' pins the strip to the viewport edge (the site-wide bottom
       strip); 'absolute' pins it to the nearest positioned ancestor, for
       fading content in and out at a section's edges. */
@@ -23,7 +25,6 @@ export const ProgressiveBlur = ({
   backgroundColor = 'var(--color-brand-blue)',
   position = 'bottom',
   height = '150px',
-  blurAmount = '4px',
   attachment = 'fixed',
 }: ProgressiveBlurProps) => {
   const isTop = position === 'top'
@@ -37,8 +38,6 @@ export const ProgressiveBlur = ({
     maskImage: isTop
       ? 'linear-gradient(to bottom, black 50%, transparent)'
       : 'linear-gradient(to top, black 50%, transparent)',
-    WebkitBackdropFilter: `blur(${blurAmount})`,
-    backdropFilter: `blur(${blurAmount})`,
   }
 
   return (

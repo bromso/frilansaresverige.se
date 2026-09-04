@@ -11,7 +11,6 @@ import PageTransition from '../components/PageTransition'
 import { ProgressiveBlur } from '../components/ProgressiveBlur'
 import SiteFooter from '../components/SiteFooter'
 import SiteNav from '../components/SiteNav'
-import { SquircleFilter } from '../components/SquircleFilter'
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -32,7 +31,6 @@ function MyApp({ Component, pageProps, router }: AppProps) {
               initial-scale=1 removes the up-to-300ms delay on mobile. */}
           <meta name="viewport" content="width=device-width, initial-scale=1" />
         </Head>
-        <SquircleFilter />
         <ProgressiveBlur position="bottom" />
         <PageTransition>
           <div

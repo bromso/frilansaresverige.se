@@ -26,13 +26,6 @@
     --expo-in: cubic-bezier(0.7, 0, 0.84, 0);
   }
 
-  /* Squircle corners: routes the element through the SVG goo filter
-     mounted in _app (see components/SquircleFilter.tsx), smoothing its
-     rounded corners into a superellipse. */
-  .squircle {
-    filter: url(#SquiCircle);
-  }
-
   /* Form inputs keep light backgrounds in both themes (bg-white/60), so
      their text must not flip to cream in light mode. */
   .light input,

@@ -557,7 +557,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
             <div key={card.title} className={`relative ${card.wrapper}`}>
               <CardSlide reduced={reduced} delay={index * 100}>
                 <div
-                  className={`squircle relative flex h-full flex-col overflow-hidden rounded-xl text-left transition-transform duration-200 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${card.height} ${card.corners}`}
+                  className={`relative flex h-full flex-col overflow-hidden rounded-xl text-left transition-transform duration-200 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${card.height} ${card.corners}`}
                 >
                   <div
                     aria-hidden="true"
@@ -732,7 +732,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
         <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-3">
           <div className="relative lg:col-span-2">
             <CardSlide reduced={reduced} delay={0}>
-              <div className="squircle relative flex h-full min-h-[28.75rem] flex-col overflow-hidden rounded-3xl text-left max-lg:rounded-t-4xl lg:min-h-[35rem] lg:rounded-l-4xl">
+              <div className="relative flex h-full min-h-[28.75rem] flex-col overflow-hidden rounded-3xl text-left max-lg:rounded-t-4xl lg:min-h-[35rem] lg:rounded-l-4xl">
                 {/* Fallback wash while the shader initializes (or when
                     WebGPU is unavailable). */}
                 <div
@@ -785,7 +785,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
 
           <div className="flex flex-col gap-4">
             <CardSlide reduced={reduced} delay={100}>
-              <div className="squircle relative flex flex-1 flex-col overflow-hidden rounded-3xl text-left lg:rounded-tr-4xl">
+              <div className="relative flex flex-1 flex-col overflow-hidden rounded-3xl text-left lg:rounded-tr-4xl">
                 <div
                   aria-hidden="true"
                   className="absolute inset-0 z-0"
@@ -814,7 +814,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
             </CardSlide>
 
             <CardSlide reduced={reduced} delay={200}>
-              <div className="squircle relative flex flex-1 flex-col overflow-hidden rounded-3xl text-left max-lg:rounded-b-4xl lg:rounded-br-4xl">
+              <div className="relative flex flex-1 flex-col overflow-hidden rounded-3xl text-left max-lg:rounded-b-4xl lg:rounded-br-4xl">
                 <div
                   aria-hidden="true"
                   className="absolute inset-0 z-0"
