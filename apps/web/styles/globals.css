@@ -126,6 +126,37 @@
   }
 }
 
+/* Static hero background in the palette the retired WebGPU hero shader
+   painted: violet up top, coral mass on the right, darkest at the bottom
+   so the wash dissolves into the flat page background. The light-theme
+   variant mirrors the shader's light palette. */
+@utility hero-wash {
+  background:
+    radial-gradient(
+      55% 65% at 100% 45%,
+      rgb(255 156 142 / 0.55),
+      transparent 70%
+    ),
+    radial-gradient(50% 45% at 60% -5%, rgb(138 92 246 / 0.5), transparent 70%),
+    radial-gradient(70% 55% at 55% 108%, rgb(22 4 94 / 0.9), transparent 75%),
+    #4823dc;
+
+  .light & {
+    background:
+      radial-gradient(
+        55% 65% at 100% 45%,
+        rgb(255 156 142 / 0.6),
+        transparent 70%
+      ),
+      radial-gradient(
+        50% 45% at 60% -5%,
+        rgb(255 207 200 / 0.8),
+        transparent 70%
+      ),
+      #fffce3;
+  }
+}
+
 /* CSS-only liquid-glass look for the header surfaces (logo pill, nav
    pill, theme toggle): frosted backdrop blur with a saturation/brightness
    lift, a hairline border and inset top/bottom highlights that mimic a

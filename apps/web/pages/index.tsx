@@ -23,26 +23,15 @@ import {
 } from '@frilansaresverige/ui/ui/marquee'
 import { VerticalMarquee } from '@frilansaresverige/ui/ui/vertical-marquee'
 import type { GetStaticProps, NextPage } from 'next'
-import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import type { ReactElement, ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import type { Organization, WebSite, WithContext } from 'schema-dts'
-import type { BentoShaderVariant } from '../components/BentoCardShader'
 import GigToastStack from '../components/GigToastStack'
 import { ProgressiveBlur } from '../components/ProgressiveBlur'
 import Seo, { SITE_NAME, SITE_URL } from '../components/Seo'
 import StructuredData from '../components/StructuredData'
 import { getRoute } from '../lib/routes'
-
-// The shader backgrounds run on WebGPU and can only render in the browser.
-const HeroShaderBackground = dynamic(
-  () => import('../components/HeroShaderBackground'),
-  { ssr: false },
-)
-const BentoCardShader = dynamic(() => import('../components/BentoCardShader'), {
-  ssr: false,
-})
 
 const API_BASE_URL =
   process.env.API_BASE_URL || 'https://uppdrag.frilansaresverige.se/api'
@@ -181,11 +170,12 @@ const SectionHeading = ({
 )
 
 // Bento grid content for the "Vad du får" section. Each card's background
-// is a live liquid-glass shader (see BentoCardShader) with the copy
-// floating at the bottom. The corner classes round the four outer corners
-// of the grid to 2rem, per card position.
+// is a static brand gradient (in the palette of the retired liquid-glass
+// shaders) with the copy floating at the bottom. The corner classes round
+// the four outer corners of the grid to 2rem, per card position.
 interface BentoCard {
-  variant: BentoShaderVariant
+  /** Per-card gradient, derived from the old shader variant's palette. */
+  wash: string
   eyebrow: string
   title: string
   text: string
@@ -197,7 +187,7 @@ interface BentoCard {
 
 const BENTO_CARDS: BentoCard[] = [
   {
-    variant: 'torus',
+    wash: 'radial-gradient(80% 70% at 80% 0%, rgba(168,180,255,0.5), transparent 70%), linear-gradient(160deg, #4823dc 20%, #16045e)',
     eyebrow: 'Community',
     title: 'Hjälp i vardagen',
     text: 'Prissättning, avtal, bokföring eller en knivig kund? Ställ frågan i Slack och få svar från frilansare som har varit i exakt samma sits.',
@@ -206,7 +196,7 @@ const BENTO_CARDS: BentoCard[] = [
     height: 'min-h-[26rem] lg:min-h-[30rem]',
   },
   {
-    variant: 'diamond',
+    wash: 'radial-gradient(75% 60% at 15% 0%, rgba(255,207,200,0.55), transparent 70%), linear-gradient(150deg, #8a5cf6 5%, #2601bb 80%)',
     eyebrow: 'Uppdrag',
     title: 'Uppdrag utan mellanhänder',
     text: 'Medlemmar och företag tipsar löpande om konsultuppdrag — direktkontakt, inga avgifter och ingen som tar en del av kakan.',
@@ -215,7 +205,7 @@ const BENTO_CARDS: BentoCard[] = [
     height: 'min-h-[26rem] lg:min-h-[30rem]',
   },
   {
-    variant: 'metaballs',
+    wash: 'radial-gradient(70% 60% at 85% 100%, rgba(255,156,142,0.5), transparent 70%), linear-gradient(200deg, #2601bb, #4823dc)',
     eyebrow: 'Nätverk',
     title: 'Kollegor i hela landet',
     text: 'Frilansare från hela Sverige, inom alla möjliga branscher. Bolla idéer, hitta samarbeten eller bara snacka av dig en fredag.',
@@ -224,7 +214,7 @@ const BENTO_CARDS: BentoCard[] = [
     height: 'min-h-[24rem]',
   },
   {
-    variant: 'ribbon',
+    wash: 'radial-gradient(80% 70% at 20% 10%, rgba(255,207,200,0.6), transparent 70%), linear-gradient(140deg, #ff9c8e -20%, #8a5cf6 90%)',
     eyebrow: 'Slack',
     title: 'Ett Slack-community',
     text: 'Allt händer i vår Slack — trådar, kanaler och direktmeddelanden. Hitta kanalen för din bransch eller din stad och häng med.',
@@ -234,7 +224,7 @@ const BENTO_CARDS: BentoCard[] = [
     slackIcon: true,
   },
   {
-    variant: 'hemisphere',
+    wash: 'radial-gradient(70% 55% at 90% 15%, rgba(255,156,142,0.45), transparent 70%), linear-gradient(170deg, #16045e 10%, #4823dc 90%)',
     eyebrow: 'Gratis',
     title: '0 kr, inga hakar',
     text: 'Ingen medlemsavgift, inga premiumnivåer och inga mellanhänder. Communityt drivs av medlemmarna själva.',
@@ -415,13 +405,6 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
   const testimonials = useNearViewport<HTMLElement>()
   const meta = getRoute('/')!
 
-  // The hero shader needs WebGPU; browsers without it just keep the flat
-  // brand-blue background.
-  const [webgpu, setWebgpu] = useState(false)
-  useEffect(() => {
-    setWebgpu('gpu' in navigator)
-  }, [])
-
   return (
     <div className="relative flex w-full max-w-[72em] flex-col items-center">
       <Seo title={meta.title} description={meta.description} path={meta.path} />
@@ -431,20 +414,20 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
       {/* Hero — copy on the left, 3D silk ribbon on the right */}
       {/* 5.5rem matches the header's height (h-14 bar + py-4). */}
       <section className="relative flex min-h-[calc(100dvh-5.5rem)] w-full flex-col justify-center py-16 md:py-20">
-        {webgpu && (
-          <div
-            aria-hidden="true"
-            className="absolute -top-[5.5rem] bottom-0 left-1/2 -z-[1] w-screen -translate-x-1/2 overflow-hidden"
-          >
-            <HeroShaderBackground reduced={reduced} />
-            {/* Left-to-right scrim over the copy side so the hero text
-                stays readable on top of the shader. */}
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-2/5 bg-gradient-to-r from-brand-blue via-brand-blue/60 to-transparent" />
-            {/* Blend the canvas edge into the flat page background so the
-                shader doesn't look sliced where the next section starts. */}
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-brand-blue" />
-          </div>
-        )}
+        {/* Static hero wash (see globals.css) in the palette the old
+            WebGPU shader painted — the canvas was dropped for
+            performance. */}
+        <div
+          aria-hidden="true"
+          className="hero-wash absolute -top-[5.5rem] bottom-0 left-1/2 -z-[1] w-screen -translate-x-1/2 overflow-hidden"
+        >
+          {/* Left-to-right scrim over the copy side so the hero text
+              stays readable on top of the wash. */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-2/5 bg-gradient-to-r from-brand-blue via-brand-blue/60 to-transparent" />
+          {/* Blend the wash into the flat page background so it doesn't
+              look sliced where the next section starts. */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-brand-blue" />
+        </div>
 
         {/* The hero copy enters with the CSS hero-enter animation (not the
             JS Reveal wrapper): the paragraph below is the page's LCP
@@ -576,23 +559,11 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 <div
                   className={`squircle relative flex h-full flex-col overflow-hidden rounded-xl text-left transition-transform duration-200 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${card.height} ${card.corners}`}
                 >
-                  {/* Fallback wash while the shader initializes (or when
-                      WebGPU is unavailable). */}
                   <div
                     aria-hidden="true"
                     className="absolute inset-0 z-0"
-                    style={{
-                      background:
-                        'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255,156,142,0.25), transparent), linear-gradient(to bottom, #2601bb, #16045e)',
-                    }}
-                  >
-                    {webgpu && (
-                      <BentoCardShader
-                        variant={card.variant}
-                        reduced={reduced}
-                      />
-                    )}
-                  </div>
+                    style={{ background: card.wash }}
+                  />
                   {/* Scrim so the copy stays readable over the brighter
                       shader regions. */}
                   <div
@@ -771,15 +742,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                     background:
                       'linear-gradient(to bottom left, #fe7c74, #ff9c8e 55%, #ffcfc8)',
                   }}
-                >
-                  {webgpu && (
-                    <BentoCardShader
-                      variant="aurora"
-                      reduced={reduced}
-                      showGlass={false}
-                    />
-                  )}
-                </div>
+                ></div>
                 {/* Cream bottom scrim keeps the dark copy readable while
                     the shader stays the visual star; the hairline ring
                     sits above it with pointer-events off so the cursor
@@ -830,15 +793,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                     background:
                       'linear-gradient(to bottom right, #ffcfc8, #ff9c8e 55%, #fe7c74)',
                   }}
-                >
-                  {webgpu && (
-                    <BentoCardShader
-                      variant="haze"
-                      reduced={reduced}
-                      showGlass={false}
-                    />
-                  )}
-                </div>
+                ></div>
                 <div
                   aria-hidden="true"
                   className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/3 bg-gradient-to-t from-[#ffcfc8]/70 to-transparent"
@@ -867,15 +822,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                     background:
                       'linear-gradient(to bottom right, #fe7c74, #ff9c8e 55%, #ffcfc8)',
                   }}
-                >
-                  {webgpu && (
-                    <BentoCardShader
-                      variant="dawn"
-                      reduced={reduced}
-                      showGlass={false}
-                    />
-                  )}
-                </div>
+                ></div>
                 <div
                   aria-hidden="true"
                   className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/3 bg-gradient-to-t from-[#fffce3]/70 to-transparent"
