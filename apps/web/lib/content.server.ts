@@ -23,7 +23,12 @@ import {
   splitSections,
 } from './content'
 
-const CONTENT_DIR = path.join(process.cwd(), 'content')
+// next build/start run with cwd at apps/web (the standalone server
+// chdirs to its own directory), but `bun test` runs from the repo root
+// per the README — resolve whichever layout is present.
+const CONTENT_DIR = fs.existsSync(path.join(process.cwd(), 'content'))
+  ? path.join(process.cwd(), 'content')
+  : path.join(process.cwd(), 'apps/web/content')
 
 const listSlugs = (section: string): string[] =>
   fs

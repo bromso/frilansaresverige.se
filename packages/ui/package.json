@@ -7,6 +7,7 @@
     "./styles/theme.css": "./src/styles/theme.css",
     "./lib/utils": "./src/lib/utils.ts",
     "./lib/use-reduced-motion": "./src/lib/use-reduced-motion.ts",
+    "./lib/use-near-viewport": "./src/lib/use-near-viewport.ts",
     "./ui/*": "./src/ui/*.tsx",
     "./animate-ui/*": "./src/animate-ui/*.tsx"
   },

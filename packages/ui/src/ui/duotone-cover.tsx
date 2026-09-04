@@ -1,10 +1,9 @@
-// Cover art for posts and events. Every cover stands on one of a few
-// curated brand gradients, picked deterministically from the slug so
-// archives vary without configuration. When a photo exists (the `image`
-// frontmatter field) it renders on top blended with mix-blend-luminosity:
-// the photo contributes light/dark structure while every hue comes from
-// the gradient — a duotone that keeps photography on brand. Colors are
-// the fixed brand hex values (not theme tokens) — the covers are artwork
+// Brand duotone cover art: a curated brand gradient picked
+// deterministically from a seed string, optionally with a photo blended
+// on top via mix-blend-luminosity — the image contributes light/dark
+// structure while every hue comes from the gradient, keeping photography
+// on brand. Used for the nyheter covers and the konsult avatars. Colors
+// are the fixed brand hex values (not theme tokens): covers are artwork
 // and keep their look in both themes.
 const GRADIENTS = [
   'radial-gradient(120% 160% at 85% 15%, #ffcfc8 0%, #ff9c8e 30%, #4823dc 75%)',
@@ -22,15 +21,16 @@ const hash = (value: string): number => {
   return h
 }
 
-const ArticleCover = ({
-  slug,
+export const DuotoneCover = ({
+  seed,
   image,
   eager = false,
 }: {
-  slug: string
+  /** Deterministically picks the gradient — same seed, same art. */
+  seed: string
   image?: string
-  /** The featured card and article hero are the page's LCP candidates —
-   * they must load eagerly; everything below the fold stays lazy. */
+  /** LCP candidates (featured cards, article heroes) must load eagerly;
+   * everything below the fold stays lazy. */
   eager?: boolean
 }) => (
   // Covers are decorative — the adjacent heading carries the meaning.
@@ -39,7 +39,7 @@ const ArticleCover = ({
   <div
     aria-hidden="true"
     className="relative isolate size-full"
-    style={{ background: GRADIENTS[hash(slug) % GRADIENTS.length] }}
+    style={{ background: GRADIENTS[hash(seed) % GRADIENTS.length] }}
   >
     {image && (
       <img
@@ -52,5 +52,3 @@ const ArticleCover = ({
     )}
   </div>
 )
-
-export default ArticleCover

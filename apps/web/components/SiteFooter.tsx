@@ -97,11 +97,8 @@ const SiteFooter = ({
           </nav>
         </div>
 
-        {/* Bottom bar: copyright + legal links left, social right. The
-            fixed progressive-blur strip covers the bottom ~150px of the
-            viewport, so the generous pb-40 keeps this row readable above
-            the blur. */}
-        <div className="border-t border-brand-cream/10 pt-8 pb-40 md:flex md:items-center md:justify-between">
+        {/* Bottom bar: copyright + legal links left, social right. */}
+        <div className="border-t border-brand-cream/10 pt-8 pb-16 md:flex md:items-center md:justify-between">
           <div className="flex gap-x-6 md:order-2">
             <a
               href={GITHUB_URL}

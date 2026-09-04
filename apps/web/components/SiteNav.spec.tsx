@@ -6,21 +6,22 @@ import SiteNav from './SiteNav'
 describe('SiteNav', () => {
   afterEach(() => cleanup())
 
-  it('renders one tab button per nav tab', () => {
+  it('renders one hub link per nav tab', () => {
     render(<SiteNav />)
     for (const tab of NAV_TABS) {
-      expect(
-        screen.getByRole('button', { name: tab.title }),
-      ).toBeInTheDocument()
+      expect(screen.getByRole('link', { name: tab.title })).toHaveAttribute(
+        'href',
+        tab.hub,
+      )
     }
   })
 
-  it('expands a tab into its link panel', () => {
+  it('opens a tab panel on focus with its section links', () => {
     render(<SiteNav />)
-    const button = screen.getByRole('button', { name: 'Community' })
-    expect(button).toHaveAttribute('aria-expanded', 'false')
-    fireEvent.click(button)
-    expect(button).toHaveAttribute('aria-expanded', 'true')
+    const trigger = screen.getByRole('link', { name: 'Community' })
+    expect(trigger).toHaveAttribute('aria-expanded', 'false')
+    fireEvent.focus(trigger)
+    expect(trigger).toHaveAttribute('aria-expanded', 'true')
     expect(screen.getByRole('link', { name: 'Om oss' })).toHaveAttribute(
       'href',
       '/om',
@@ -33,19 +34,17 @@ describe('SiteNav', () => {
 
   it('closes on Escape', () => {
     render(<SiteNav />)
-    const button = screen.getByRole('button', { name: 'Företag' })
-    fireEvent.click(button)
-    expect(button).toHaveAttribute('aria-expanded', 'true')
+    const trigger = screen.getByRole('link', { name: 'Företag' })
+    fireEvent.focus(trigger)
+    expect(trigger).toHaveAttribute('aria-expanded', 'true')
     fireEvent.keyDown(document, { key: 'Escape' })
-    expect(button).toHaveAttribute('aria-expanded', 'false')
+    expect(trigger).toHaveAttribute('aria-expanded', 'false')
   })
 
-  it('tabs without items link straight to the hub', () => {
+  it('tabs without items are plain links with no dropdown', () => {
     render(<SiteNav />)
-    fireEvent.click(screen.getByRole('button', { name: 'Uppdrag' }))
-    expect(screen.getByRole('link', { name: /uppdrag/i })).toHaveAttribute(
-      'href',
-      '/uppdrag',
-    )
+    const uppdrag = screen.getByRole('link', { name: 'Uppdrag' })
+    expect(uppdrag).toHaveAttribute('href', '/uppdrag')
+    expect(uppdrag).not.toHaveAttribute('aria-expanded')
   })
 })

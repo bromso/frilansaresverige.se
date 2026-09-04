@@ -150,7 +150,7 @@ const GigTipForm = () => {
 
   return (
     <form
-      className="squircle rounded-[1.25rem] bg-brand-cream p-6 text-left text-brand-blue md:p-10"
+      className="rounded-[1.25rem] bg-brand-cream p-6 text-left text-brand-blue md:p-10"
       onSubmit={submitForm}
     >
       <Tabs value={step} onValueChange={goTo} className="gap-6">
