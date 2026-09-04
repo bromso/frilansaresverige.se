@@ -412,14 +412,14 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
       <StructuredData data={WEBSITE_JSON_LD} />
 
       {/* Hero — copy on the left, 3D silk ribbon on the right */}
-      {/* 5.5rem matches the header's height (h-14 bar + py-4). */}
-      <section className="relative flex min-h-[calc(100dvh-5.5rem)] w-full flex-col justify-center py-16 md:py-20">
+      {/* 3.5rem matches the header bar height (h-14). */}
+      <section className="relative flex min-h-[calc(100dvh-3.5rem)] w-full flex-col justify-center py-16 md:py-20">
         {/* Static hero wash (see globals.css) in the palette the old
             WebGPU shader painted — the canvas was dropped for
             performance. */}
         <div
           aria-hidden="true"
-          className="hero-wash absolute -top-[5.5rem] bottom-0 left-1/2 -z-[1] w-screen -translate-x-1/2 overflow-hidden"
+          className="hero-wash absolute -top-14 bottom-0 left-1/2 -z-[1] w-screen -translate-x-1/2 overflow-hidden"
         >
           {/* Left-to-right scrim over the copy side so the hero text
               stays readable on top of the wash. */}

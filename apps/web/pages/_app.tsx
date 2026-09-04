@@ -33,11 +33,8 @@ function MyApp({ Component, pageProps, router }: AppProps) {
           className={`${bricolage.variable} relative z-[1] flex min-h-full flex-col`}
         >
           <header className="sticky top-0 z-10 w-full">
-            {/* One glass pill carries logo, tabs and theme toggle — see
-                SiteNav. */}
-            <div className="mx-auto flex w-full max-w-[72em] items-center justify-center px-[min(2em,4vw)] py-4">
-              <SiteNav />
-            </div>
+            {/* Full-width mega-menu bar — see SiteNav / ui MegaNav. */}
+            <SiteNav />
           </header>
 
           <main className="relative z-[2] flex w-full flex-1 flex-col items-center px-[min(2em,4vw)]">
