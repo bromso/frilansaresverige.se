@@ -8,7 +8,6 @@ import { ThemeProvider } from 'next-themes'
 
 import CookieToast from '../components/CookieToast'
 import PageTransition from '../components/PageTransition'
-import { ProgressiveBlur } from '../components/ProgressiveBlur'
 import SiteFooter from '../components/SiteFooter'
 import SiteNav from '../components/SiteNav'
 
@@ -31,7 +30,6 @@ function MyApp({ Component, pageProps, router }: AppProps) {
               initial-scale=1 removes the up-to-300ms delay on mobile. */}
           <meta name="viewport" content="width=device-width, initial-scale=1" />
         </Head>
-        <ProgressiveBlur position="bottom" />
         <PageTransition>
           <div
             className={`${bricolage.variable} relative z-[1] flex min-h-full flex-col`}
