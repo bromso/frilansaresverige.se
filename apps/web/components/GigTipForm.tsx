@@ -248,22 +248,22 @@ const GigTipForm = () => {
                   className="mt-2 grid-cols-1 gap-3 md:grid-cols-3"
                 >
                   {OMFATTNING_OPTIONS.map((option) => (
-                    <div
+                    // The whole box is the label — clicking anywhere in it
+                    // selects the radio.
+                    <Label
                       key={option}
-                      className="flex flex-row items-center justify-start gap-3 rounded-[0.75em] bg-brand-blue/5 p-4"
+                      htmlFor={`omfattning-${option}`}
+                      className="flex cursor-pointer flex-row items-center justify-start gap-3 rounded-[0.75em] bg-brand-blue/5 p-4"
                     >
                       <RadioGroupItem
                         id={`omfattning-${option}`}
                         value={option}
                         className="border-brand-blue text-brand-blue"
                       />
-                      <Label
-                        htmlFor={`omfattning-${option}`}
-                        className="text-[1.05em] leading-[1.5]"
-                      >
+                      <span className="text-[1.05em] leading-[1.5]">
                         {option}
-                      </Label>
-                    </div>
+                      </span>
+                    </Label>
                   ))}
                 </RadioGroup>
               </fieldset>
@@ -272,9 +272,10 @@ const GigTipForm = () => {
                 <legend className={LABEL_CLASSES}>Arbetsform</legend>
                 <div className="mt-2 grid grid-cols-1 gap-3 md:grid-cols-3">
                   {ARBETSFORM_OPTIONS.map((option) => (
-                    <div
+                    <Label
                       key={option}
-                      className="flex flex-row items-center justify-start gap-3 rounded-[0.75em] bg-brand-blue/5 p-4"
+                      htmlFor={`arbetsform-${option}`}
+                      className="flex cursor-pointer flex-row items-center justify-start gap-3 rounded-[0.75em] bg-brand-blue/5 p-4"
                     >
                       <Checkbox
                         id={`arbetsform-${option}`}
@@ -282,13 +283,10 @@ const GigTipForm = () => {
                         value={option}
                         className="border-brand-blue"
                       />
-                      <Label
-                        htmlFor={`arbetsform-${option}`}
-                        className="text-[1.05em] leading-[1.5]"
-                      >
+                      <span className="text-[1.05em] leading-[1.5]">
                         {option}
-                      </Label>
-                    </div>
+                      </span>
+                    </Label>
                   ))}
                 </div>
               </fieldset>
@@ -328,22 +326,20 @@ const GigTipForm = () => {
                 </legend>
                 <RadioGroup name="relation" required className="mt-2 gap-3">
                   {RELATION_OPTIONS.map((option) => (
-                    <div
+                    <Label
                       key={option.value}
-                      className="flex flex-row items-baseline justify-start gap-3 rounded-[0.75em] bg-brand-blue/5 p-4"
+                      htmlFor={`relation-${option.value}`}
+                      className="flex cursor-pointer flex-row items-baseline justify-start gap-3 rounded-[0.75em] bg-brand-blue/5 p-4"
                     >
                       <RadioGroupItem
                         id={`relation-${option.value}`}
                         value={option.value}
                         className="border-brand-blue text-brand-blue"
                       />
-                      <Label
-                        htmlFor={`relation-${option.value}`}
-                        className="text-[1.05em] leading-[1.5]"
-                      >
+                      <span className="text-[1.05em] leading-[1.5]">
                         {option.label}
-                      </Label>
-                    </div>
+                      </span>
+                    </Label>
                   ))}
                 </RadioGroup>
               </fieldset>

@@ -351,22 +351,24 @@ const RequestSlackInvitationForm = () => {
                   </IconField>
                 </div>
 
-                <div className="mt-6 flex flex-row items-baseline justify-start gap-3 rounded-[0.75em] bg-brand-blue/5 p-4">
+                {/* The whole box is the label, so clicking anywhere in it
+                    toggles the checkbox. */}
+                <Label
+                  htmlFor="freelancer-confirmation"
+                  className="mt-6 flex cursor-pointer flex-row items-baseline justify-start gap-3 rounded-[0.75em] bg-brand-blue/5 p-4"
+                >
                   <Checkbox
                     id="freelancer-confirmation"
                     name="freelancer-confirmation"
                     required
                     className="border-brand-blue"
                   />
-                  <Label
-                    htmlFor="freelancer-confirmation"
-                    className="text-[1.05em] leading-[1.5]"
-                  >
+                  <span className="text-[1.05em] leading-[1.5]">
                     Jag är igång som frilansare, d v s har ett bolag att
                     fakturera genom och tecknat avtal med åtminstone min första
                     kund.
-                  </Label>
-                </div>
+                  </span>
+                </Label>
               </div>
             </TabsContent>
           </TabsContents>
