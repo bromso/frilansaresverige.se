@@ -5,11 +5,13 @@ import { serialize } from 'next-mdx-remote/serialize'
 import type { NewsArticle, WithContext } from 'schema-dts'
 import type { LeafCrumb } from '../../components/Breadcrumbs'
 import ArticleCard from '../../components/nyheter/ArticleCard'
+import CoverPreload from '../../components/nyheter/CoverPreload'
 import { MDX_COMPONENTS } from '../../components/nyheter/MdxContent'
 import Seo, { SITE_NAME, SITE_URL } from '../../components/Seo'
 import StructuredData from '../../components/StructuredData'
 import { formatPostDate, type PostMeta } from '../../lib/content'
 import { getAllPosts, getPost, getPostSlugs } from '../../lib/content.server'
+import { COVER_SIZES_ARTICLE, coverImageProps } from '../../lib/cover-image'
 
 interface Props {
   meta: PostMeta
@@ -48,6 +50,9 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 // headline, the excerpt as standfirst, cover art and the MDX body.
 const Artikel = ({ meta, source, more }: Props) => {
   const path = `/nyheter/${meta.slug}`
+  const cover = meta.image
+    ? coverImageProps(meta.image, COVER_SIZES_ARTICLE)
+    : undefined
   const jsonLd: WithContext<NewsArticle> = {
     '@context': 'https://schema.org',
     '@type': 'NewsArticle',
@@ -68,6 +73,7 @@ const Artikel = ({ meta, source, more }: Props) => {
         type="article"
       />
       <StructuredData data={jsonLd} />
+      {cover && <CoverPreload {...cover} />}
       <article className="w-full max-w-[42em] py-12 md:py-16">
         <div className="flex items-baseline gap-4">
           <p className="font-display text-sm font-bold tracking-widest text-eyebrow uppercase">
@@ -84,7 +90,12 @@ const Artikel = ({ meta, source, more }: Props) => {
           {meta.excerpt}
         </p>
         <div className="mt-8 aspect-[16/9] overflow-hidden rounded-3xl">
-          <DuotoneCover seed={meta.slug} image={meta.image} eager />
+          <DuotoneCover
+            seed={meta.slug}
+            image={meta.image}
+            eager
+            imgProps={cover}
+          />
         </div>
         <div className="mt-2">
           <MDXRemote {...source} components={MDX_COMPONENTS} />

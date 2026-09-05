@@ -35,6 +35,12 @@ const nextConfig = {
       },
     ]
   },
+  // The nyheter covers go through the built-in optimizer (see
+  // lib/cover-image.ts); serve AVIF where the browser takes it, WebP
+  // otherwise. Optimized variants inherit the 30-day max-age above.
+  images: {
+    formats: ['image/avif', 'image/webp'],
+  },
   // `motion/react` is a thin wrapper around framer-motion that starts
   // with `import * as fm from 'framer-motion'` — a namespace import
   // Turbopack cannot tree-shake, so every page shipped the whole library
