@@ -10,7 +10,6 @@ import {
   useTransform,
 } from 'motion/react'
 import * as React from 'react'
-import useMeasure from 'react-use-measure'
 
 import {
   type UseIsInViewOptions,
@@ -43,11 +42,14 @@ function SlidingNumberRoller({
     return () => clearTimeout(timeoutId)
   }, [targetNumber, animatedValue, delay])
 
-  const [measureRef, { height }] = useMeasure()
-
+  // Each digit display is absolutely positioned to fill the roller, so its
+  // height equals the roller's and the slide can be expressed in percent
+  // of the element's own height — no measuring. (The upstream component
+  // measured the roller with react-use-measure, which walks every
+  // ancestor with getComputedStyle on mount: one forced style/layout pass
+  // per digit, right in the hero.)
   return (
     <span
-      ref={measureRef}
       data-slot="sliding-number-roller"
       style={{
         position: 'relative',
@@ -65,7 +67,6 @@ function SlidingNumberRoller({
           key={i}
           motionValue={animatedValue}
           number={i}
-          height={height}
           transition={transition}
         />
       ))}
@@ -76,32 +77,21 @@ function SlidingNumberRoller({
 type SlidingNumberDisplayProps = {
   motionValue: MotionValue<number>
   number: number
-  height: number
   transition: SpringOptions
 }
 
 function SlidingNumberDisplay({
   motionValue,
   number,
-  height,
   transition,
 }: SlidingNumberDisplayProps) {
   const y = useTransform(motionValue, (latest) => {
-    if (!height) return 0
     const currentNumber = latest % 10
     const offset = (10 + number - currentNumber) % 10
-    let translateY = offset * height
-    if (offset > 5) translateY -= 10 * height
-    return translateY
+    let translateY = offset * 100
+    if (offset > 5) translateY -= 10 * 100
+    return `${translateY}%`
   })
-
-  if (!height) {
-    return (
-      <span style={{ visibility: 'hidden', position: 'absolute' }}>
-        {number}
-      </span>
-    )
-  }
 
   return (
     <motion.span
