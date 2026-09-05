@@ -188,8 +188,8 @@ const BENTO_CARDS: BentoCard[] = [
   {
     wash: 'radial-gradient(80% 70% at 80% 0%, rgba(168,180,255,0.5), transparent 70%), linear-gradient(160deg, #4823dc 20%, #16045e)',
     eyebrow: 'Community',
-    title: 'Hjälp i vardagen',
-    text: 'Prissättning, avtal, bokföring eller en knivig kund? Ställ frågan i Slack och få svar från frilansare som har varit i exakt samma sits.',
+    title: 'Svar när du behöver dem',
+    text: 'Timpris, avtal, moms eller en kund som inte betalar? Ställ frågan i Slack och få svar från frilansare som har stått i exakt samma sits.',
     wrapper: 'lg:col-span-3',
     corners: 'max-lg:rounded-t-4xl lg:rounded-tl-4xl',
     height: 'min-h-[26rem] lg:min-h-[30rem]',
@@ -198,7 +198,7 @@ const BENTO_CARDS: BentoCard[] = [
     wash: 'radial-gradient(75% 60% at 15% 0%, rgba(255,207,200,0.55), transparent 70%), linear-gradient(150deg, #8a5cf6 5%, #2601bb 80%)',
     eyebrow: 'Uppdrag',
     title: 'Uppdrag utan mellanhänder',
-    text: 'Medlemmar och företag tipsar löpande om konsultuppdrag — direktkontakt, inga avgifter och ingen som tar en del av kakan.',
+    text: 'Medlemmar och företag tipsar om konsultuppdrag varje vecka. Du tar kontakt direkt, och ingen tar en del av ditt arvode.',
     wrapper: 'lg:col-span-3',
     corners: 'lg:rounded-tr-4xl',
     height: 'min-h-[26rem] lg:min-h-[30rem]',
@@ -207,7 +207,7 @@ const BENTO_CARDS: BentoCard[] = [
     wash: 'radial-gradient(70% 60% at 85% 100%, rgba(255,156,142,0.5), transparent 70%), linear-gradient(200deg, #2601bb, #4823dc)',
     eyebrow: 'Nätverk',
     title: 'Kollegor i hela landet',
-    text: 'Frilansare från hela Sverige, inom alla möjliga branscher. Bolla idéer, hitta samarbeten eller bara snacka av dig en fredag.',
+    text: 'Frilansare i över 120 kommuner och i alla möjliga branscher. Bolla en idé, hitta någon att samarbeta med eller bara snacka av dig en fredag.',
     wrapper: 'lg:col-span-2',
     corners: 'lg:rounded-bl-4xl',
     height: 'min-h-[24rem]',
@@ -215,8 +215,8 @@ const BENTO_CARDS: BentoCard[] = [
   {
     wash: 'radial-gradient(80% 70% at 20% 10%, rgba(255,207,200,0.6), transparent 70%), linear-gradient(140deg, #ff9c8e -20%, #8a5cf6 90%)',
     eyebrow: 'Slack',
-    title: 'Ett Slack-community',
-    text: 'Allt händer i vår Slack — trådar, kanaler och direktmeddelanden. Hitta kanalen för din bransch eller din stad och häng med.',
+    title: 'Allt händer i Slack',
+    text: 'Kanaler för din bransch, din stad och dina frågor. Trådar när du vill gå på djupet, direktmeddelanden när du vill ta något vidare.',
     wrapper: 'lg:col-span-2',
     corners: '',
     height: 'min-h-[24rem]',
@@ -226,7 +226,7 @@ const BENTO_CARDS: BentoCard[] = [
     wash: 'radial-gradient(70% 55% at 90% 15%, rgba(255,156,142,0.45), transparent 70%), linear-gradient(170deg, #16045e 10%, #4823dc 90%)',
     eyebrow: 'Gratis',
     title: '0 kr, inga hakar',
-    text: 'Ingen medlemsavgift, inga premiumnivåer och inga mellanhänder. Communityt drivs av medlemmarna själva.',
+    text: 'Ingen medlemsavgift, inga premiumnivåer och ingen som tjänar pengar på dig. Communityt drivs ideellt av medlemmarna själva.',
     wrapper: 'lg:col-span-2',
     corners: 'max-lg:rounded-b-4xl lg:rounded-br-4xl',
     height: 'min-h-[24rem]',
@@ -260,7 +260,7 @@ const TESTIMONIALS: Testimonial[] = [
   {
     name: 'Sara L.',
     role: 'UX-designer, Stockholm',
-    body: '”Mitt största uppdrag hittills kom från ett tips i Slack. Direktkontakt med kunden, inga mellanhänder — bara ett schysst tips från en annan frilansare.”',
+    body: '”Mitt största uppdrag hittills kom från ett tips i Slack. Direktkontakt med kunden, ingen mellanhand, bara ett schysst tips från en annan frilansare.”',
   },
   {
     name: 'Johan E.',
@@ -270,7 +270,7 @@ const TESTIMONIALS: Testimonial[] = [
   {
     name: 'Amina H.',
     role: 'Frilansskribent, Malmö',
-    body: '”Prissättning var alltid mitt svaga kort. Efter en tråd i Slack vågade jag höja arvodet — och kunden sa ja utan att blinka.”',
+    body: '”Prissättning var alltid mitt svaga kort. Efter en tråd i Slack vågade jag höja arvodet, och kunden sa ja utan att blinka.”',
   },
   {
     name: 'Erik S.',
@@ -285,7 +285,7 @@ const TESTIMONIALS: Testimonial[] = [
   {
     name: 'David N.',
     role: 'Ekonomikonsult, Lund',
-    body: '”Momsfrågor, avtal, försäkringar — svaren i Slack har sparat mig dyra konsulttimmar många gånger om.”',
+    body: '”Momsfrågor, avtal, försäkringar. Svaren i Slack har sparat mig dyra konsulttimmar många gånger om.”',
   },
   {
     name: 'Moa K.',
@@ -300,7 +300,7 @@ const TESTIMONIALS: Testimonial[] = [
   {
     name: 'Elin T.',
     role: 'Copywriter, Västerås',
-    body: '”Halva mitt nätverk kommer härifrån. Vi skickar uppdrag till varandra när vi själva är fullbokade — alla vinner.”',
+    body: '”Halva mitt nätverk kommer härifrån. Vi skickar uppdrag till varandra när vi själva är fullbokade, så alla vinner.”',
   },
 ]
 
@@ -365,7 +365,7 @@ const ORG_JSON_LD: WithContext<Organization> = {
   url: SITE_URL,
   logo: `${SITE_URL}/android-chrome-512x512.png`,
   description:
-    'Sveriges största community för frilansare: uppdragstips, kunskap och kollegskap i Slack — gratis och utan mellanhänder.',
+    'Sveriges största community för frilansare: uppdragstips, kunskap och kollegor i Slack. Gratis och utan mellanhänder.',
   sameAs: ['https://github.com/frilansaresverige/frilansaresverige.se'],
 }
 
@@ -382,17 +382,17 @@ const STEPS = [
   {
     number: '01',
     title: 'Skicka in din ansökan',
-    text: 'Berätta kort om vad du gör och länka till din LinkedIn. Det tar bara ett par minuter.',
+    text: 'Berätta kort om vad du gör och länka till din LinkedIn. Det tar ett par minuter, och det kostar ingenting.',
   },
   {
     number: '02',
     title: 'Vi tittar på den',
-    text: 'Vi godkänner dig som redan är igång som frilansare — med ett bolag att fakturera genom och minst en kund.',
+    text: 'Communityt är för dig som redan är igång som frilansare, med ett bolag att fakturera genom och minst en kund. Är du det så säger vi ja.',
   },
   {
     number: '03',
     title: 'Säg hej i Slack',
-    text: 'Du får en inbjudan till vår Slack. Hoppa in, presentera dig och hitta kanalerna som passar dig.',
+    text: 'Inbjudan kommer via mejl. Hoppa in, presentera dig i välkomstkanalen och hitta kanalerna för din bransch och din stad.',
   },
 ]
 
@@ -481,9 +481,10 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
           <div className="hero-enter" style={{ animationDelay: '300ms' }}>
             <p className="mt-8 max-w-[38em] text-lg leading-[1.6] text-brand-cream/85 md:text-xl">
               Vi är <MemberCount count={memberCount} /> frilansare som delar
-              uppdrag, kunskap och kollegskap i Slack. Vårt syfte är att främja
-              kontaktskapande och uppdragstipsande mellan frilansare — helt
-              gratis, utan mellanhänder.
+              uppdrag, kunskap och vardag i Slack. Här hittar du kollegor att
+              bolla med, svar på frågorna som annars kostar konsulttimmar och
+              uppdragstips som går direkt från kund till frilansare. Gratis, och
+              utan att någon tar en del av kakan.
             </p>
           </div>
 
@@ -496,14 +497,14 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 </Link>
               </Button>
               <Button asChild variant="primary-outline" size="none">
-                <Link href="/tipsa">Tipsa om konsultuppdrag</Link>
+                <Link href="/tipsa">Tipsa om ett uppdrag</Link>
               </Button>
             </div>
           </div>
 
           <div className="hero-enter" style={{ animationDelay: '500ms' }}>
             <p className="mt-7 text-sm text-brand-cream/60">
-              Gratis · Inga mellanhänder · Vi ses i Slack
+              Gratis · Ideellt · Inga mellanhänder · Vi ses i Slack
             </p>
           </div>
         </div>
@@ -512,7 +513,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
       {/* Client logos */}
       <Reveal reduced={reduced} className="w-full py-12 md:py-14">
         <p className="font-display mb-8 text-center text-sm font-bold tracking-widest text-brand-cream/60 uppercase">
-          Medlemmarna har gjort uppdrag för bland andra
+          Våra medlemmar har gjort uppdrag för bland andra
         </p>
         <TooltipProvider>
           <div ref={logos.ref}>
@@ -549,7 +550,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
       <section className="w-full py-16 md:py-20">
         <SectionHeading
           eyebrow="Vad du får"
-          title="Ett community som jobbar för dig"
+          title="Kollegorna du saknar när du driver eget"
         />
         <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-6 lg:grid-rows-2">
           {BENTO_CARDS.map((card, index) => (
@@ -597,7 +598,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
       <section className="w-full py-8 md:py-12">
         <SectionHeading
           eyebrow="Så går det till"
-          title="Tre steg till ditt nya nätverk"
+          title="Tre steg, sedan är du med"
         />
         <ol className="grid w-full gap-10 md:grid-cols-3">
           {STEPS.map((step, index) => (
@@ -625,7 +626,10 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
           and every extra copy is another 18 filtered <figure>s in the DOM
           on every viewport, hidden columns included. */}
       <section ref={testimonials.ref} className="w-full py-20 md:py-28">
-        <SectionHeading eyebrow="Medlemmarna" title="Röster från communityt" />
+        <SectionHeading
+          eyebrow="Medlemmarna"
+          title="Så beskriver medlemmarna det"
+        />
         {reduced ? (
           <div className="group grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {TESTIMONIALS.slice(0, 6).map((testimonial) => (
@@ -704,10 +708,10 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
       <section className="flex w-full flex-col items-center py-16 text-center md:py-20">
         <Reveal reduced={reduced}>
           <h2 className="font-display max-w-[14em] text-4xl font-extrabold tracking-tight text-brand-cream md:text-5xl">
-            Redo att slippa frilansa ensam?
+            Trött på att frilansa ensam?
           </h2>
           <p className="mx-auto mt-4 flex max-w-[30em] items-center justify-center gap-2 text-lg leading-[1.6] text-brand-cream/85">
-            Ansökan är gratis och tar bara ett par minuter. Vi ses i Slack!
+            Ansökan är gratis och tar ett par minuter. Vi ses i Slack.
             <span
               className="icon-[simple-icons--slack] size-5 shrink-0"
               aria-hidden="true"
@@ -733,8 +737,8 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
           language. Same outer-corner treatment as that bento. */}
       <section className="w-full pt-8 pb-24 md:pt-12 md:pb-32">
         <SectionHeading
-          eyebrow="Hitta rätt konsult"
-          title="Rätt frilansare för nästa uppdrag"
+          eyebrow="För företag"
+          title="Rätt frilansare till nästa uppdrag"
         />
         <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-3">
           <div className="relative lg:col-span-2">
@@ -767,10 +771,11 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                     Nå tusentals frilansare direkt.
                   </h3>
                   <p className="mt-4 max-w-[46ch] leading-[1.6] text-brand-grey/85">
-                    Beskriv ert uppdrag så når det{' '}
-                    <MemberCount count={memberCount} /> frilansare — ni väljer
-                    själva vem ni vill jobba med, utan förmedlingsavgifter och
-                    utan mellanhänder som tar en del av kakan.
+                    Beskriv uppdraget, så når det{' '}
+                    <MemberCount count={memberCount} /> frilansare i Slack.
+                    Intresserade hör av sig direkt till dig, och du väljer själv
+                    vem du vill jobba med. Ingen förmedlingsavgift, ingen
+                    provision.
                   </p>
                   <div className="mt-7">
                     <Button
@@ -780,7 +785,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                       className="bg-brand-blue text-brand-cream hover:bg-brand-blue-dark focus:shadow-[0_0_0_0.1em_var(--color-brand-coral),0_0_0_0.2em_var(--color-brand-blue)]"
                     >
                       <Link href="/tipsa">
-                        Tipsa om konsultuppdrag
+                        Tipsa om ett uppdrag
                         <ArrowRight />
                       </Link>
                     </Button>
@@ -807,11 +812,12 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 />
                 <div className="relative z-10 flex flex-1 flex-col p-8 text-brand-grey">
                   <h3 className="font-display text-2xl font-bold tracking-tight">
-                    Utan mellanhänder.
+                    Rakt in i Slack.
                   </h3>
                   <p className="mt-3 text-sm leading-[1.6] text-brand-grey/85">
-                    Tipset går rakt ut i communityt och kontakten sker direkt
-                    mellan er och frilansaren. Inga avgifter, ingen provision.
+                    Tipset publiceras i uppdragskanalen samma dag och kontakten
+                    sker direkt mellan dig och frilansaren. Vi står aldrig
+                    emellan.
                   </p>
                   <div className="mt-auto pt-6">
                     <GigToastStack reduced={reduced} />
@@ -839,8 +845,9 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                     Alla kompetenser.
                   </h3>
                   <p className="mt-3 text-sm leading-[1.6] text-brand-grey/85">
-                    Utvecklare, designers, skribenter, projektledare, ekonomer —
-                    nätverket täcker de flesta kompetenser och branscher.
+                    Utvecklare, designers, skribenter, projektledare, ekonomer
+                    och många fler. Alla är etablerade frilansare med eget bolag
+                    och kunder bakom sig.
                   </p>
                   <div className="mt-auto flex items-center gap-4 pt-6">
                     <div className="flex shrink-0" aria-hidden="true">

@@ -41,19 +41,19 @@ const SiteFooter = ({
               </span>
             </Link>
             <p className="mt-4 leading-relaxed text-brand-cream/85">
-              Sveriges största community för frilansare. Vi främjar
-              kontaktskapande och uppdragstipsande mellan frilansare — helt
-              gratis, utan mellanhänder.
+              Sveriges största community för frilansare. Tusentals kollegor som
+              delar uppdrag, kunskap och vardag i Slack. Gratis, ideellt och
+              utan mellanhänder.
             </p>
             <p className="mt-3 leading-relaxed text-brand-cream/85">
-              Sajten byggs av communityt och koden är öppen —{' '}
+              Sajten byggs av communityt och koden är öppen.{' '}
               <a
                 href={GITHUB_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-brand-cream underline hover:no-underline"
               >
-                bidra gärna
+                Bidra gärna på GitHub
               </a>
               .
             </p>

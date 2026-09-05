@@ -35,8 +35,9 @@ const Event = ({ upcoming, past }: Props) => {
           Event
         </h1>
         <p className="mt-4 max-w-[36em] text-lg leading-[1.6] text-brand-cream/85">
-          AW:er, workshops och årsmöten — communityts träffar är gratis och
-          öppna för alla medlemmar.
+          AW:er, workshops och årsmöten. Träffarna är gratis, öppna för alla
+          medlemmar och det enklaste sättet att sätta ansikten på
+          Slack-avatarerna.
         </p>
 
         <h2 className="font-display mt-10 text-2xl font-bold tracking-tight text-brand-cream">
@@ -50,8 +51,9 @@ const Event = ({ upcoming, past }: Props) => {
           </div>
         ) : (
           <p className="mt-4 max-w-[36em] leading-[1.6] text-brand-cream/70">
-            Inga inplanerade event just nu — håll utkik i Slacken, det brukar
-            inte dröja länge.
+            Inga inplanerade event just nu. Håll utkik i Slacken, det brukar
+            inte dröja länge. Vill du dra igång en träff på din ort? Säg till i
+            #meta.
           </p>
         )}
 

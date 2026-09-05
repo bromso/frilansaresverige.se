@@ -29,8 +29,9 @@ const AnsokanTack = () => {
           Tack för din ansökan
         </h1>
         <p className="mt-4 max-w-[36em] text-lg leading-[1.6] text-brand-cream/85">
-          Grattis! Din ansökan är inskickad. Vi tittar på den och hör av oss via
-          mejl så fort vi är klara — då kommer din inbjudan till Slacken.
+          Din ansökan är inskickad. En av oss tittar på den, oftast inom några
+          dagar, och sedan kommer din inbjudan till Slacken via mejl. Håll koll
+          på skräpposten för säkerhets skull.
         </p>
         <p className="mt-4 max-w-[36em] leading-[1.6] text-brand-cream/70">
           Medan du väntar kan du läsa{' '}

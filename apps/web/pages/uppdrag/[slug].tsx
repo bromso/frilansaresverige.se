@@ -116,8 +116,8 @@ const EnskiltUppdrag = ({ meta, source }: Props) => {
             </a>
           ) : (
             <p className="mt-2 leading-[1.6] text-brand-cream/70">
-              Uppdraget söks via communityt — som medlem hittar du kontaktvägen
-              i uppdragskanalen i Slack.{' '}
+              Uppdraget söks via communityt. Som medlem hittar du kontaktvägen i
+              uppdragskanalen i Slack.{' '}
               <Link href="/ansokan" className="underline hover:no-underline">
                 Bli medlem
               </Link>

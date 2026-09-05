@@ -36,11 +36,11 @@ const RELATION_OPTIONS = [
   {
     value: 'formedlare',
     label:
-      'Uppdraget innebär avtal med en förmedlare, som i sin tur har avtal med kunden',
+      'Frilansaren skriver avtal med en förmedlare eller ett konsultbolag, som i sin tur har avtal med kunden',
   },
   {
     value: 'direktavtal',
-    label: 'Den vi söker kommer ha direktavtal med kunden',
+    label: 'Frilansaren skriver avtal direkt med kunden',
   },
 ]
 
@@ -108,7 +108,9 @@ const GigTipForm = () => {
       '[role="radiogroup"][aria-required="true"]',
     )) {
       if (!group.querySelector('[role="radio"][data-state="checked"]')) {
-        setStepError('Välj ett alternativ i alla obligatoriska fält.')
+        setStepError(
+          'Välj ett alternativ i alla obligatoriska fält innan du går vidare.',
+        )
         return false
       }
     }
@@ -142,7 +144,10 @@ const GigTipForm = () => {
     return (
       <StatusSlide reduced={reduced}>
         <Alert className="mt-8 rounded-[0.75em] border-[#6a6a6a] bg-[#ffaaaa] p-5 text-brand-grey">
-          <AlertDescription>Något gick fel. Försök igen.</AlertDescription>
+          <AlertDescription>
+            Något gick fel när tipset skulle skickas. Ladda om sidan och försök
+            igen. Fortsätter det strula, hör av dig via kontaktsidan.
+          </AlertDescription>
         </Alert>
       </StatusSlide>
     )
@@ -195,7 +200,7 @@ const GigTipForm = () => {
 
               <div className="mt-5 flex flex-col gap-1.5">
                 <Label htmlFor="description" className={LABEL_CLASSES}>
-                  Beskrivning av uppdraget och uppdragsgivarens behov
+                  Beskriv uppdraget
                 </Label>
                 <div className="relative">
                   <span
@@ -205,7 +210,7 @@ const GigTipForm = () => {
                   <Textarea
                     id="description"
                     name="description"
-                    placeholder="Beskriv uppdraget, teamet och behoven…"
+                    placeholder="Vad ska göras, i vilket team, när börjar det och hur länge pågår det? Ju mer konkret, desto bättre svar…"
                     required
                     className={`${FIELD_CLASSES} min-h-[10em] pl-[2.4em]`}
                   />
@@ -293,7 +298,7 @@ const GigTipForm = () => {
 
               <div className="mt-6 flex flex-col gap-1.5">
                 <Label htmlFor="minRate" className={LABEL_CLASSES}>
-                  Minimumarvode till frilansaren
+                  Lägsta arvode till frilansaren
                 </Label>
                 <div className="relative">
                   <span
@@ -322,7 +327,7 @@ const GigTipForm = () => {
 
               <fieldset className="mt-6">
                 <legend className={LABEL_CLASSES}>
-                  Hur kommer frilansarens relation med kunden se ut?
+                  Vem skriver frilansaren avtal med?
                 </legend>
                 <RadioGroup name="relation" required className="mt-2 gap-3">
                   {RELATION_OPTIONS.map((option) => (
@@ -354,7 +359,7 @@ const GigTipForm = () => {
             >
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="clientName" className={LABEL_CLASSES}>
-                  Uppdragsgivarens namn
+                  Företag eller organisation
                 </Label>
                 <div className="relative">
                   <span
@@ -386,7 +391,7 @@ const GigTipForm = () => {
                     name="contactName"
                     type="text"
                     autoComplete="name"
-                    placeholder="t.ex. Anna Andersson…"
+                    placeholder="t.ex. Kim Lindqvist…"
                     required
                     className={`${FIELD_CLASSES} pl-[2.4em]`}
                   />
@@ -432,7 +437,7 @@ const GigTipForm = () => {
                       pattern={EMAIL_PATTERN}
                       title={EMAIL_TITLE}
                       autoComplete="email"
-                      placeholder="anna@acme.se…"
+                      placeholder="kim@acme.se…"
                       required
                       className={`${FIELD_CLASSES} pl-[2.4em]`}
                     />

@@ -20,8 +20,9 @@ const Tipsa: NextPage = () => {
       </h1>
 
       <p className="mt-4 mb-8 max-w-[36em] text-lg leading-[1.6] text-brand-cream/85">
-        Har du eller ditt företag ett konsultbehov? Publicera uppdraget direkt
-        till våra medlemmar — gratis, utan mellanhänder och direkt från källan.
+        Har du eller ditt företag ett konsultbehov? Beskriv uppdraget, så
+        publicerar vi det för tusentals frilansare i Slack. Det är gratis, och
+        de som är intresserade hör av sig direkt till dig. Tre korta steg.
       </p>
 
       <GigTipForm />
@@ -34,7 +35,7 @@ const Tipsa: NextPage = () => {
           Vanliga frågor
         </h2>
         <p className="font-display mb-6 text-2xl font-extrabold tracking-tight text-brand-cream md:text-3xl">
-          Innan du tipsar
+          Bra att veta innan du tipsar
         </p>
         <FaqAccordion items={TIPSA_FAQ_ITEMS} />
         <Link

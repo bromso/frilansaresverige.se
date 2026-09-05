@@ -40,8 +40,8 @@ const Uppdrag = ({ gigs }: Props) => {
         </h1>
         <p className="mt-4 max-w-[36em] text-lg leading-[1.6] text-brand-cream/85">
           Uppdragen kommer från medlemmar och företag som tipsar communityt
-          direkt — inga mellanhänder, du tar kontakt med uppdragsgivaren själv.
-          Har du ett uppdrag att dela?{' '}
+          direkt. Du tar kontakt med uppdragsgivaren själv, utan mellanhänder
+          och utan att någon tar en del av arvodet. Har du ett uppdrag att dela?{' '}
           <Link href="/tipsa" className="underline hover:no-underline">
             Tipsa gratis
           </Link>
@@ -66,11 +66,12 @@ const Uppdrag = ({ gigs }: Props) => {
         </div>
 
         <p className="mt-10 max-w-[36em] leading-[1.6] text-brand-cream/70">
-          Är du inte medlem än?{' '}
+          Här visas ett urval. Är du inte medlem än?{' '}
           <Link href="/ansokan" className="underline hover:no-underline">
             Ansök om medlemskap
           </Link>{' '}
-          så får du uppdragstipsen direkt i Slack.
+          så får du alla uppdragstips direkt i Slack, samma dag som de kommer
+          in.
         </p>
       </section>
     </>

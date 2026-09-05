@@ -4,15 +4,27 @@ const Community = () => (
   <HubPage
     path="/community"
     eyebrow="Community"
-    heading="Communityt bakom sajten"
+    heading="Människorna bakom sajten"
     intro={
       <p>
-        Frilansare Sverige drivs av sina medlemmar — ideellt, gratis och med
-        öppen källkod. Här hittar du vilka vi är, vad som gäller och hur du når
-        oss.
+        Frilansare Sverige drivs av sina medlemmar: ideellt, gratis och med
+        öppen källkod. Här hittar du vilka vi är, vad som händer just nu, vad
+        som gäller i Slacken och hur du når oss.
       </p>
     }
     links={[
+      {
+        href: '/nyheter',
+        label: 'Nyheter',
+        text: 'Det senaste från communityt, sajten och frilanslivet.',
+        icon: 'icon-[lucide--newspaper]',
+      },
+      {
+        href: '/event',
+        label: 'Event',
+        text: 'AW:er, workshops och årsmöten. Gratis och öppna för alla medlemmar.',
+        icon: 'icon-[lucide--calendar]',
+      },
       {
         href: '/om',
         label: 'Om oss',
@@ -22,7 +34,7 @@ const Community = () => (
       {
         href: '/uppforandekod',
         label: 'Uppförandekod',
-        text: 'Reglerna som håller Slacken schysst.',
+        text: 'Reglerna som håller Slacken schysst och hjälpsam.',
         icon: 'icon-[lucide--scale]',
       },
       {

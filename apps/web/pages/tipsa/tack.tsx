@@ -29,8 +29,9 @@ const TipsaTack = () => {
           Tack för tipset
         </h1>
         <p className="mt-4 max-w-[36em] text-lg leading-[1.6] text-brand-cream/85">
-          Uppdraget är inskickat till communityt. Frilansare som är intresserade
-          hör av sig direkt till kontaktpersonen du angav — utan mellanhänder.
+          Tipset är inskickat. En av oss läser igenom det och publicerar det i
+          uppdragskanalen, och frilansare som är intresserade hör av sig direkt
+          till kontaktpersonen du angav. Vi står inte emellan.
         </p>
         <p className="mt-4 max-w-[36em] leading-[1.6] text-brand-cream/70">
           Har du fler uppdrag?{' '}

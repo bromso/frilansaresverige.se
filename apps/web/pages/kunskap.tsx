@@ -4,19 +4,25 @@ const Kunskap = () => (
   <HubPage
     path="/kunskap"
     eyebrow="Kunskap"
-    heading="Kunskap för frilansare"
+    heading="Kunskap från frilansare, till frilansare"
     intro={
       <p>
-        Guider och verktyg för dig som frilansar i Sverige — skrivna av
-        communityt, utan säljagenda. Vi bygger ut den här sektionen löpande;
-        först ut är svaren på de vanligaste frågorna.
+        Guider, recensioner och svar för dig som frilansar i Sverige. Allt är
+        skrivet av medlemmar i communityt, utan säljagenda. Vi bygger ut
+        sektionen löpande.
       </p>
     }
     links={[
       {
+        href: '/recensioner',
+        label: 'Recensioner',
+        text: 'Så upplever medlemmarna konsultmäklare, rekryterare och HR-bolag. Ärliga betyg, inga filter.',
+        icon: 'icon-[lucide--star]',
+      },
+      {
         href: '/fragor-och-svar',
         label: 'Frågor och svar',
-        text: 'Det vanligaste om medlemskap och community.',
+        text: 'Det vanligaste om medlemskap och hur communityt fungerar.',
         icon: 'icon-[lucide--message-circle-question-mark]',
       },
     ]}
@@ -29,8 +35,8 @@ const Kunskap = () => (
         className="underline hover:no-underline"
       >
         GitHub
-      </a>{' '}
-      — sajten är öppen källkod.
+      </a>
+      . Sajten är öppen källkod, och kunskapssektionen växer med dem som bidrar.
     </p>
   </HubPage>
 )

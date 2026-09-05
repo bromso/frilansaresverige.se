@@ -29,7 +29,7 @@ const FragorOchSvar = () => {
         </h1>
         <p className="mt-4 max-w-[36em] text-lg leading-[1.6] text-brand-cream/85">
           Här är svaren på det vi oftast får frågor om. Hittar du inte ditt
-          svar? Fråga i Slacken — eller mejla oss via kontaktsidan.
+          svar? Fråga i Slacken om du är medlem, annars via kontaktsidan.
         </p>
         <div className="mt-10">
           <FaqAccordion items={FAQ_ITEMS} />

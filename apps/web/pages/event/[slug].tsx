@@ -118,7 +118,7 @@ const EnskiltEvent = ({ meta, source, isPast }: Props) => {
           )}
           {isPast ? (
             <p className="mt-2 text-brand-cream/60">
-              Det här eventet har ägt rum.
+              Det här eventet har redan ägt rum. Håll utkik efter nästa.
             </p>
           ) : (
             meta.rsvpUrl && (

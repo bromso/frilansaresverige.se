@@ -115,7 +115,7 @@ export const parseLocalDate = (value: string): Date => {
   const m = value.match(DATE_PATTERN)
   if (!m) {
     throw new Error(
-      `Ogiltigt datum "${value}" — använd "YYYY-MM-DD" eller "YYYY-MM-DDTHH:mm"`,
+      `Ogiltigt datum "${value}". Använd "YYYY-MM-DD" eller "YYYY-MM-DDTHH:mm"`,
     )
   }
   return new Date(+m[1], +m[2] - 1, +m[3], +(m[4] ?? 0), +(m[5] ?? 0))
@@ -205,7 +205,7 @@ export const parseGigMeta = (
   const role = field(data, 'role', slug, true) as string
   if (!(GIG_ROLES as readonly string[]).includes(role)) {
     throw new Error(
-      `${slug}: okänd roll "${role}" — använd ${GIG_ROLES.join(', ')}`,
+      `${slug}: okänd roll "${role}". Använd ${GIG_ROLES.join(', ')}`,
     )
   }
   return {
@@ -244,7 +244,7 @@ export const parseReviewMeta = (
   const category = field(data, 'category', slug, true) as string
   if (!(REVIEW_CATEGORIES as readonly string[]).includes(category)) {
     throw new Error(
-      `${slug}: okänd kategori "${category}" — använd ${REVIEW_CATEGORIES.join(', ')}`,
+      `${slug}: okänd kategori "${category}". Använd ${REVIEW_CATEGORIES.join(', ')}`,
     )
   }
   const rawScores = data.scores

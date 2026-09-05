@@ -62,8 +62,8 @@ const CookieToast = () => {
                 Cookies
               </p>
               <p className="mt-0.5 text-[0.8rem] leading-snug text-brand-cream/60">
-                Vi använder cookies för att se hur många besökare det kommer
-                till denna sida.
+                Vi använder cookies för att räkna besökare på sajten. Inget mer
+                än så.
               </p>
               <div className="mt-3 flex items-center gap-2">
                 <Button
@@ -72,7 +72,7 @@ const CookieToast = () => {
                   className="px-4 py-1.5 text-sm"
                   onClick={() => answer(true)}
                 >
-                  Okej det går väl bra
+                  Okej, det går bra
                 </Button>
                 <Button
                   variant="primary-outline"
@@ -80,7 +80,7 @@ const CookieToast = () => {
                   className="px-4 py-1.5 text-sm"
                   onClick={() => answer(false)}
                 >
-                  Nej
+                  Nej tack
                 </Button>
               </div>
             </div>

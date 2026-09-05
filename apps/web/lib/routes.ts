@@ -23,7 +23,7 @@ export const ROUTES: RouteMeta[] = [
     path: '/',
     title: 'Sveriges största community för frilansare',
     description:
-      'Frilansare Sverige är ett gratis community där frilansare delar uppdrag, kunskap och kollegskap — utan mellanhänder.',
+      'Frilansare Sverige är ett gratis community i Slack där tusentals frilansare delar uppdrag, kunskap och kollegor. Inga avgifter, inga mellanhänder.',
   },
 
   // För frilansare
@@ -31,19 +31,19 @@ export const ROUTES: RouteMeta[] = [
     path: '/for-frilansare',
     title: 'För frilansare',
     description:
-      'Det här får du som medlem i Frilansare Sverige: uppdragstips, kollegor i hela landet och svar på frilanslivets frågor — helt gratis.',
+      'Det här får du som medlem i Frilansare Sverige: uppdragstips, kollegor i hela landet och svar på frilanslivets frågor. Helt gratis.',
   },
   {
     path: '/ansokan',
     title: 'Ansök om medlemskap',
     description:
-      'Ansök om medlemskap i Frilansare Sverige. Gratis, tar ett par minuter, och du får en inbjudan till vår Slack via mejl.',
+      'Ansök om medlemskap i Frilansare Sverige. Det är gratis, tar ett par minuter och du får en inbjudan till vår Slack via mejl.',
     parent: '/for-frilansare',
   },
   {
     path: '/ansokan/tack',
     title: 'Tack för din ansökan',
-    description: 'Din ansökan är inskickad.',
+    description: 'Din ansökan är inskickad. Vi hör av oss via mejl.',
     parent: '/ansokan',
     noindex: true,
   },
@@ -51,14 +51,14 @@ export const ROUTES: RouteMeta[] = [
     path: '/sa-fungerar-det',
     title: 'Så fungerar communityt',
     description:
-      'Så fungerar Frilansare Sverige: ansökan, Slack-kanalerna, uppdragstipsen och reglerna som håller communityt schysst.',
+      'Så fungerar Frilansare Sverige: ansökan, kanalerna i Slack, uppdragstipsen och reglerna som håller communityt schysst.',
     parent: '/for-frilansare',
   },
   {
     path: '/fragor-och-svar',
     title: 'Frågor och svar',
     description:
-      'Vanliga frågor om Frilansare Sverige: vem som kan bli medlem, vad det kostar och hur ansökan går till.',
+      'Vanliga frågor om Frilansare Sverige: vem som kan bli medlem, vad det kostar, hur ansökan går till och vad som händer sedan.',
     parent: '/for-frilansare',
   },
 
@@ -67,19 +67,19 @@ export const ROUTES: RouteMeta[] = [
     path: '/for-foretag',
     title: 'För företag',
     description:
-      'Nå Sveriges största frilanscommunity direkt: tipsa om uppdrag gratis och kom i kontakt med frilansare utan mellanhänder.',
+      'Söker du en konsult? Tipsa Sveriges största frilanscommunity om uppdraget. Gratis, och frilansarna kontaktar dig direkt.',
   },
   {
     path: '/tipsa',
     title: 'Tipsa om konsultuppdrag',
     description:
-      'Har du ett uppdrag som passar en frilansare? Tipsa communityt gratis — uppdraget når tusentals frilansare direkt.',
+      'Har du ett uppdrag som passar en frilansare? Tipsa communityt gratis, så når det tusentals frilansare i Slack samma dag.',
     parent: '/for-foretag',
   },
   {
     path: '/tipsa/tack',
     title: 'Tack för tipset',
-    description: 'Uppdraget är inskickat till communityt.',
+    description: 'Tipset är inskickat till communityt. Tack för att du delar.',
     parent: '/tipsa',
     noindex: true,
   },
@@ -87,7 +87,7 @@ export const ROUTES: RouteMeta[] = [
     path: '/anlita-frilansare',
     title: 'Anlita en frilansare',
     description:
-      'Hitta rätt konsult i Sveriges största frilanscommunity — utvecklare, designers, skribenter och fler. Direktkontakt, inga mellanhänder.',
+      'Hitta rätt konsult i Sveriges största frilanscommunity: utvecklare, designers, skribenter, projektledare och fler. Direktkontakt, ingen förmedlingsavgift.',
     parent: '/for-foretag',
   },
 
@@ -96,7 +96,7 @@ export const ROUTES: RouteMeta[] = [
     path: '/uppdrag',
     title: 'Lediga frilans- och konsultuppdrag',
     description:
-      'Lediga frilansuppdrag och konsultuppdrag från Frilansare Sveriges community — tipsade av medlemmar, utan mellanhänder.',
+      'Lediga frilansuppdrag och konsultuppdrag tipsade av medlemmar och företag i Frilansare Sverige. Du kontaktar uppdragsgivaren direkt.',
   },
 
   // Kunskap
@@ -104,14 +104,14 @@ export const ROUTES: RouteMeta[] = [
     path: '/kunskap',
     title: 'Kunskap för frilansare',
     description:
-      'Guider, verktyg och svar för dig som frilansar i Sverige — från fakturering och skatt till timpris och avtal.',
+      'Guider, verktyg och svar för dig som frilansar i Sverige, från fakturering och skatt till timpris och avtal. Skrivet av frilansare.',
   },
 
   {
     path: '/recensioner',
     title: 'Recensioner',
     description:
-      'Communityts recensioner av konsultmäklare, rekryterare och HR-bolag — villkor, transparens och bemötande betygsatt av frilansare.',
+      'Frilansarnas egna recensioner av konsultmäklare, rekryterare och HR-bolag. Villkor, transparens och bemötande betygsatt av medlemmarna.',
   },
 
   // Community
@@ -119,39 +119,39 @@ export const ROUTES: RouteMeta[] = [
     path: '/nyheter',
     title: 'Nyheter',
     description:
-      'Nyheter från Frilansare Sverige — uppdateringar från communityt, sajten och frilanslivet i Sverige.',
+      'Nyheter från Frilansare Sverige: det senaste från communityt, sajten och frilanslivet i Sverige.',
   },
   {
     path: '/event',
     title: 'Event',
     description:
-      'Kommande träffar och event för frilansare — AW, workshops och årsmöten från Frilansare Sverige.',
+      'Kommande träffar och event för frilansare: AW:er, workshops och årsmöten från Frilansare Sverige. Gratis för medlemmar.',
   },
   {
     path: '/community',
     title: 'Community',
     description:
-      'Lär känna communityt bakom Frilansare Sverige: vilka vi är, hur du når oss och vad som gäller i vår Slack.',
+      'Lär känna communityt bakom Frilansare Sverige: vilka vi är, hur vi drivs, hur du når oss och vad som gäller i vår Slack.',
   },
   {
     path: '/om',
     title: 'Om Frilansare Sverige',
     description:
-      'Frilansare Sverige är ett ideellt, medlemsdrivet community med öppen källkod. Läs om varför vi finns och hur vi drivs.',
+      'Frilansare Sverige är ett ideellt community som drivs av sina medlemmar, med öppen källkod. Läs om varför vi finns och hur vi jobbar.',
     parent: '/community',
   },
   {
     path: '/kontakt',
     title: 'Kontakt',
     description:
-      'Kontakta Frilansare Sverige — frågor om medlemskap, uppdrag, press eller sajten.',
+      'Kontakta Frilansare Sverige med frågor om medlemskap, uppdrag, press eller sajten.',
     parent: '/community',
   },
   {
     path: '/uppforandekod',
     title: 'Uppförandekod',
     description:
-      'Uppförandekoden för Frilansare Sveriges community: så håller vi Slacken schysst, hjälpsam och fri från spam.',
+      'Uppförandekoden för Frilansare Sverige: så håller vi Slacken schysst, hjälpsam och fri från spam.',
     parent: '/community',
   },
 

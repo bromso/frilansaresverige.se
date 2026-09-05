@@ -123,7 +123,10 @@ const RequestSlackInvitationForm = () => {
     return (
       <StatusSlide reduced={reduced}>
         <Alert className="mt-8 rounded-[0.75em] border-[#6a6a6a] bg-[#ffaaaa] p-5 text-brand-grey">
-          <AlertDescription>Något gick fel. Försök igen.</AlertDescription>
+          <AlertDescription>
+            Något gick fel när ansökan skulle skickas. Ladda om sidan och försök
+            igen. Fortsätter det strula, hör av dig via kontaktsidan.
+          </AlertDescription>
         </Alert>
       </StatusSlide>
     )
@@ -135,12 +138,14 @@ const RequestSlackInvitationForm = () => {
         Ansökan
       </p>
       <h1 className="font-display text-4xl font-extrabold tracking-tight text-brand-cream md:text-5xl">
-        Bli en av oss
+        Ansök om medlemskap
       </h1>
 
       <p className="mt-4 mb-8 max-w-[36em] text-lg leading-[1.6] text-brand-cream/85">
-        Slack-gruppen är till för dig som redan är igång som frilansare. Berätta
-        kort om dig själv, så tittar vi på din ansökan så snart vi kan.
+        Communityt är för dig som redan är igång som frilansare, oavsett
+        bransch, ort eller bolagsform. Berätta kort om dig själv, så tittar vi
+        på din ansökan så snart vi kan. Det tar ett par minuter och kostar
+        ingenting.
       </p>
 
       <form
@@ -175,7 +180,7 @@ const RequestSlackInvitationForm = () => {
                     <IconField icon="icon-[lucide--user]">
                       <Input
                         id="name"
-                        placeholder="Anna Andersson…"
+                        placeholder="Kim Lindqvist…"
                         name="name"
                         type="text"
                         autoComplete="name"
@@ -187,12 +192,12 @@ const RequestSlackInvitationForm = () => {
 
                   <div className="flex flex-col gap-1.5">
                     <Label htmlFor="email" className={LABEL_CLASSES}>
-                      E-mail
+                      E-post
                     </Label>
                     <IconField icon="icon-[lucide--mail]">
                       <Input
                         id="email"
-                        placeholder="anna@exempel.se…"
+                        placeholder="kim@exempel.se…"
                         name="email"
                         type="email"
                         pattern={EMAIL_PATTERN}
@@ -213,7 +218,7 @@ const RequestSlackInvitationForm = () => {
                     <IconField icon="icon-[lucide--briefcase-business]">
                       <Input
                         id="roll"
-                        placeholder="t.ex. UX-designer…"
+                        placeholder="t.ex. UX-designer, fotograf, redovisningskonsult…"
                         name="roll"
                         type="text"
                         required
@@ -265,12 +270,12 @@ const RequestSlackInvitationForm = () => {
 
                 <div className="mt-5 flex flex-col gap-1.5">
                   <Label htmlFor="companyName" className={LABEL_CLASSES}>
-                    Vad heter ditt företag? Eller har du enskild firma?
+                    Vad heter ditt företag eller din enskilda firma?
                   </Label>
                   <IconField icon="icon-[lucide--building-2]">
                     <Input
                       id="companyName"
-                      placeholder="t.ex. Anna Design AB…"
+                      placeholder="t.ex. Lindqvist Design AB…"
                       name="companyName"
                       type="text"
                       required
@@ -286,7 +291,7 @@ const RequestSlackInvitationForm = () => {
                   <IconField icon="icon-[simple-icons--linkedin]">
                     <Input
                       id="linkedin"
-                      placeholder="linkedin.com/in/anna-andersson…"
+                      placeholder="linkedin.com/in/kim-lindqvist…"
                       name="linkedin"
                       type="text"
                       inputMode="url"
@@ -305,7 +310,7 @@ const RequestSlackInvitationForm = () => {
                   <IconField icon="icon-[lucide--globe]">
                     <Input
                       id="portfolio"
-                      placeholder="annadesign.se…"
+                      placeholder="lindqvistdesign.se…"
                       name="portfolio"
                       type="text"
                       inputMode="url"
@@ -326,15 +331,16 @@ const RequestSlackInvitationForm = () => {
               >
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="motivation" className={LABEL_CLASSES}>
-                    Motivering
+                    Berätta om dig
                   </Label>
                   <p
                     id="motivation-description"
                     className="text-[0.95em] leading-[1.5]"
                   >
-                    Berätta kort om vad du gör och varför du vill vara med i
-                    vårt community. Observera att vi endast godkänner medlemmar
-                    som ÄR frilansare.
+                    Vad gör du, vilka kunder jobbar du med och vad hoppas du få
+                    ut av communityt? Några rader räcker. Vi godkänner bara
+                    frilansare som redan är igång, så skriv gärna hur länge du
+                    kört eget.
                   </p>
                   <IconField
                     icon="icon-[lucide--message-square]"
@@ -342,7 +348,7 @@ const RequestSlackInvitationForm = () => {
                   >
                     <Textarea
                       id="motivation"
-                      placeholder="Jag är frilansande formgivare sedan 2021 och vill…"
+                      placeholder="Jag har frilansat som formgivare sedan 2021 och vill…"
                       name="motivation"
                       required
                       aria-describedby="motivation-description"
@@ -364,9 +370,8 @@ const RequestSlackInvitationForm = () => {
                     className="border-brand-blue"
                   />
                   <span className="text-[1.05em] leading-[1.5]">
-                    Jag är igång som frilansare, d v s har ett bolag att
-                    fakturera genom och tecknat avtal med åtminstone min första
-                    kund.
+                    Jag är igång som frilansare: jag har ett bolag eller en
+                    enskild firma att fakturera genom och minst en kund.
                   </span>
                 </Label>
               </div>

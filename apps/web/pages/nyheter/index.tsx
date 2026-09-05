@@ -35,6 +35,7 @@ const Nyheter = ({ posts }: Props) => {
         </h1>
         <p className="mt-4 max-w-[36em] text-lg leading-[1.6] text-brand-cream/85">
           Det senaste från communityt, sajten och frilanslivet i Sverige.
+          Skrivet av medlemmar, för medlemmar.
         </p>
         {featured && (
           <div className="mt-10">

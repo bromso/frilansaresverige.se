@@ -123,7 +123,8 @@ const EnskildRecension = ({ meta, source }: Props) => {
           </div>
           <p className="text-sm leading-[1.6] text-brand-cream/60 italic">
             Recensionen bygger på erfarenheter från medlemmar i communityt och
-            uppdateras när nya erfarenheter kommer in.
+            uppdateras när nya erfarenheter kommer in. Har du egna erfarenheter
+            av bolaget? Dela dem i Slacken.
           </p>
         </div>
 
