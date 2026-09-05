@@ -1,33 +1,20 @@
 import { type FormEvent, useState } from 'react'
-
-interface GigTipFormTarget extends EventTarget {
-  title: HTMLInputElement
-  location: HTMLInputElement
-  clientName: HTMLInputElement
-  minRate: HTMLInputElement
-  description: HTMLInputElement
-  contactName: HTMLInputElement
-  contactPhone: HTMLInputElement
-  contactEmail: HTMLInputElement
-  // Radix RadioGroup renders hidden radio inputs, so the named form
-  // control is a RadioNodeList whose .value is the checked item's value.
-  relation: { value: string }
-  omfattning: { value: string }
-}
-interface Data {
-  success?: boolean
-}
+import { HONEYPOT_FIELD } from '../lib/form-fields'
+import { controlValue, type FormResult, postForm } from './submit-form'
 
 export const useSubmitGigTipForm = () => {
-  const [data, setData] = useState<Data | null>(null)
+  const [data, setData] = useState<FormResult | null>(null)
   const [error, setError] = useState<unknown>(null)
   const [isLoading, setIsLoading] = useState(false)
 
   const submitForm = async (event: FormEvent) => {
     event.preventDefault()
+    if (isLoading) {
+      return
+    }
     setIsLoading(true)
 
-    const target = event.target as GigTipFormTarget
+    const target = event.target
     // The arbetsform checkboxes share a name and only checked ones land
     // in FormData, so reading them there gives the selected set directly.
     // (The instanceof guard keeps unit tests with plain-object mock
@@ -36,36 +23,32 @@ export const useSubmitGigTipForm = () => {
       target instanceof HTMLFormElement
         ? new FormData(target).getAll('arbetsform').map(String).join(', ')
         : ''
+    // Radix RadioGroup renders hidden radio inputs, so the named form
+    // control is a RadioNodeList whose .value is the checked item's value.
     const requestBody = {
-      title: target.title.value,
-      location: target.location.value,
-      clientName: target.clientName.value,
-      minRate: target.minRate.value,
-      description: target.description.value,
-      contactName: target.contactName.value,
-      contactPhone: target.contactPhone.value,
-      contactEmail: target.contactEmail.value,
-      relation: target.relation.value,
-      omfattning: target.omfattning.value,
+      title: controlValue(target, 'title'),
+      location: controlValue(target, 'location'),
+      clientName: controlValue(target, 'clientName'),
+      minRate: controlValue(target, 'minRate'),
+      description: controlValue(target, 'description'),
+      contactName: controlValue(target, 'contactName'),
+      contactPhone: controlValue(target, 'contactPhone'),
+      contactEmail: controlValue(target, 'contactEmail'),
+      relation: controlValue(target, 'relation'),
+      omfattning: controlValue(target, 'omfattning'),
       arbetsform,
+      [HONEYPOT_FIELD]: controlValue(target, HONEYPOT_FIELD),
     }
 
-    await fetch('/api/submit-gig-tip', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(requestBody),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data)
-        setError(null)
-        setIsLoading(false)
-      })
-      .catch((e) => {
-        setError(e)
-        setData(null)
-        setIsLoading(false)
-      })
+    try {
+      setData(await postForm('/api/submit-gig-tip', requestBody))
+      setError(null)
+    } catch (e) {
+      setError(e)
+      setData(null)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return { submitForm, data, isLoading, error }

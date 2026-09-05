@@ -11,14 +11,12 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from '@frilansaresverige/ui/animate-ui/components/radix/radio-group'
-import { Slide } from '@frilansaresverige/ui/animate-ui/primitives/effects/slide'
 import { useReducedMotion } from '@frilansaresverige/ui/lib/use-reduced-motion'
-import { Alert, AlertDescription } from '@frilansaresverige/ui/ui/alert'
 import { Input } from '@frilansaresverige/ui/ui/input'
 import { Label } from '@frilansaresverige/ui/ui/label'
 import { Textarea } from '@frilansaresverige/ui/ui/textarea'
 import { useRouter } from 'next/router'
-import type { ReactElement } from 'react'
+import type { FormEvent } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { useSubmitGigTipForm } from '../hooks/useSubmitGigTipForm'
 import {
@@ -31,6 +29,11 @@ import {
   PHONE_PATTERN,
   PHONE_TITLE,
 } from './form-classes'
+import {
+  HoneypotField,
+  SubmitErrorAlert,
+  SubmittingStatus,
+} from './form-extras'
 
 const RELATION_OPTIONS = [
   {
@@ -62,19 +65,8 @@ const STEPS = [
   { value: 'kontakt', label: '3. Kontakt' },
 ]
 
-// Wraps a status Alert in the Slide entrance animation, except when the
-// visitor has asked for reduced motion — in that case it renders as-is,
-// with no motion wrapper attached at all.
-const StatusSlide = ({
-  reduced,
-  children,
-}: {
-  reduced: boolean
-  children: ReactElement
-}) => (reduced ? children : <Slide asChild>{children}</Slide>)
-
 const GigTipForm = () => {
-  const { submitForm, data, error } = useSubmitGigTipForm()
+  const { submitForm, data, error, isLoading } = useSubmitGigTipForm()
   const reduced = useReducedMotion()
   const router = useRouter()
   const [step, setStep] = useState(STEPS[0].value)
@@ -140,24 +132,36 @@ const GigTipForm = () => {
     }
   }
 
-  if (error) {
-    return (
-      <StatusSlide reduced={reduced}>
-        <Alert className="mt-8 rounded-[0.75em] border-[#6a6a6a] bg-[#ffaaaa] p-5 text-brand-grey">
-          <AlertDescription>
-            Något gick fel när tipset skulle skickas. Ladda om sidan och försök
-            igen. Fortsätter det strula, hör av dig via kontaktsidan.
-          </AlertDescription>
-        </Alert>
-      </StatusSlide>
-    )
+  // Enter inside a text field triggers implicit submission. Before the
+  // last step that should behave like the Nästa button, and on the last
+  // step the pane is validated first so the required radio groups get
+  // the same treatment as when clicking Nästa.
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    if (stepIndex < STEPS.length - 1) {
+      event.preventDefault()
+      goNext()
+      return
+    }
+    if (!validateStep()) {
+      event.preventDefault()
+      return
+    }
+    void submitForm(event)
   }
 
   return (
     <form
-      className="rounded-[1.25rem] bg-brand-cream p-6 text-left text-brand-blue md:p-10"
-      onSubmit={submitForm}
+      className="relative rounded-[1.25rem] bg-brand-cream p-6 text-left text-brand-blue md:p-10"
+      onSubmit={handleSubmit}
+      aria-busy={isLoading}
     >
+      {error ? (
+        <SubmitErrorAlert reduced={reduced}>
+          Något gick fel när tipset skulle skickas. Försök igen om en stund.
+          Fortsätter det strula, hör av dig via kontaktsidan.
+        </SubmitErrorAlert>
+      ) : null}
+      <HoneypotField />
       <Tabs value={step} onValueChange={goTo} className="gap-6">
         <TabsList>
           {STEPS.map((s, index) => (
@@ -474,11 +478,17 @@ const GigTipForm = () => {
             Nästa
           </Button>
         ) : (
-          <Button type="submit" variant="primary" size="none">
-            Skicka in tipset
+          <Button
+            type="submit"
+            variant="primary"
+            size="none"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Skickar…' : 'Skicka in tipset'}
           </Button>
         )}
       </div>
+      <SubmittingStatus active={isLoading} />
     </form>
   )
 }

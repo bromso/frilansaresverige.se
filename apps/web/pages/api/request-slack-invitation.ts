@@ -1,130 +1,49 @@
-import https from 'node:https'
-import type { NextApiRequest, NextApiResponse } from 'next'
+import {
+  createSlackFormHandler,
+  escapeInline,
+  escapeMrkdwn,
+} from '../../lib/slack-form.server'
 
-const slackWebHookURL: string | undefined =
-  process.env.SLACK_REQUEST_INVITE_WEBHOOK_URL
-
-interface RequestSlackInvitationBody {
-  name: string
-  email: string
-  roll: string
-  ort: string
-  howlong: string
-  companyName: string
-  linkedin: string
-  portfolio: string
-  motivation: string
-}
-
-interface ErrorResponse {
-  error: string
-}
-interface SuccessResponse {
-  success: boolean
-  name: string
-  slackResponse: string
-}
-
-type MessageBody = {
-  username: string
-  icon_emoji: string
-  text: string
-}
-
-const messageBody: MessageBody = {
+// The membership form on /ansokan posts here; the message lands in the
+// admins' review channel. Field caps are generous versions of what the
+// form itself enforces, so a legitimate application never trips them.
+export default createSlackFormHandler({
+  webhookEnv: 'SLACK_REQUEST_INVITE_WEBHOOK_URL',
   username: 'Request for Slack invitation',
   icon_emoji: ':raised_hands:',
-  text: '',
-}
-
-/**
- * Handles the actual sending request.
- */
-function sendSlackMessage(
-  webhookURL: string,
-  messageBody: MessageBody,
-): Promise<string> {
-  let messageString: string | undefined
-  // make sure the incoming message body can be parsed into valid JSON
-  try {
-    messageString = JSON.stringify(messageBody)
-  } catch (_error) {
-    throw new Error('Failed to stringify messageBody')
-  }
-
-  // Promisify the https.request
-  return new Promise((resolve, reject) => {
-    // general request options, we defined that it's a POST request and content is JSON
-    const requestOptions = {
-      method: 'POST',
-      header: { 'Content-Type': 'application/json' },
-    }
-
-    const req = https.request(webhookURL, requestOptions, (res) => {
-      let response = ''
-      res.on('data', (d) => {
-        response += d
-      })
-      res.on('end', () => {
-        resolve(response)
-      })
-    })
-
-    req.on('error', (e) => {
-      reject(e)
-    })
-
-    req.write(messageString)
-    req.end()
-  })
-}
-
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<SuccessResponse | ErrorResponse>,
-) {
-  if (!slackWebHookURL) {
-    console.error('Please fill in your Webhook URL')
-    res.status(400).json({ error: 'Please fill in the Slack Webhook URL' })
-    return
-  }
-
-  const body: RequestSlackInvitationBody = req.body
-  const {
-    name,
-    email,
-    roll,
-    ort,
-    howlong,
-    companyName,
-    linkedin,
-    portfolio,
-    motivation,
-  } = body
-  const companySearchUrl = `https://www.allabolag.se/what/${encodeURI(
-    companyName,
-  )}`
-
-  const newMessage: MessageBody = {
-    ...messageBody,
-    text:
+  rules: {
+    name: { label: 'Namn', required: true, max: 200 },
+    email: {
+      label: 'E-post',
+      required: true,
+      max: 254,
+      pattern: /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/,
+    },
+    roll: { label: 'Roll', required: true, max: 200 },
+    ort: { label: 'Ort', required: true, max: 200 },
+    howlong: { label: 'Tid som frilansare', required: true, max: 200 },
+    companyName: { label: 'Företagsnamn', required: true, max: 200 },
+    linkedin: { label: 'LinkedIn', required: true, max: 500 },
+    portfolio: { label: 'Portfolio', max: 500 },
+    motivation: { label: 'Motivering', required: true, max: 5000 },
+  },
+  formatText: (f) => {
+    // encodeURIComponent, not encodeURI: company names with `&`, `?` or
+    // `#` would otherwise break the search link.
+    const companySearchUrl = `https://www.allabolag.se/what/${encodeURIComponent(
+      f.companyName,
+    )}`
+    return (
       'Ny frilansare på ingång! \n' +
-      `Namn: ${name} \n` +
-      `Email: ${email} \n` +
-      `Roll: ${roll} \n` +
-      `Ort: ${ort} \n` +
-      `Tid som frilansare: ${howlong} \n` +
-      `Företagsnamn: ${companyName}, ${companySearchUrl} \n` +
-      `LinkedIn: ${linkedin} \n` +
-      `Portfolio: ${portfolio || '—'} \n` +
-      `Motivering: ${motivation}`,
-  }
-
-  const slackResponse = await sendSlackMessage(slackWebHookURL, newMessage)
-
-  res.status(200).json({
-    success: true,
-    name: 'Request Slack invitation result',
-    slackResponse,
-  })
-}
+      `Namn: ${escapeInline(f.name)} \n` +
+      `Email: ${escapeInline(f.email)} \n` +
+      `Roll: ${escapeInline(f.roll)} \n` +
+      `Ort: ${escapeInline(f.ort)} \n` +
+      `Tid som frilansare: ${escapeInline(f.howlong)} \n` +
+      `Företagsnamn: ${escapeInline(f.companyName)}, ${escapeInline(companySearchUrl)} \n` +
+      `LinkedIn: ${escapeInline(f.linkedin)} \n` +
+      `Portfolio: ${escapeInline(f.portfolio) || '—'} \n` +
+      `Motivering: ${escapeMrkdwn(f.motivation)}`
+    )
+  },
+})

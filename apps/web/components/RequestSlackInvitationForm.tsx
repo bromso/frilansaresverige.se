@@ -7,14 +7,12 @@ import {
 } from '@frilansaresverige/ui/animate-ui/components/animate/tabs'
 import { Button } from '@frilansaresverige/ui/animate-ui/components/buttons/button'
 import { Checkbox } from '@frilansaresverige/ui/animate-ui/components/radix/checkbox'
-import { Slide } from '@frilansaresverige/ui/animate-ui/primitives/effects/slide'
 import { useReducedMotion } from '@frilansaresverige/ui/lib/use-reduced-motion'
-import { Alert, AlertDescription } from '@frilansaresverige/ui/ui/alert'
 import { Input } from '@frilansaresverige/ui/ui/input'
 import { Label } from '@frilansaresverige/ui/ui/label'
 import { Textarea } from '@frilansaresverige/ui/ui/textarea'
 import { useRouter } from 'next/router'
-import type { ReactElement, ReactNode } from 'react'
+import type { FormEvent, ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { useSubmitSlackInvitationForm } from '../hooks/useSubmitSlackInvitationForm'
 import {
@@ -25,6 +23,11 @@ import {
   URL_PATTERN,
   URL_TITLE,
 } from './form-classes'
+import {
+  HoneypotField,
+  SubmitErrorAlert,
+  SubmittingStatus,
+} from './form-extras'
 
 // The application is a three-step stepper on the animate-ui Tabs, same
 // treatment as the gig-tip form on /tipsa: a pill progress row, panes
@@ -58,22 +61,12 @@ const IconField = ({
   </div>
 )
 
-// Wraps a status Alert in the Slide entrance animation, except when the
-// visitor has asked for reduced motion — in that case it renders as-is,
-// with no motion wrapper attached at all.
-const StatusSlide = ({
-  reduced,
-  children,
-}: {
-  reduced: boolean
-  children: ReactElement
-}) => (reduced ? children : <Slide asChild>{children}</Slide>)
-
 const RequestSlackInvitationForm = () => {
-  const { submitForm, data, error } = useSubmitSlackInvitationForm()
+  const { submitForm, data, error, isLoading } = useSubmitSlackInvitationForm()
   const reduced = useReducedMotion()
   const router = useRouter()
   const [step, setStep] = useState(STEPS[0].value)
+  const [stepError, setStepError] = useState<string | null>(null)
   const paneRefs = useRef<Record<string, HTMLDivElement | null>>({})
 
   useEffect(() => {
@@ -84,6 +77,11 @@ const RequestSlackInvitationForm = () => {
 
   const stepIndex = STEPS.findIndex((s) => s.value === step)
 
+  // Text fields validate through the browser (reportValidity focuses and
+  // explains); the required confirmation checkbox is checked by hand
+  // because Radix keeps its native `required` on a hidden input the
+  // browser cannot focus, so the bubble never shows and submit just
+  // silently does nothing.
   const validateStep = (): boolean => {
     const pane = paneRefs.current[step]
     if (!pane) {
@@ -96,6 +94,18 @@ const RequestSlackInvitationForm = () => {
         return false
       }
     }
+    for (const box of pane.querySelectorAll(
+      '[role="checkbox"][aria-required="true"]',
+    )) {
+      if (box.getAttribute('aria-checked') !== 'true') {
+        setStepError(
+          'Bekräfta att du är igång som frilansare innan du skickar.',
+        )
+        ;(box as HTMLElement).focus()
+        return false
+      }
+    }
+    setStepError(null)
     return true
   }
 
@@ -103,6 +113,7 @@ const RequestSlackInvitationForm = () => {
     // Backwards is always allowed; forwards only via the validated
     // Nästa button.
     if (STEPS.findIndex((s) => s.value === value) < stepIndex) {
+      setStepError(null)
       setStep(value)
     }
   }
@@ -115,21 +126,26 @@ const RequestSlackInvitationForm = () => {
 
   const goBack = () => {
     if (stepIndex > 0) {
+      setStepError(null)
       setStep(STEPS[stepIndex - 1].value)
     }
   }
 
-  if (error) {
-    return (
-      <StatusSlide reduced={reduced}>
-        <Alert className="mt-8 rounded-[0.75em] border-[#6a6a6a] bg-[#ffaaaa] p-5 text-brand-grey">
-          <AlertDescription>
-            Något gick fel när ansökan skulle skickas. Ladda om sidan och försök
-            igen. Fortsätter det strula, hör av dig via kontaktsidan.
-          </AlertDescription>
-        </Alert>
-      </StatusSlide>
-    )
+  // Enter inside a text field triggers implicit submission. Before the
+  // last step that should behave like the Nästa button, and on the last
+  // step the pane is validated first so the confirmation checkbox gets
+  // the same treatment as the text fields.
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    if (stepIndex < STEPS.length - 1) {
+      event.preventDefault()
+      goNext()
+      return
+    }
+    if (!validateStep()) {
+      event.preventDefault()
+      return
+    }
+    void submitForm(event)
   }
 
   return (
@@ -149,9 +165,17 @@ const RequestSlackInvitationForm = () => {
       </p>
 
       <form
-        className="rounded-[1.25rem] bg-brand-cream p-6 text-left text-brand-blue md:p-10"
-        onSubmit={submitForm}
+        className="relative rounded-[1.25rem] bg-brand-cream p-6 text-left text-brand-blue md:p-10"
+        onSubmit={handleSubmit}
+        aria-busy={isLoading}
       >
+        {error ? (
+          <SubmitErrorAlert reduced={reduced}>
+            Något gick fel när ansökan skulle skickas. Försök igen om en stund.
+            Fortsätter det strula, hör av dig via kontaktsidan.
+          </SubmitErrorAlert>
+        ) : null}
+        <HoneypotField />
         <Tabs value={step} onValueChange={goTo} className="gap-6">
           <TabsList>
             {STEPS.map((s, index) => (
@@ -379,6 +403,15 @@ const RequestSlackInvitationForm = () => {
           </TabsContents>
         </Tabs>
 
+        {stepError && (
+          <p
+            className="mt-4 text-[0.95em] font-medium text-red-700"
+            role="alert"
+          >
+            {stepError}
+          </p>
+        )}
+
         <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
           {stepIndex > 0 ? (
             <Button
@@ -403,11 +436,17 @@ const RequestSlackInvitationForm = () => {
               Nästa
             </Button>
           ) : (
-            <Button type="submit" variant="primary" size="none">
-              Skicka in ansökan
+            <Button
+              type="submit"
+              variant="primary"
+              size="none"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Skickar…' : 'Skicka in ansökan'}
             </Button>
           )}
         </div>
+        <SubmittingStatus active={isLoading} />
       </form>
     </div>
   )
