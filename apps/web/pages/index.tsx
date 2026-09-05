@@ -91,7 +91,9 @@ const MemberCount = ({ count }: { count: number | null }) => {
     <>
       <span className="sr-only">{count}</span>
       <span aria-hidden="true">
-        <SlidingNumber number={count} />
+        {/* initiallyStable: the server HTML shows the real count instead
+            of four zero rollers waiting for hydration in the LCP text. */}
+        <SlidingNumber number={count} initiallyStable />
       </span>
     </>
   )
@@ -439,7 +441,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
             </p>
           </div>
 
-          <div className="hero-enter" style={{ animationDelay: '100ms' }}>
+          <div className="hero-enter-still" style={{ animationDelay: '100ms' }}>
             <h1 className="font-display text-5xl leading-[1.05] font-extrabold tracking-tight text-brand-cream md:text-6xl lg:text-7xl">
               Att frilansa är bättre{' '}
               {reduced ? (
@@ -467,18 +469,25 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                   alla frilansare
                 </span>
               ) : (
-                <RotatingTextContainer
-                  text={ROTATING_PROFESSIONS}
-                  duration={2400}
-                  y={-24}
-                >
-                  <RotatingText className="font-display font-bold text-highlight" />
-                </RotatingTextContainer>
+                <>
+                  {/* Screen readers get the umbrella phrase instead of
+                      whichever profession happens to be showing. */}
+                  <span className="sr-only">alla frilansare</span>
+                  <span aria-hidden="true" className="contents">
+                    <RotatingTextContainer
+                      text={ROTATING_PROFESSIONS}
+                      duration={2400}
+                      y={-24}
+                    >
+                      <RotatingText className="font-display font-bold text-highlight" />
+                    </RotatingTextContainer>
+                  </span>
+                </>
               )}
             </div>
           </div>
 
-          <div className="hero-enter" style={{ animationDelay: '300ms' }}>
+          <div className="hero-enter-still" style={{ animationDelay: '300ms' }}>
             <p className="mt-8 max-w-[38em] text-lg leading-[1.6] text-brand-cream/85 md:text-xl">
               Vi är <MemberCount count={memberCount} /> frilansare som delar
               uppdrag, kunskap och vardag i Slack. Här hittar du kollegor att
@@ -515,8 +524,17 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
         <p className="font-display mb-8 text-center text-sm font-bold tracking-widest text-brand-cream/75 uppercase">
           Våra medlemmar har gjort uppdrag för bland andra
         </p>
+        {/* The marquee is decorative for assistive tech: react-fast-marquee
+            clones every item to fill the track, so exposing it would read
+            (and tab through) the logos several times over. A static list
+            carries the names instead. */}
+        <ul className="sr-only">
+          {CLIENT_LOGOS.map((logo) => (
+            <li key={logo.name}>{logo.name}</li>
+          ))}
+        </ul>
         <TooltipProvider>
-          <div ref={logos.ref}>
+          <div ref={logos.ref} aria-hidden="true">
             <Marquee>
               <MarqueeContent play={!reduced && logos.near} speed={40}>
                 {CLIENT_LOGOS.map((logo) => (
@@ -525,6 +543,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                       <TooltipTrigger asChild>
                         <button
                           type="button"
+                          tabIndex={-1}
                           aria-label={logo.name}
                           className="flex cursor-default items-center"
                         >

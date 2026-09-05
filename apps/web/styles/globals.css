@@ -105,6 +105,27 @@
   }
 }
 
+/* For the h1 and the LCP paragraph: same motion, but never below full
+   opacity. The browser only counts a text block as painted once it is
+   visible, so a fade-in (plus its stagger delay) is billed straight into
+   LCP; a translate alone is not. */
+@utility hero-enter-still {
+  animation: hero-enter-still 0.55s var(--expo-out) both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes hero-enter-still {
+  from {
+    translate: 0 12px;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
 /* Static hero background in the palette the retired WebGPU hero shader
    painted: violet up top, coral mass on the right, darkest at the bottom
    so the wash dissolves into the flat page background. The light-theme

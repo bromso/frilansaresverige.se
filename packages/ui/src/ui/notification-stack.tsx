@@ -68,7 +68,12 @@ export const NotificationStack = ({
   }, [reduced, near, intervalMs])
 
   if (reduced) {
-    return <NotificationRow {...messages[0]} />
+    // Still decorative: the sample tip is illustration, not content.
+    return (
+      <div aria-hidden="true">
+        <NotificationRow {...messages[0]} />
+      </div>
+    )
   }
 
   return (

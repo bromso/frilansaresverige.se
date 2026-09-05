@@ -14,9 +14,10 @@ const FaqAccordion = ({ items }: { items: FaqItem[] }) => {
   const [activeItem, setActiveItem] = useState<number | null>(0)
 
   return (
-    <ul className="w-full select-none">
+    <ul className="w-full">
       {items.map((item, index) => {
         const open = activeItem === index
+        const panelId = `faq-${index}`
         const roundTop =
           index === 0 ||
           open ||
@@ -42,6 +43,7 @@ const FaqAccordion = ({ items }: { items: FaqItem[] }) => {
             <button
               type="button"
               aria-expanded={open}
+              aria-controls={panelId}
               onClick={() => setActiveItem(open ? null : index)}
               className="flex w-full cursor-pointer items-center gap-3 px-5 py-4 text-left hover:bg-brand-blue/5"
             >
@@ -73,6 +75,7 @@ const FaqAccordion = ({ items }: { items: FaqItem[] }) => {
                   exit={{ height: 0, opacity: 0, filter: 'blur(2px)' }}
                   transition={{ type: 'spring', stiffness: 300, damping: 26 }}
                   className="overflow-hidden"
+                  id={panelId}
                 >
                   <p className="max-w-[36em] px-5 pb-5 pl-13 leading-[1.6] text-brand-blue/80">
                     {item.answer}

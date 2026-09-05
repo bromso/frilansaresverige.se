@@ -42,12 +42,24 @@ function MyApp({ Component, pageProps, router }: AppProps) {
           <div
             className={`${bricolage.variable} relative z-[1] flex min-h-full flex-col`}
           >
+            {/* Skip link: visually hidden until focused, first in tab
+                order so keyboard users can jump past the mega nav. */}
+            <a
+              href="#innehall"
+              className="sr-only z-20 rounded-full bg-brand-cream px-4 py-2 font-bold text-brand-blue focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
+            >
+              Hoppa till innehållet
+            </a>
             <header className="sticky top-0 z-10 w-full">
               {/* Full-width mega-menu bar — see SiteNav / ui MegaNav. */}
               <SiteNav />
             </header>
 
-            <main className="relative z-[2] flex w-full flex-1 flex-col items-center px-[min(2em,4vw)]">
+            <main
+              id="innehall"
+              tabIndex={-1}
+              className="relative z-[2] flex w-full flex-1 flex-col items-center px-[min(2em,4vw)] outline-none"
+            >
               <Component {...pageProps} />
             </main>
 
