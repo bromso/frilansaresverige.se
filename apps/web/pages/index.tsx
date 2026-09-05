@@ -25,7 +25,6 @@ import { VerticalMarquee } from '@frilansaresverige/ui/ui/vertical-marquee'
 import type { GetStaticProps, NextPage } from 'next'
 import Link from 'next/link'
 import type { ReactElement, ReactNode } from 'react'
-import { useEffect, useState } from 'react'
 import type { Organization, WebSite, WithContext } from 'schema-dts'
 import GigToastStack from '../components/GigToastStack'
 import { ProgressiveBlur } from '../components/ProgressiveBlur'
@@ -620,7 +619,11 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
         </ol>
       </section>
 
-      {/* Testimonials */}
+      {/* Testimonials. Each column repeats its cards twice, not the
+          marquee's default four: one copy (3 cards × 18rem + gaps) already
+          exceeds the 52.5rem window, which is all a seamless loop needs,
+          and every extra copy is another 18 filtered <figure>s in the DOM
+          on every viewport, hidden columns included. */}
       <section ref={testimonials.ref} className="w-full py-20 md:py-28">
         <SectionHeading eyebrow="Medlemmarna" title="Röster från communityt" />
         {reduced ? (
@@ -633,6 +636,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
           <div className="relative h-210 w-full overflow-hidden">
             <div className="group flex h-full w-full flex-row items-stretch justify-center gap-4">
               <VerticalMarquee
+                repeat={2}
                 play={testimonials.near}
                 pauseOnHover
                 className="hidden h-full flex-1 [--duration:34s] sm:flex"
@@ -644,6 +648,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 )}
               </VerticalMarquee>
               <VerticalMarquee
+                repeat={2}
                 play={testimonials.near}
                 reverse
                 pauseOnHover
@@ -656,6 +661,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 )}
               </VerticalMarquee>
               <VerticalMarquee
+                repeat={2}
                 play={testimonials.near}
                 pauseOnHover
                 className="hidden h-full flex-1 [--duration:30s] lg:flex"
@@ -667,6 +673,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                 )}
               </VerticalMarquee>
               <VerticalMarquee
+                repeat={2}
                 play={testimonials.near}
                 pauseOnHover
                 className="flex h-full flex-1 [--duration:60s] sm:hidden"
