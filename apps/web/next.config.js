@@ -8,13 +8,37 @@ const nextConfig = {
   // standalone output's static analysis can't see — trace it explicitly.
   outputFileTracingIncludes: {
     '/sitemap.xml': ['./content/**/*'],
+    // The event pages regenerate hourly (ISR) to move past events over,
+    // which re-reads content/ at runtime.
+    '/event': ['./content/**/*'],
+    '/event/[slug]': ['./content/**/*'],
   },
+  poweredByHeader: false,
   // Files under public/ ship with max-age=0 by default, so every visit
   // re-downloads the covers and avatars. They aren't content-hashed, so
   // no immutable-year: a month with a long stale-while-revalidate —
   // replace an image under a new filename if it must change instantly.
   async headers() {
     return [
+      // Baseline security headers. No full CSP yet: the GA bootstrap in
+      // _document is an inline script that would need a nonce or hash.
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'Content-Security-Policy', value: "frame-ancestors 'none'" },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=(), payment=()',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains',
+          },
+        ],
+      },
       {
         source: '/images/:path*',
         headers: [

@@ -11,11 +11,13 @@ interface Props {
   past: EventMeta[]
 }
 
-// The upcoming/past split happens at build time, so it refreshes on the
-// next deploy — fine for a static site where events are added (and
-// thereby rebuilt) well before they happen.
+// The upcoming/past split is computed here, so the page regenerates
+// hourly (ISR) rather than waiting for the next deploy to move an event
+// that has happened into the past list. Needs content/ traced for this
+// route in next.config.js.
 export const getStaticProps: GetStaticProps<Props> = async () => ({
   props: splitEvents(getAllEvents(), new Date()),
+  revalidate: 3600,
 })
 
 const Event = ({ upcoming, past }: Props) => {

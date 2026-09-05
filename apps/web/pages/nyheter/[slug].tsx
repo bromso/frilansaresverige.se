@@ -59,6 +59,7 @@ const Artikel = ({ meta, source, more }: Props) => {
     headline: meta.title,
     description: meta.excerpt,
     datePublished: meta.date,
+    ...(meta.image && { image: `${SITE_URL}${meta.image}` }),
     inLanguage: 'sv',
     author: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
     publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
@@ -71,6 +72,9 @@ const Artikel = ({ meta, source, more }: Props) => {
         description={meta.excerpt}
         path={path}
         type="article"
+        image={meta.image}
+        imageAlt={meta.image ? meta.title : undefined}
+        publishedTime={meta.date}
       />
       <StructuredData data={jsonLd} />
       {cover && <CoverPreload {...cover} />}

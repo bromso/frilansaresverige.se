@@ -118,7 +118,84 @@ export const parseLocalDate = (value: string): Date => {
       `Ogiltigt datum "${value}". Använd "YYYY-MM-DD" eller "YYYY-MM-DDTHH:mm"`,
     )
   }
-  return new Date(+m[1], +m[2] - 1, +m[3], +(m[4] ?? 0), +(m[5] ?? 0))
+  const [year, month, day, hour, minute] = [
+    +m[1],
+    +m[2],
+    +m[3],
+    +(m[4] ?? 0),
+    +(m[5] ?? 0),
+  ]
+  const date = new Date(year, month - 1, day, hour, minute)
+  // Date() silently rolls "2026-09-31" over to 1 October; a round-trip
+  // check turns that into a build error instead of a wrong date.
+  if (
+    date.getFullYear() !== year ||
+    date.getMonth() !== month - 1 ||
+    date.getDate() !== day ||
+    date.getHours() !== hour ||
+    date.getMinutes() !== minute
+  ) {
+    throw new Error(`Ogiltigt datum "${value}": dagen eller tiden finns inte`)
+  }
+  return date
+}
+
+const STOCKHOLM = 'Europe/Stockholm'
+const stockholmParts = new Intl.DateTimeFormat('sv-SE', {
+  timeZone: STOCKHOLM,
+  hourCycle: 'h23',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+})
+
+/** Minutes Europe/Stockholm is ahead of UTC at the given instant. */
+const stockholmOffsetMinutes = (instant: number): number => {
+  const parts = Object.fromEntries(
+    stockholmParts
+      .formatToParts(new Date(instant))
+      .map((part) => [part.type, part.value]),
+  )
+  const wall = Date.UTC(
+    +parts.year,
+    +parts.month - 1,
+    +parts.day,
+    +parts.hour,
+    +parts.minute,
+  )
+  return Math.round((wall - instant) / 60000)
+}
+
+/** Renders a frontmatter date as ISO 8601 with the Swedish UTC offset
+ * ("2026-09-17T18:00:00+02:00"). Structured data consumers want the
+ * offset; without it Google guesses the timezone. The result does not
+ * depend on the machine's timezone, so builds in a UTC container emit
+ * the same string as a laptop in Stockholm. */
+export const toStockholmIso = (value: string): string => {
+  const m = value.match(DATE_PATTERN)
+  if (!m) {
+    throw new Error(`Ogiltigt datum "${value}"`)
+  }
+  const wall = Date.UTC(+m[1], +m[2] - 1, +m[3], +(m[4] ?? 0), +(m[5] ?? 0))
+  // The offset depends on the instant, so resolve wall time → instant in
+  // two passes (the second corrects a guess made across a DST switch).
+  let instant = wall - stockholmOffsetMinutes(wall) * 60000
+  instant = wall - stockholmOffsetMinutes(instant) * 60000
+  const offset = stockholmOffsetMinutes(instant)
+  const sign = offset < 0 ? '-' : '+'
+  const abs = Math.abs(offset)
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `${m[1]}-${m[2]}-${m[3]}T${pad(+(m[4] ?? 0))}:${pad(+(m[5] ?? 0))}:00${sign}${pad(Math.floor(abs / 60))}:${pad(abs % 60)}`
+}
+
+/** "YYYY-MM-DD" plus a number of days, for JobPosting validThrough. */
+export const addDays = (value: string, days: number): string => {
+  const date = parseLocalDate(value)
+  date.setDate(date.getDate() + days)
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
 }
 
 const field = (

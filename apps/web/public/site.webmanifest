@@ -1,6 +1,9 @@
 {
   "name": "Frilansare Sverige",
   "short_name": "Frilansare",
+  "description": "Sveriges största community för frilansare.",
+  "lang": "sv",
+  "start_url": "/",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -13,7 +16,7 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "theme_color": "#4823dc",
+  "background_color": "#4823dc",
   "display": "standalone"
 }
