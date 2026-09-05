@@ -3,7 +3,7 @@ import SectionedPage, {
   type SerializedSection,
 } from '../components/SectionedPage'
 import type { SidaMeta } from '../lib/content'
-import { getRoute } from '../lib/routes'
+import { requireRoute } from '../lib/routes'
 import { loadSida } from '../lib/sidor.server'
 
 interface Props {
@@ -16,7 +16,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => ({
 })
 
 const Integritetspolicy = (props: Props) => {
-  const route = getRoute('/integritetspolicy')!
+  const route = requireRoute('/integritetspolicy')
   return (
     <SectionedPage
       path="/integritetspolicy"

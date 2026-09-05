@@ -15,6 +15,7 @@ const ReviewCard = ({ review }: { review: ReviewMeta }) => (
   >
     <span className="flex items-center gap-4">
       {review.logo ? (
+        // biome-ignore lint/performance/noImgElement: the logos are SVGs, which the image optimizer passes through untouched.
         <img
           alt=""
           src={review.logo}

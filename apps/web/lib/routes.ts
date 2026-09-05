@@ -235,6 +235,18 @@ const byPath = new Map(ROUTES.map((route) => [route.path, route]))
 export const getRoute = (path: string): RouteMeta | undefined =>
   byPath.get(path)
 
+/** Like getRoute, for callers that know the path is registered (the
+ * page files themselves). Throws with the path instead of returning
+ * undefined, so a typo fails the build rather than rendering an empty
+ * title. */
+export const requireRoute = (path: string): RouteMeta => {
+  const route = byPath.get(path)
+  if (!route) {
+    throw new Error(`Route "${path}" is not registered in lib/routes.ts`)
+  }
+  return route
+}
+
 export function getBreadcrumbs(
   path: string,
 ): { path: string; label: string }[] {

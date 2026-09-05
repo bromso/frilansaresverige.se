@@ -7,7 +7,7 @@ import Seo from '../../components/Seo'
 import GigCard from '../../components/uppdrag/GigCard'
 import { GIG_ROLES, type GigMeta, type GigRole } from '../../lib/content'
 import { getAllGigs } from '../../lib/content.server'
-import { getRoute } from '../../lib/routes'
+import { requireRoute } from '../../lib/routes'
 
 interface Props {
   gigs: GigMeta[]
@@ -20,7 +20,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => ({
 // Job-board take on the nyheter archive skeleton: heading + intro, a
 // role-filter chip row, then dense listing rows instead of cover tiles.
 const Uppdrag = ({ gigs }: Props) => {
-  const meta = getRoute('/uppdrag')!
+  const meta = requireRoute('/uppdrag')
   const [role, setRole] = useState<GigRole | null>(null)
   const roles = GIG_ROLES.filter((r) => gigs.some((gig) => gig.role === r))
   const shown = role ? gigs.filter((gig) => gig.role === role) : gigs

@@ -1,5 +1,5 @@
 {
   "extends": "@frilansaresverige/tsconfig/react-library.json",
-  "include": [".storybook/**/*.ts", "stories/**/*.tsx"],
+  "include": [".storybook/**/*.ts", ".storybook/**/*.tsx", "stories/**/*.tsx"],
   "exclude": ["node_modules"]
 }

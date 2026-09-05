@@ -18,7 +18,7 @@ describe('/fragor-och-svar', () => {
     const data = [
       ...container.querySelectorAll('script[type="application/ld+json"]'),
     ]
-      .map((s) => JSON.parse(s.textContent!))
+      .map((s) => JSON.parse(s.textContent ?? ''))
       .find((d) => d['@type'] === 'FAQPage')
     expect(data.mainEntity).toHaveLength(FAQ_ITEMS.length)
     expect(data.mainEntity[0]['@type']).toBe('Question')

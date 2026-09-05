@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import { useEffect } from 'react'
 import Seo from '../../components/Seo'
-import { getRoute } from '../../lib/routes'
+import { requireRoute } from '../../lib/routes'
 
 const TipsaTack = () => {
-  const meta = getRoute('/tipsa/tack')!
+  const meta = requireRoute('/tipsa/tack')
 
   // The form redirects here client-side, so _document's gtag config (which
   // only fires on a full document load) never records this pageview.

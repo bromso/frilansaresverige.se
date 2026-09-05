@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
-import { getRoute } from '../lib/routes'
+import { requireRoute } from '../lib/routes'
 import Seo from './Seo'
 
 export interface HubLink {
@@ -28,7 +28,7 @@ const HubPage = ({
   links,
   children,
 }: HubPageProps) => {
-  const meta = getRoute(path)!
+  const meta = requireRoute(path)
   return (
     <>
       <Seo title={meta.title} description={meta.description} path={path} />

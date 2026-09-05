@@ -3,10 +3,10 @@ import FaqAccordion from '../components/Faq/FaqAccordion'
 import { FAQ_ITEMS } from '../components/Faq/faq-items'
 import Seo from '../components/Seo'
 import StructuredData from '../components/StructuredData'
-import { getRoute } from '../lib/routes'
+import { requireRoute } from '../lib/routes'
 
 const FragorOchSvar = () => {
-  const meta = getRoute('/fragor-och-svar')!
+  const meta = requireRoute('/fragor-och-svar')
   const jsonLd: WithContext<FAQPage> = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

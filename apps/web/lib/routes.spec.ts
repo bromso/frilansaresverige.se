@@ -1,7 +1,14 @@
 import { describe, expect, it } from 'bun:test'
 import { readdirSync } from 'node:fs'
 import { join } from 'node:path'
-import { getBreadcrumbs, getRoute, NAV_TABS, ROUTES } from './routes'
+import {
+  getBreadcrumbs,
+  getRoute,
+  NAV_TABS,
+  ROUTES,
+  type RouteMeta,
+  requireRoute,
+} from './routes'
 
 const PAGES_DIR = join(__dirname, '..', 'pages')
 
@@ -90,5 +97,16 @@ describe('routes registry', () => {
     for (const route of pageRoutes) {
       expect(paths.has(route)).toBe(true)
     }
+  })
+})
+
+describe('requireRoute', () => {
+  it('returns the registered route', () => {
+    expect(requireRoute('/tipsa').path).toBe('/tipsa')
+    expect(requireRoute('/tipsa')).toBe(getRoute('/tipsa') as RouteMeta)
+  })
+
+  it('throws with the path for an unregistered one', () => {
+    expect(() => requireRoute('/finns-inte')).toThrow('/finns-inte')
   })
 })

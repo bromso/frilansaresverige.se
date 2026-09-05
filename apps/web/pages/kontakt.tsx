@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import Seo from '../components/Seo'
-import { getRoute } from '../lib/routes'
+import { requireRoute } from '../lib/routes'
 
 const Kontakt = () => {
-  const meta = getRoute('/kontakt')!
+  const meta = requireRoute('/kontakt')
   return (
     <>
       <Seo title={meta.title} description={meta.description} path={meta.path} />

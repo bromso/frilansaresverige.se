@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM oven/bun:1.3.14-alpine AS deps
+FROM oven/bun:1.4.2-alpine AS deps
 WORKDIR /app
 COPY package.json bun.lock bunfig.toml ./
 # Each workspace package needs its own manifest copied before install —
@@ -17,7 +17,7 @@ COPY packages/ui/package.json packages/ui/
 # real deploy time: deploy.sh streams the whole image over ssh.
 RUN bun install --frozen-lockfile --filter '!@frilansaresverige/story'
 
-FROM oven/bun:1.3.14-alpine AS builder
+FROM oven/bun:1.4.2-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .

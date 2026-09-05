@@ -22,7 +22,7 @@ describe('Breadcrumbs', () => {
   it('emits BreadcrumbList JSON-LD', () => {
     const { container } = render(<Breadcrumbs path="/uppforandekod" />)
     const script = container.querySelector('script[type="application/ld+json"]')
-    const data = JSON.parse(script!.textContent!)
+    const data = JSON.parse(script?.textContent ?? '')
     expect(data['@type']).toBe('BreadcrumbList')
     expect(data.itemListElement).toHaveLength(3)
     expect(data.itemListElement[2].name).toBe('Uppförandekod')

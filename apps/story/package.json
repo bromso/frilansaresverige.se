@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@frilansaresverige/ui": "workspace:*",
@@ -20,6 +21,7 @@
     "@tailwindcss/postcss": "4.3.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
+    "motion": "^13.1.1",
     "storybook": "10.5.10",
     "tailwindcss": "4.3.3",
     "typescript": "^6.0.3",

@@ -4,7 +4,7 @@ import ItemListJsonLd from '../../components/ItemListJsonLd'
 import Seo from '../../components/Seo'
 import { type EventMeta, splitEvents } from '../../lib/content'
 import { getAllEvents } from '../../lib/content.server'
-import { getRoute } from '../../lib/routes'
+import { requireRoute } from '../../lib/routes'
 
 interface Props {
   upcoming: EventMeta[]
@@ -21,7 +21,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => ({
 })
 
 const Event = ({ upcoming, past }: Props) => {
-  const meta = getRoute('/event')!
+  const meta = requireRoute('/event')
   return (
     <>
       <Seo title={meta.title} description={meta.description} path="/event" />

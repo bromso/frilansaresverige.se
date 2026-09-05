@@ -1,10 +1,10 @@
 import { Button } from '@frilansaresverige/ui/animate-ui/components/buttons/button'
 import Link from 'next/link'
 import Seo from '../components/Seo'
-import { getRoute } from '../lib/routes'
+import { requireRoute } from '../lib/routes'
 
 const Om = () => {
-  const meta = getRoute('/om')!
+  const meta = requireRoute('/om')
   return (
     <>
       <Seo title={meta.title} description={meta.description} path={meta.path} />

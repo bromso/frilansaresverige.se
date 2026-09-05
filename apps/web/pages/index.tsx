@@ -30,7 +30,7 @@ import GigToastStack from '../components/GigToastStack'
 import { ProgressiveBlur } from '../components/ProgressiveBlur'
 import Seo, { SITE_NAME, SITE_URL } from '../components/Seo'
 import StructuredData from '../components/StructuredData'
-import { getRoute } from '../lib/routes'
+import { requireRoute } from '../lib/routes'
 
 const API_BASE_URL =
   process.env.API_BASE_URL || 'https://uppdrag.frilansaresverige.se/api'
@@ -404,7 +404,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
   // outside the viewport — no frames burned on decoration nobody sees.
   const logos = useNearViewport<HTMLDivElement>()
   const testimonials = useNearViewport<HTMLElement>()
-  const meta = getRoute('/')!
+  const meta = requireRoute('/')
 
   return (
     <div className="relative flex w-full max-w-[72em] flex-col items-center">
@@ -876,6 +876,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                           className={`isolate size-11 overflow-hidden rounded-full ring-2 ring-white/70 ${index > 0 ? '-ml-3' : ''}`}
                           style={{ background: avatar.gradient }}
                         >
+                          {/* biome-ignore lint/performance/noImgElement: 200px, 10 KB portraits blended over a gradient; next/image's wrapper would break the mix-blend stack. */}
                           <img
                             alt=""
                             src={avatar.src}

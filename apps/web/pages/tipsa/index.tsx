@@ -4,10 +4,10 @@ import FaqAccordion from '../../components/Faq/FaqAccordion'
 import { TIPSA_FAQ_ITEMS } from '../../components/Faq/tipsa-faq-items'
 import GigTipForm from '../../components/GigTipForm'
 import Seo from '../../components/Seo'
-import { getRoute } from '../../lib/routes'
+import { requireRoute } from '../../lib/routes'
 
 const Tipsa: NextPage = () => {
-  const meta = getRoute('/tipsa')!
+  const meta = requireRoute('/tipsa')
   return (
     <div className="w-full max-w-[44em] pt-10 pb-24 md:pt-16">
       <Seo title={meta.title} description={meta.description} path={meta.path} />

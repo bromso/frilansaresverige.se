@@ -10,7 +10,7 @@ import {
   type ReviewMeta,
 } from '../../lib/content'
 import { getAllReviews } from '../../lib/content.server'
-import { getRoute } from '../../lib/routes'
+import { requireRoute } from '../../lib/routes'
 
 interface Props {
   reviews: ReviewMeta[]
@@ -23,7 +23,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => ({
 // Ranked review directory: category chips like /uppdrag, but a two-column
 // card grid led by score badges, sorted best first.
 const Recensioner = ({ reviews }: Props) => {
-  const meta = getRoute('/recensioner')!
+  const meta = requireRoute('/recensioner')
   const [category, setCategory] = useState<ReviewCategory | null>(null)
   const categories = REVIEW_CATEGORIES.filter((c) =>
     reviews.some((review) => review.category === c),

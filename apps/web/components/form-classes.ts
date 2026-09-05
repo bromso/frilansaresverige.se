@@ -19,5 +19,5 @@ export const URL_PATTERN = String.raw`(https?://)?([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,
 export const URL_TITLE = 'Ange en giltig webbadress, t.ex. exempel.se'
 export const PHONE_PATTERN = String.raw`\+?[0-9][0-9 \-]{5,}`
 export const PHONE_TITLE = 'Ange ett giltigt telefonnummer, t.ex. 070-123 45 67'
-export const NUMBER_PATTERN = String.raw`[0-9][0-9 ]*`
+export const NUMBER_PATTERN = '[0-9][0-9 ]*'
 export const NUMBER_TITLE = 'Ange ett belopp i siffror, t.ex. 950'

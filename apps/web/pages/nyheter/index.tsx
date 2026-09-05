@@ -4,7 +4,7 @@ import ArticleCard from '../../components/nyheter/ArticleCard'
 import Seo from '../../components/Seo'
 import type { PostMeta } from '../../lib/content'
 import { getAllPosts } from '../../lib/content.server'
-import { getRoute } from '../../lib/routes'
+import { requireRoute } from '../../lib/routes'
 
 interface Props {
   posts: PostMeta[]
@@ -17,7 +17,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => ({
 // Newsroom-style archive: the latest post as a full-width featured card,
 // the rest in a tile grid.
 const Nyheter = ({ posts }: Props) => {
-  const meta = getRoute('/nyheter')!
+  const meta = requireRoute('/nyheter')
   const [featured, ...rest] = posts
   return (
     <>

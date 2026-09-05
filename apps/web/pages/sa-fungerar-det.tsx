@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import Seo from '../components/Seo'
-import { getRoute } from '../lib/routes'
+import { requireRoute } from '../lib/routes'
 
 const SaFungerarDet = () => {
-  const meta = getRoute('/sa-fungerar-det')!
+  const meta = requireRoute('/sa-fungerar-det')
   return (
     <>
       <Seo title={meta.title} description={meta.description} path={meta.path} />
