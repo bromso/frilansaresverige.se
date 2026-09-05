@@ -19,15 +19,13 @@
      burnt coral on the cream ground in light mode (~4.7:1). */
   --color-eyebrow: #ffcfc8;
 
-  /* Accent text and graphics. Brand coral reads fine on the blue ground
-     at display sizes (~4.1:1, AA for large text) and as a bar or icon
-     (3:1 needed), but is unreadable on the cream ground in light mode
-     (~2:1), so `highlight` becomes a deeper, still saturated coral there
-     (the closest shade that reaches 3:1). Body-size text needs 4.5:1,
-     which coral misses even on blue, so inline links use `link`: the
-     light coral in the dark theme (~5.9:1) and the ink blue in light
-     mode. Keep plain brand-coral for filled surfaces with grey text on
-     them (buttons, avatars), which pass either way. */
+  /* Accent text and graphics: brand coral in both themes, by design.
+     It reads fine on the blue ground at display sizes (~4.1:1, AA for
+     large text) and as a bar or icon; on the cream ground in light mode
+     it is a deliberate brand choice over the contrast ratio. Body-size
+     text needs 4.5:1, which coral misses even on blue, so inline links
+     use `link`: the light coral in the dark theme (~5.9:1) and the ink
+     blue in light mode. */
   --color-highlight: var(--color-brand-coral);
   --color-link: var(--color-brand-coral-light);
 
@@ -61,7 +59,7 @@
   --color-brand-cream: #4823dc;
   --color-brand-blue-dark: #f1e8c8;
   --color-eyebrow: #c8442b;
-  --color-highlight: #f6614d;
+  --color-highlight: var(--color-brand-coral);
   --color-link: #2601bb;
 }
 
