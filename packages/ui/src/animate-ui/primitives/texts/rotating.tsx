@@ -1,6 +1,6 @@
 'use client'
 
-import { AnimatePresence, type HTMLMotionProps, motion } from 'motion/react'
+import { AnimatePresence, type HTMLMotionProps, m } from 'motion/react'
 import * as React from 'react'
 
 import {
@@ -96,7 +96,7 @@ function RotatingText({
   return (
     <AnimatePresence mode="wait">
       {isInView && (
-        <motion.div
+        <m.div
           key={currentText}
           transition={transition}
           initial={{ opacity: 0, y: -y }}
@@ -105,7 +105,7 @@ function RotatingText({
           {...props}
         >
           {currentText}
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   )

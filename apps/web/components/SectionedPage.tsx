@@ -1,4 +1,5 @@
-import { motion, useInView } from 'motion/react'
+import { LayoutMotion } from '@frilansaresverige/ui/lib/layout-motion'
+import { m, useInView } from 'motion/react'
 import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { type ReactNode, useEffect, useRef, useState } from 'react'
 import { formatPostDate, type SidaMeta } from '../lib/content'
@@ -63,8 +64,10 @@ const SectionedPage = ({
 }: SectionedPageProps) => {
   const [active, setActive] = useState(0)
 
+  // The menu tick springs between items with layoutId: LayoutMotion
+  // fetches motion's layout features for this page.
   return (
-    <>
+    <LayoutMotion>
       <Seo title={title} description={description} path={path} />
       <div className="flex w-full max-w-[60em] flex-col py-12 md:py-16">
         <p className="font-display mb-3 text-sm font-bold tracking-widest text-eyebrow uppercase">
@@ -85,7 +88,7 @@ const SectionedPage = ({
               {sections.map((section, index) => (
                 <li key={section.id} className="relative pl-4">
                   {active === index && (
-                    <motion.span
+                    <m.span
                       layoutId="active-section"
                       aria-hidden="true"
                       className="absolute top-1/2 -left-[1.5px] inline-block h-5 w-[2px] -translate-y-1/2 rounded-full bg-brand-coral"
@@ -133,7 +136,7 @@ const SectionedPage = ({
           </div>
         </div>
       </div>
-    </>
+    </LayoutMotion>
   )
 }
 

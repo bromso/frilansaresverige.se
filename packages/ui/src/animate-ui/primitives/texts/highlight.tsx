@@ -1,6 +1,6 @@
 'use client'
 
-import { type HTMLMotionProps, motion } from 'motion/react'
+import { type HTMLMotionProps, m } from 'motion/react'
 import type * as React from 'react'
 
 import {
@@ -34,7 +34,7 @@ function HighlightText({
   )
 
   return (
-    <motion.span
+    <m.span
       ref={localRef}
       data-slot="highlight-text"
       initial={{ backgroundSize: '0% 100%' }}
@@ -53,7 +53,7 @@ function HighlightText({
       {...props}
     >
       {text}
-    </motion.span>
+    </m.span>
   )
 }
 

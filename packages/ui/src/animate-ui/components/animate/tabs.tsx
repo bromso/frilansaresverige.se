@@ -1,5 +1,6 @@
 'use client'
 
+import { LayoutMotion } from '../../../lib/layout-motion'
 import { cn } from '../../../lib/utils'
 import {
   TabsContent as TabsContentPrimitive,
@@ -26,11 +27,15 @@ import {
 type TabsProps = TabsPrimitiveProps
 
 function Tabs({ className, ...props }: TabsProps) {
+  // The highlight pill slides between triggers with layoutId, which
+  // needs motion's layout features — loaded on demand here.
   return (
-    <TabsPrimitive
-      className={cn('flex flex-col gap-2', className)}
-      {...props}
-    />
+    <LayoutMotion>
+      <TabsPrimitive
+        className={cn('flex flex-col gap-2', className)}
+        {...props}
+      />
+    </LayoutMotion>
   )
 }
 

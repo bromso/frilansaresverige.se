@@ -1,6 +1,6 @@
 'use client'
 
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import {
   type ComponentProps,
   type ComponentType,
@@ -62,22 +62,22 @@ const MenuSection = ({
   LinkComponent: LinkLike
   onNavigate: () => void
 }) => (
-  <motion.ul
+  <m.ul
     className="space-y-2"
     initial="hidden"
     animate="visible"
     exit="hidden"
     variants={menuContainerVariants}
   >
-    <motion.li
+    <m.li
       variants={menuItemVariants}
       transition={{ duration: 0.3 }}
       className="my-4 text-xs text-brand-cream/50"
     >
       {section.title}
-    </motion.li>
+    </m.li>
     {section.links.map((link) => (
-      <motion.li
+      <m.li
         key={link.href + link.label}
         variants={menuItemVariants}
         transition={{ duration: 0.3 }}
@@ -101,9 +101,9 @@ const MenuSection = ({
             />
           )}
         </LinkComponent>
-      </motion.li>
+      </m.li>
     ))}
-  </motion.ul>
+  </m.ul>
 )
 
 export const MegaNav = ({
@@ -199,7 +199,7 @@ export const MegaNav = ({
       </div>
 
       {/* Dropdown / mobile panel */}
-      <motion.div
+      <m.div
         initial={{ height: 0 }}
         animate={{ height: showPanel ? 'auto' : 0 }}
         transition={{ ease: [0.645, 0.045, 0.355, 1], duration: 0.5 }}
@@ -207,7 +207,7 @@ export const MegaNav = ({
       >
         <AnimatePresence mode="wait">
           {current?.sections && (
-            <motion.div
+            <m.div
               key={current.label}
               exit={{ opacity: 0, transition: { duration: 0.25 } }}
               className="mx-auto hidden w-full max-w-[72em] gap-24 px-[min(2em,4vw)] pt-6 pb-16 lg:flex"
@@ -220,10 +220,10 @@ export const MegaNav = ({
                   onNavigate={closeAll}
                 />
               ))}
-            </motion.div>
+            </m.div>
           )}
           {mobileOpen && (
-            <motion.ul
+            <m.ul
               key="mobile"
               initial="hidden"
               animate="visible"
@@ -236,7 +236,7 @@ export const MegaNav = ({
               className="flex h-[calc(100dvh-3.5rem)] flex-col gap-6 overflow-y-auto px-[min(2em,4vw)] pt-6 pb-16 lg:hidden"
             >
               {items.map((item) => (
-                <motion.li key={item.label} variants={menuItemVariants}>
+                <m.li key={item.label} variants={menuItemVariants}>
                   <LinkComponent
                     href={item.href}
                     onClick={closeAll}
@@ -263,16 +263,16 @@ export const MegaNav = ({
                       ))}
                     </ul>
                   )}
-                </motion.li>
+                </m.li>
               ))}
-            </motion.ul>
+            </m.ul>
           )}
         </AnimatePresence>
-      </motion.div>
+      </m.div>
 
       {/* Page dim while a menu is open — a plain overlay, deliberately
           without backdrop-filter. */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0 }}
         animate={{ opacity: current ? 1 : 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}

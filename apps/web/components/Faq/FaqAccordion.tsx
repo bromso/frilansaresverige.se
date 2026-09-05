@@ -1,5 +1,5 @@
 import { cn } from '@frilansaresverige/ui/lib/utils'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import { useState } from 'react'
 import type { FaqItem } from './faq-items'
 
@@ -27,7 +27,7 @@ const FaqAccordion = ({ items }: { items: FaqItem[] }) => {
           (activeItem !== null && index === activeItem - 1)
 
         return (
-          <motion.li
+          <m.li
             key={item.question}
             animate={{
               marginBlock: open ? '10px' : '0px',
@@ -63,7 +63,7 @@ const FaqAccordion = ({ items }: { items: FaqItem[] }) => {
 
             <AnimatePresence initial={false}>
               {open && (
-                <motion.div
+                <m.div
                   initial={{ height: 0, opacity: 0, filter: 'blur(2px)' }}
                   animate={{
                     height: 'auto',
@@ -77,10 +77,10 @@ const FaqAccordion = ({ items }: { items: FaqItem[] }) => {
                   <p className="max-w-[36em] px-5 pb-5 pl-13 leading-[1.6] text-brand-blue/80">
                     {item.answer}
                   </p>
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
-          </motion.li>
+          </m.li>
         )
       })}
     </ul>

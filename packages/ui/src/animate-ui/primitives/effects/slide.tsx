@@ -1,6 +1,6 @@
 'use client'
 
-import { type HTMLMotionProps, motion, type Variant } from 'motion/react'
+import { type HTMLMotionProps, m, type Variant } from 'motion/react'
 import * as React from 'react'
 import {
   type UseIsInViewOptions,
@@ -48,7 +48,7 @@ function Slide({
   }
   const visible: Variant = { [axis]: 0 }
 
-  const Component = asChild ? Slot : motion.div
+  const Component = asChild ? Slot : m.div
 
   return (
     <Component

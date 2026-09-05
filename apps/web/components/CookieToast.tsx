@@ -1,5 +1,5 @@
 import { Button } from '@frilansaresverige/ui/animate-ui/components/buttons/button'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import { useEffect, useState } from 'react'
 
 // Cookie notice as a bottom-center toast, visually adapted from a
@@ -41,7 +41,7 @@ const CookieToast = () => {
     >
       <AnimatePresence initial={false}>
         {open && (
-          <motion.section
+          <m.section
             aria-label="Information om cookies"
             className="pointer-events-auto flex origin-bottom items-start gap-3 rounded-2xl border border-brand-cream/15 bg-brand-blue-dark p-4 text-brand-cream shadow-[0_8px_32px_rgba(0,0,0,0.25)]"
             initial={{ opacity: 0, y: 60, scale: 0.85 }}
@@ -84,7 +84,7 @@ const CookieToast = () => {
                 </Button>
               </div>
             </div>
-          </motion.section>
+          </m.section>
         )}
       </AnimatePresence>
     </div>

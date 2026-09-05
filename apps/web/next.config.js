@@ -35,6 +35,18 @@ const nextConfig = {
       },
     ]
   },
+  // `motion/react` is a thin wrapper around framer-motion that starts
+  // with `import * as fm from 'framer-motion'` — a namespace import
+  // Turbopack cannot tree-shake, so every page shipped the whole library
+  // (the `motion` proxy with all features) even though the code only
+  // renders `m.*` inside LazyMotion. Resolving the wrapper straight to
+  // framer-motion (same package, same version, pinned in package.json)
+  // lets the unused features drop out of the shared bundle.
+  turbopack: {
+    resolveAlias: {
+      'motion/react': 'framer-motion',
+    },
+  },
   transpilePackages: ['@frilansaresverige/ui'],
   reactStrictMode: true,
 }

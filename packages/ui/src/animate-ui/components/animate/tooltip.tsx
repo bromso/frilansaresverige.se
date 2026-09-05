@@ -1,5 +1,6 @@
-import * as motion from 'motion/react-client'
+import { m } from 'motion/react'
 import type * as React from 'react'
+import { LayoutMotion } from '../../../lib/layout-motion'
 import { cn } from '../../../lib/utils'
 import {
   TooltipArrow as TooltipArrowPrimitive,
@@ -16,7 +17,13 @@ import {
 type TooltipProviderProps = TooltipProviderPrimitiveProps
 
 function TooltipProvider({ openDelay = 0, ...props }: TooltipProviderProps) {
-  return <TooltipProviderPrimitive openDelay={openDelay} {...props} />
+  // The content and arrow carry a layoutId so the tooltip glides between
+  // neighbouring triggers — that needs motion's layout features.
+  return (
+    <LayoutMotion>
+      <TooltipProviderPrimitive openDelay={openDelay} {...props} />
+    </LayoutMotion>
+  )
 }
 
 type TooltipProps = TooltipPrimitiveProps
@@ -50,9 +57,9 @@ function TooltipContent({
       )}
       {...props}
     >
-      <motion.div className="overflow-hidden px-3 py-1.5 text-xs text-balance">
-        <motion.div layout={layout}>{children}</motion.div>
-      </motion.div>
+      <m.div className="overflow-hidden px-3 py-1.5 text-xs text-balance">
+        <m.div layout={layout}>{children}</m.div>
+      </m.div>
       <TooltipArrowPrimitive
         className="fill-primary size-3 data-[side='bottom']:translate-y-[1px] data-[side='right']:translate-x-[1px] data-[side='left']:translate-x-[-1px] data-[side='top']:translate-y-[-1px]"
         tipRadius={2}

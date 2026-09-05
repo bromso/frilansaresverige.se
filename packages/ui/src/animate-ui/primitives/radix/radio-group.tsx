@@ -1,6 +1,6 @@
 'use client'
 
-import { AnimatePresence, type HTMLMotionProps, motion } from 'motion/react'
+import { AnimatePresence, type HTMLMotionProps, m } from 'motion/react'
 import { RadioGroup as RadioGroupPrimitive } from 'radix-ui'
 import * as React from 'react'
 
@@ -68,7 +68,7 @@ function RadioGroupIndicator({
           asChild
           forceMount
         >
-          <motion.div
+          <m.div
             key="radio-group-indicator-circle"
             data-slot="radio-group-indicator-circle"
             initial={{ opacity: 0, scale: 0 }}
@@ -110,7 +110,7 @@ function RadioGroupItem({
         disabled={disabled}
         required={required}
       >
-        <motion.button
+        <m.button
           data-slot="radio-group-item"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}

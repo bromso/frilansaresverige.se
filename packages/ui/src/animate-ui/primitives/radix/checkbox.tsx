@@ -1,6 +1,6 @@
 'use client'
 
-import { type HTMLMotionProps, motion, type SVGMotionProps } from 'motion/react'
+import { type HTMLMotionProps, m, type SVGMotionProps } from 'motion/react'
 import { Checkbox as CheckboxPrimitive } from 'radix-ui'
 import type * as React from 'react'
 
@@ -51,7 +51,7 @@ function Checkbox({
         value={value}
         asChild
       >
-        <motion.button
+        <m.button
           data-slot="checkbox"
           whileTap={{ scale: 0.95 }}
           whileHover={{ scale: 1.05 }}
@@ -69,7 +69,7 @@ function CheckboxIndicator(props: CheckboxIndicatorProps) {
 
   return (
     <CheckboxPrimitive.Indicator forceMount asChild>
-      <motion.svg
+      <m.svg
         data-slot="checkbox-indicator"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -81,7 +81,7 @@ function CheckboxIndicator(props: CheckboxIndicatorProps) {
         {...props}
       >
         {isChecked === 'indeterminate' ? (
-          <motion.line
+          <m.line
             x1="5"
             y1="12"
             x2="19"
@@ -95,7 +95,7 @@ function CheckboxIndicator(props: CheckboxIndicatorProps) {
             }}
           />
         ) : (
-          <motion.path
+          <m.path
             strokeLinecap="round"
             strokeLinejoin="round"
             d="M4.5 12.75l6 6 9-13.5"
@@ -118,7 +118,7 @@ function CheckboxIndicator(props: CheckboxIndicatorProps) {
             }}
           />
         )}
-      </motion.svg>
+      </m.svg>
     </CheckboxPrimitive.Indicator>
   )
 }

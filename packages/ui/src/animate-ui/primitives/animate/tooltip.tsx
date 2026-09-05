@@ -15,7 +15,7 @@ import {
   AnimatePresence,
   type HTMLMotionProps,
   LayoutGroup,
-  motion,
+  m,
   type Transition,
 } from 'motion/react'
 import * as React from 'react'
@@ -190,7 +190,7 @@ type FloatingContextType = {
 const [FloatingProvider, useFloatingContext] =
   getStrictContext<FloatingContextType>('FloatingContext')
 
-const MotionTooltipArrow = motion.create(FloatingArrow)
+const MotionTooltipArrow = m.create(FloatingArrow)
 
 type TooltipArrowProps = Omit<
   React.ComponentProps<typeof MotionTooltipArrow>,
@@ -278,7 +278,7 @@ function TooltipOverlay() {
   }, [referenceElRef, refs, update, rendered.data])
 
   const ready = x != null && y != null
-  const Component = rendered.data?.contentAsChild ? Slot : motion.div
+  const Component = rendered.data?.contentAsChild ? Slot : m.div
   const resolvedSide = getResolvedSide(context.placement)
 
   return (
@@ -535,7 +535,7 @@ function TooltipTrigger({
     [hideTooltip, onBlur],
   )
 
-  const Component = asChild ? Slot : motion.div
+  const Component = asChild ? Slot : m.div
 
   return (
     <Component

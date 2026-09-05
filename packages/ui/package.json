@@ -9,7 +9,8 @@
     "./lib/use-reduced-motion": "./src/lib/use-reduced-motion.ts",
     "./lib/use-near-viewport": "./src/lib/use-near-viewport.ts",
     "./ui/*": "./src/ui/*.tsx",
-    "./animate-ui/*": "./src/animate-ui/*.tsx"
+    "./animate-ui/*": "./src/animate-ui/*.tsx",
+    "./lib/layout-motion": "./src/lib/layout-motion.tsx"
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.20",
