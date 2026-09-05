@@ -46,7 +46,7 @@ const InfoRow = ({ icon, children }: { icon: string; children: string }) => (
   <div className="flex items-center gap-3">
     <span
       aria-hidden="true"
-      className={`${icon} size-5 shrink-0 text-brand-coral`}
+      className={`${icon} size-5 shrink-0 text-highlight`}
     />
     <span className="text-brand-cream/85">{children}</span>
   </div>
@@ -117,7 +117,7 @@ const EnskiltEvent = ({ meta, source, isPast }: Props) => {
             <InfoRow icon="icon-[lucide--ticket]">{meta.price}</InfoRow>
           )}
           {isPast ? (
-            <p className="mt-2 text-brand-cream/60">
+            <p className="mt-2 text-brand-cream/75">
               Det här eventet har redan ägt rum. Håll utkik efter nästa.
             </p>
           ) : (

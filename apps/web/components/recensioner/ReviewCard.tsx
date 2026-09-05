@@ -24,7 +24,7 @@ const ReviewCard = ({ review }: { review: ReviewMeta }) => (
       ) : (
         <span
           aria-hidden="true"
-          className="font-display flex size-14 shrink-0 items-center justify-center rounded-2xl bg-brand-cream/10 text-2xl font-extrabold text-brand-coral"
+          className="font-display flex size-14 shrink-0 items-center justify-center rounded-2xl bg-brand-cream/10 text-2xl font-extrabold text-highlight"
         >
           {review.title.charAt(0)}
         </span>
@@ -37,7 +37,7 @@ const ReviewCard = ({ review }: { review: ReviewMeta }) => (
           {review.title}
         </span>
       </span>
-      <span className="shrink-0 self-start text-sm text-brand-cream/60">
+      <span className="shrink-0 self-start text-sm text-brand-cream/75">
         <span className="font-display text-base font-bold text-brand-cream">
           {formatScore(review.overall)}
         </span>{' '}
@@ -50,16 +50,16 @@ const ReviewCard = ({ review }: { review: ReviewMeta }) => (
     <span className="mt-auto flex flex-col gap-1.5">
       {REVIEW_CRITERIA.map(({ key, label }) => (
         <span key={key} className="flex items-center gap-3">
-          <span className="w-24 shrink-0 text-xs text-brand-cream/60">
+          <span className="w-24 shrink-0 text-xs text-brand-cream/75">
             {label}
           </span>
           <span className="h-1 flex-1 overflow-hidden rounded-full bg-brand-cream/10">
             <span
-              className="block h-full rounded-full bg-brand-coral"
+              className="block h-full rounded-full bg-highlight"
               style={{ width: `${(review.scores[key] / 5) * 100}%` }}
             />
           </span>
-          <span className="w-7 shrink-0 text-right text-xs text-brand-cream/70 tabular-nums">
+          <span className="w-7 shrink-0 text-right text-xs text-brand-cream/75 tabular-nums">
             {formatScore(review.scores[key])}
           </span>
         </span>

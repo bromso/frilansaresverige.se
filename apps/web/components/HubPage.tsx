@@ -48,7 +48,7 @@ const HubPage = ({
               <span className="flex h-full flex-col rounded-3xl bg-brand-cream/5 p-7 transition-colors hover:bg-brand-cream/10">
                 <span
                   aria-hidden="true"
-                  className={`${link.icon} size-7 text-brand-coral`}
+                  className={`${link.icon} size-7 text-highlight`}
                 />
                 <span className="font-display mt-4 text-xl font-bold text-brand-cream">
                   {link.label}

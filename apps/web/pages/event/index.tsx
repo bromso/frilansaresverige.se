@@ -50,7 +50,7 @@ const Event = ({ upcoming, past }: Props) => {
             ))}
           </div>
         ) : (
-          <p className="mt-4 max-w-[36em] leading-[1.6] text-brand-cream/70">
+          <p className="mt-4 max-w-[36em] leading-[1.6] text-brand-cream/75">
             Inga inplanerade event just nu. Håll utkik i Slacken, det brukar
             inte dröja länge. Vill du dra igång en träff på din ort? Säg till i
             #meta.

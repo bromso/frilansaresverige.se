@@ -69,7 +69,7 @@ function TabsTrigger({ className, ...props }: TabsTriggerProps) {
     <TabsHighlightItemPrimitive value={props.value} className="h-full flex-1">
       <TabsTriggerPrimitive
         className={cn(
-          'inline-flex h-full w-full flex-1 items-center justify-center gap-1.5 rounded-full px-2 text-sm font-medium whitespace-nowrap text-brand-blue/70 transition-colors duration-150 ease-in-out data-[state=active]:text-brand-cream focus:shadow-[0_0_0_0.1em_var(--color-brand-cream),0_0_0_0.2em_var(--color-brand-blue)] focus:outline-none disabled:pointer-events-none disabled:opacity-40',
+          'inline-flex h-full w-full flex-1 items-center justify-center gap-1.5 rounded-full px-2 text-sm font-medium whitespace-nowrap text-brand-blue/75 transition-colors duration-150 ease-in-out data-[state=active]:text-brand-cream focus:shadow-[0_0_0_0.1em_var(--color-brand-cream),0_0_0_0.2em_var(--color-brand-blue)] focus:outline-none disabled:pointer-events-none disabled:opacity-40',
           className,
         )}
         {...props}

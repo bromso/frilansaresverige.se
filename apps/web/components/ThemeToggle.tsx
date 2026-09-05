@@ -330,7 +330,10 @@ export const useThemeToggle = ({
   blur?: boolean
 } = {}) => {
   const { theme, setTheme, resolvedTheme } = useTheme()
-  const [isDark, setIsDark] = useState(false)
+  // The theme is only known after hydration; the default theme is dark,
+  // so start there rather than painting the wrong icon for a frame for
+  // the majority of visitors.
+  const [isDark, setIsDark] = useState(true)
 
   useEffect(() => {
     setIsDark(resolvedTheme === 'dark')
@@ -393,11 +396,11 @@ export const ThemeToggleButton = ({
     <button
       type="button"
       className={cn(
-        'flex size-10 cursor-pointer items-center justify-center rounded-full text-brand-cream/70 transition-colors duration-300 hover:bg-brand-cream/10 hover:text-brand-cream active:scale-95',
+        'flex size-10 cursor-pointer items-center justify-center rounded-full text-brand-cream/75 transition-colors duration-300 hover:bg-brand-cream/10 hover:text-brand-cream active:scale-95',
         className,
       )}
       onClick={toggleTheme}
-      aria-label="Växla mellan mörkt och ljust läge"
+      aria-label={isDark ? 'Byt till ljust läge' : 'Byt till mörkt läge'}
     >
       <span
         aria-hidden="true"

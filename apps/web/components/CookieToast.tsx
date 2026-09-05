@@ -61,7 +61,7 @@ const CookieToast = () => {
               <p className="font-display text-sm leading-tight font-bold">
                 Cookies
               </p>
-              <p className="mt-0.5 text-[0.8rem] leading-snug text-brand-cream/60">
+              <p className="mt-0.5 text-[0.8rem] leading-snug text-brand-cream/75">
                 Vi använder cookies för att räkna besökare på sajten. Inget mer
                 än så.
               </p>

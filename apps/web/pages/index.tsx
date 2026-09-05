@@ -328,7 +328,7 @@ const TestimonialCard = ({ name, role, body }: Testimonial) => (
       </span>
       <span className="flex flex-col">
         <span className="font-display text-base font-bold">{name}</span>
-        <span className="text-sm text-brand-blue/70">{role}</span>
+        <span className="text-sm text-brand-blue/75">{role}</span>
       </span>
     </figcaption>
   </figure>
@@ -443,12 +443,12 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
             <h1 className="font-display text-5xl leading-[1.05] font-extrabold tracking-tight text-brand-cream md:text-6xl lg:text-7xl">
               Att frilansa är bättre{' '}
               {reduced ? (
-                <span className="text-brand-coral">tillsammans.</span>
+                <span className="text-highlight">tillsammans.</span>
               ) : (
                 <HighlightText
                   inView
                   text="tillsammans."
-                  className="rounded-[0.15em] text-brand-coral"
+                  className="rounded-[0.15em] text-highlight"
                   style={{
                     backgroundImage:
                       'linear-gradient(var(--color-brand-blue-dark), var(--color-brand-blue-dark))',
@@ -463,7 +463,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
             <div className="mt-6 flex items-baseline gap-[0.35em] text-xl text-brand-cream/90 md:text-2xl">
               <span>För</span>
               {reduced ? (
-                <span className="font-display font-bold text-brand-coral">
+                <span className="font-display font-bold text-highlight">
                   alla frilansare
                 </span>
               ) : (
@@ -472,7 +472,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                   duration={2400}
                   y={-24}
                 >
-                  <RotatingText className="font-display font-bold text-brand-coral" />
+                  <RotatingText className="font-display font-bold text-highlight" />
                 </RotatingTextContainer>
               )}
             </div>
@@ -503,7 +503,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
           </div>
 
           <div className="hero-enter" style={{ animationDelay: '500ms' }}>
-            <p className="mt-7 text-sm text-brand-cream/60">
+            <p className="mt-7 text-sm text-brand-cream/75">
               Gratis · Ideellt · Inga mellanhänder · Vi ses i Slack
             </p>
           </div>
@@ -512,7 +512,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
 
       {/* Client logos */}
       <Reveal reduced={reduced} className="w-full py-12 md:py-14">
-        <p className="font-display mb-8 text-center text-sm font-bold tracking-widest text-brand-cream/60 uppercase">
+        <p className="font-display mb-8 text-center text-sm font-bold tracking-widest text-brand-cream/75 uppercase">
           Våra medlemmar har gjort uppdrag för bland andra
         </p>
         <TooltipProvider>
@@ -529,7 +529,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
                           className="flex cursor-default items-center"
                         >
                           <span
-                            className={`${logo.icon} size-14 text-brand-cream/60 transition-colors duration-200 hover:text-brand-cream md:size-16`}
+                            className={`${logo.icon} size-14 text-brand-cream/75 transition-colors duration-200 hover:text-brand-cream md:size-16`}
                             aria-hidden="true"
                           />
                         </button>
@@ -605,7 +605,7 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
             <li key={step.number}>
               <Reveal reduced={reduced} delay={index * 120}>
                 <p
-                  className="font-display text-5xl font-extrabold text-brand-coral"
+                  className="font-display text-5xl font-extrabold text-highlight"
                   aria-hidden="true"
                 >
                   {step.number}

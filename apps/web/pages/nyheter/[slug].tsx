@@ -79,7 +79,7 @@ const Artikel = ({ meta, source, more }: Props) => {
           <p className="font-display text-sm font-bold tracking-widest text-eyebrow uppercase">
             {meta.category}
           </p>
-          <time dateTime={meta.date} className="text-sm text-brand-cream/60">
+          <time dateTime={meta.date} className="text-sm text-brand-cream/75">
             {formatPostDate(meta.date)}
           </time>
         </div>

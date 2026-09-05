@@ -27,7 +27,7 @@ const Kunskap = () => (
       },
     ]}
   >
-    <p className="mt-10 max-w-[36em] leading-[1.6] text-brand-cream/70">
+    <p className="mt-10 max-w-[36em] leading-[1.6] text-brand-cream/75">
       Vill du skriva en guide eller föreslå ett ämne? Säg till i Slacken eller
       öppna ett ärende på{' '}
       <a

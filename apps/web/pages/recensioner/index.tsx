@@ -80,7 +80,7 @@ const Recensioner = ({ reviews }: Props) => {
           ))}
         </div>
 
-        <p className="mt-10 max-w-[36em] text-sm leading-[1.6] text-brand-cream/60">
+        <p className="mt-10 max-w-[36em] text-sm leading-[1.6] text-brand-cream/75">
           Recensionerna bygger på erfarenheter från medlemmar i Frilansare
           Sverige och uppdateras när nya erfarenheter kommer in. Betygen är
           communityts samlade bild, inte en vetenskaplig mätning. Bolagen kan

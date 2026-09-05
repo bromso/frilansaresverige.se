@@ -33,7 +33,7 @@ const AnsokanTack = () => {
           dagar, och sedan kommer din inbjudan till Slacken via mejl. Håll koll
           på skräpposten för säkerhets skull.
         </p>
-        <p className="mt-4 max-w-[36em] leading-[1.6] text-brand-cream/70">
+        <p className="mt-4 max-w-[36em] leading-[1.6] text-brand-cream/75">
           Medan du väntar kan du läsa{' '}
           <Link
             href="/sa-fungerar-det"

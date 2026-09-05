@@ -188,7 +188,7 @@ const GigTipForm = () => {
                 </Label>
                 <div className="relative">
                   <span
-                    className="icon-[lucide--briefcase-business] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/60"
+                    className="icon-[lucide--briefcase-business] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/75"
                     aria-hidden="true"
                   />
                   <Input
@@ -208,7 +208,7 @@ const GigTipForm = () => {
                 </Label>
                 <div className="relative">
                   <span
-                    className="icon-[lucide--text] pointer-events-none absolute top-[0.8em] left-[0.75em] size-[1.2em] text-brand-blue/60"
+                    className="icon-[lucide--text] pointer-events-none absolute top-[0.8em] left-[0.75em] size-[1.2em] text-brand-blue/75"
                     aria-hidden="true"
                   />
                   <Textarea
@@ -235,7 +235,7 @@ const GigTipForm = () => {
                 </Label>
                 <div className="relative">
                   <span
-                    className="icon-[lucide--map-pin] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/60"
+                    className="icon-[lucide--map-pin] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/75"
                     aria-hidden="true"
                   />
                   <Input
@@ -306,7 +306,7 @@ const GigTipForm = () => {
                 </Label>
                 <div className="relative">
                   <span
-                    className="icon-[lucide--banknote] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/60"
+                    className="icon-[lucide--banknote] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/75"
                     aria-hidden="true"
                   />
                   <Input
@@ -321,7 +321,7 @@ const GigTipForm = () => {
                     className={`${FIELD_CLASSES} pr-[3.5em] pl-[2.4em]`}
                   />
                   <span
-                    className="absolute top-1/2 right-[0.75em] -translate-y-1/2 text-[1.1em] text-brand-blue/60"
+                    className="absolute top-1/2 right-[0.75em] -translate-y-1/2 text-[1.1em] text-brand-blue/75"
                     aria-hidden="true"
                   >
                     kr/h
@@ -367,7 +367,7 @@ const GigTipForm = () => {
                 </Label>
                 <div className="relative">
                   <span
-                    className="icon-[lucide--building-2] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/60"
+                    className="icon-[lucide--building-2] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/75"
                     aria-hidden="true"
                   />
                   <Input
@@ -387,7 +387,7 @@ const GigTipForm = () => {
                 </Label>
                 <div className="relative">
                   <span
-                    className="icon-[lucide--contact-round] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/60"
+                    className="icon-[lucide--contact-round] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/75"
                     aria-hidden="true"
                   />
                   <Input
@@ -409,7 +409,7 @@ const GigTipForm = () => {
                   </Label>
                   <div className="relative">
                     <span
-                      className="icon-[lucide--phone] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/60"
+                      className="icon-[lucide--phone] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/75"
                       aria-hidden="true"
                     />
                     <Input
@@ -431,7 +431,7 @@ const GigTipForm = () => {
                   </Label>
                   <div className="relative">
                     <span
-                      className="icon-[lucide--mail] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/60"
+                      className="icon-[lucide--mail] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/75"
                       aria-hidden="true"
                     />
                     <Input

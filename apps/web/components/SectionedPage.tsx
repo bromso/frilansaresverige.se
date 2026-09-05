@@ -91,7 +91,7 @@ const SectionedPage = ({
                     <m.span
                       layoutId="active-section"
                       aria-hidden="true"
-                      className="absolute top-1/2 -left-[1.5px] inline-block h-5 w-[2px] -translate-y-1/2 rounded-full bg-brand-coral"
+                      className="absolute top-1/2 -left-[1.5px] inline-block h-5 w-[2px] -translate-y-1/2 rounded-full bg-highlight"
                       transition={{
                         type: 'spring',
                         stiffness: 400,
@@ -104,7 +104,7 @@ const SectionedPage = ({
                     className={`block leading-snug transition-opacity duration-200 hover:opacity-100 ${
                       active === index
                         ? 'text-brand-cream opacity-100'
-                        : 'text-brand-cream opacity-50'
+                        : 'text-brand-cream opacity-75'
                     }`}
                   >
                     {section.title}
@@ -129,7 +129,7 @@ const SectionedPage = ({
               </Section>
             ))}
             {meta.updated && (
-              <p className="text-sm text-brand-cream/60">
+              <p className="text-sm text-brand-cream/75">
                 Senast uppdaterad: {formatPostDate(meta.updated)}
               </p>
             )}

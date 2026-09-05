@@ -34,7 +34,7 @@ const EventCard = ({
         <span className="font-display text-lg font-bold tracking-tight text-brand-cream sm:text-xl">
           {event.title}
         </span>
-        <span className="mt-1 text-sm text-brand-cream/70">
+        <span className="mt-1 text-sm text-brand-cream/75">
           {event.city} · {formatEventTime(event.startDate, event.endDate)} ·{' '}
           {event.location}
         </span>

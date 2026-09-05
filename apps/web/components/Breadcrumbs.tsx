@@ -44,7 +44,7 @@ const Breadcrumbs = ({ path, crumb }: { path: string; crumb?: LeafCrumb }) => {
       aria-label="Brödsmulor"
       className="w-full border-b border-brand-cream/10 py-5 text-sm"
     >
-      <ol className="flex flex-wrap items-center gap-1 text-brand-cream/60">
+      <ol className="flex flex-wrap items-center gap-1 text-brand-cream/75">
         {crumbs.map((crumb, index) => {
           const last = index === crumbs.length - 1
           return (

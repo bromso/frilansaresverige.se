@@ -72,7 +72,7 @@ const MenuSection = ({
     <m.li
       variants={menuItemVariants}
       transition={{ duration: 0.3 }}
-      className="my-4 text-xs text-brand-cream/50"
+      className="my-4 text-xs text-brand-cream/75"
     >
       {section.title}
     </m.li>
@@ -255,7 +255,7 @@ export const MegaNav = ({
                           <LinkComponent
                             href={link.href}
                             onClick={closeAll}
-                            className="text-sm text-brand-cream/70 hover:text-brand-cream"
+                            className="text-sm text-brand-cream/75 hover:text-brand-cream"
                           >
                             {link.label}
                           </LinkComponent>

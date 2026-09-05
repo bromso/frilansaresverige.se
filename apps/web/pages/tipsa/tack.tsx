@@ -33,7 +33,7 @@ const TipsaTack = () => {
           uppdragskanalen, och frilansare som är intresserade hör av sig direkt
           till kontaktpersonen du angav. Vi står inte emellan.
         </p>
-        <p className="mt-4 max-w-[36em] leading-[1.6] text-brand-cream/70">
+        <p className="mt-4 max-w-[36em] leading-[1.6] text-brand-cream/75">
           Har du fler uppdrag?{' '}
           <Link href="/tipsa" className="underline hover:no-underline">
             Tipsa igen

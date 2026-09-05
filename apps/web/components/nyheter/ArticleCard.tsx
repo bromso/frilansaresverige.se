@@ -60,7 +60,7 @@ const ArticleCard = ({
             {post.excerpt}
           </p>
         )}
-        <time dateTime={post.date} className="mt-3 text-sm text-brand-cream/60">
+        <time dateTime={post.date} className="mt-3 text-sm text-brand-cream/75">
           {formatPostDate(post.date)}
         </time>
       </div>

@@ -37,7 +37,7 @@ const NotificationRow = ({ icon, title, body }: NotificationMessage) => (
     </span>
     <span className="min-w-0 text-brand-grey">
       <span className="block truncate text-sm font-medium">{title}</span>
-      <span className="block truncate font-mono text-xs text-brand-grey/60">
+      <span className="block truncate font-mono text-xs text-brand-grey/75">
         {body}
       </span>
     </span>

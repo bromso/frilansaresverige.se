@@ -65,7 +65,7 @@ const Uppdrag = ({ gigs }: Props) => {
           ))}
         </div>
 
-        <p className="mt-10 max-w-[36em] leading-[1.6] text-brand-cream/70">
+        <p className="mt-10 max-w-[36em] leading-[1.6] text-brand-cream/75">
           Här visas ett urval. Är du inte medlem än?{' '}
           <Link href="/ansokan" className="underline hover:no-underline">
             Ansök om medlemskap

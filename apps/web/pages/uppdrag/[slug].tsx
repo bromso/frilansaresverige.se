@@ -42,7 +42,7 @@ const InfoRow = ({ icon, children }: { icon: string; children: string }) => (
   <div className="flex items-center gap-3">
     <span
       aria-hidden="true"
-      className={`${icon} size-5 shrink-0 text-brand-coral`}
+      className={`${icon} size-5 shrink-0 text-highlight`}
     />
     <span className="text-brand-cream/85">{children}</span>
   </div>
@@ -115,7 +115,7 @@ const EnskiltUppdrag = ({ meta, source }: Props) => {
               />
             </a>
           ) : (
-            <p className="mt-2 leading-[1.6] text-brand-cream/70">
+            <p className="mt-2 leading-[1.6] text-brand-cream/75">
               Uppdraget söks via communityt. Som medlem hittar du kontaktvägen i
               uppdragskanalen i Slack.{' '}
               <Link href="/ansokan" className="underline hover:no-underline">

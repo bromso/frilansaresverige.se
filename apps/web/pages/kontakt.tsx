@@ -46,7 +46,7 @@ const Kontakt = () => {
             , så ser någon av oss det.
           </li>
         </ul>
-        <p className="mt-6 max-w-[36em] leading-[1.6] text-brand-cream/70">
+        <p className="mt-6 max-w-[36em] leading-[1.6] text-brand-cream/75">
           Vi är ett ideellt community utan anställda, så det kan dröja någon dag
           innan du får svar. Men du får svar.
         </p>

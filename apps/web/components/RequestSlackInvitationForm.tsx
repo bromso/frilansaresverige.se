@@ -55,7 +55,7 @@ const IconField = ({
   <div className="relative">
     <span
       aria-hidden="true"
-      className={`${icon} pointer-events-none absolute left-3.5 size-5 text-brand-blue/50 ${top}`}
+      className={`${icon} pointer-events-none absolute left-3.5 size-5 text-brand-blue/75 ${top}`}
     />
     {children}
   </div>
