@@ -21,6 +21,15 @@ FROM oven/bun:1.3.14-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# Build-time configuration. These are read while the pages are
+# prerendered, so they must be passed as build args (deploy.sh does);
+# .env.local files are excluded by .dockerignore on purpose so the Slack
+# webhook secrets never end up baked into an image layer. The webhooks
+# are runtime-only and belong in the compose service's environment.
+ARG GOOGLE_ANALYTICS_ID
+ARG NEXT_PUBLIC_SITE_URL=https://frilansaresverige.se
+ENV GOOGLE_ANALYTICS_ID=$GOOGLE_ANALYTICS_ID
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 RUN bun run build
 
 FROM node:24-alpine AS runner
