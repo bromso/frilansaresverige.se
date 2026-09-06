@@ -7,6 +7,11 @@ import { getImageProps } from 'next/image'
 // art lives in the framework-free ui package. The result is a `src`,
 // `srcSet` and `sizes` triple for a plain <img>: the optimizer picks a
 // width per device from `sizes` and encodes AVIF/WebP on the fly.
+//
+// Call this from getStaticProps only: `getImageProps` pulls next/image's
+// client code into any component that calls it during render, and the
+// triple is plain JSON, so it is computed at build time and handed to
+// the components as props.
 
 /** Featured card: the full 60em column, or the viewport below it. */
 export const COVER_SIZES_FEATURED = '(min-width: 64em) 60em, 100vw'
@@ -35,5 +40,20 @@ export const coverImageProps = (
     sizes,
     quality: 75,
   })
-  return { src, srcSet, sizes }
+  // Leave `srcSet` out rather than `undefined`: getStaticProps props
+  // must be JSON-serialisable.
+  return { src, sizes, ...(srcSet && { srcSet }) }
 }
+
+/** A post with its cover resolved at build time (`null` when it has none). */
+export type WithCover<T extends { image?: string }> = T & {
+  cover: CoverImageProps | null
+}
+
+export const withCover = <T extends { image?: string }>(
+  post: T,
+  sizes: string,
+): WithCover<T> => ({
+  ...post,
+  cover: post.image ? coverImageProps(post.image, sizes) : null,
+})

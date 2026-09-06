@@ -4,14 +4,26 @@ import ArticleCard from '../../components/nyheter/ArticleCard'
 import Seo from '../../components/Seo'
 import type { PostMeta } from '../../lib/content'
 import { getAllPosts } from '../../lib/content.server'
+import {
+  COVER_SIZES_FEATURED,
+  COVER_SIZES_TILE,
+  type WithCover,
+  withCover,
+} from '../../lib/cover-image'
 import { requireRoute } from '../../lib/routes'
 
 interface Props {
-  posts: PostMeta[]
+  posts: WithCover<PostMeta>[]
 }
 
+// The first post is the featured card and gets the wider `sizes`; the
+// covers are resolved here so the page never imports next/image.
 export const getStaticProps: GetStaticProps<Props> = async () => ({
-  props: { posts: getAllPosts() },
+  props: {
+    posts: getAllPosts().map((post, index) =>
+      withCover(post, index === 0 ? COVER_SIZES_FEATURED : COVER_SIZES_TILE),
+    ),
+  },
 })
 
 // Newsroom-style archive: the latest post as a full-width featured card,

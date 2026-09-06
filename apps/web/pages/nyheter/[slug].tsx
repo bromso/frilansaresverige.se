@@ -11,12 +11,21 @@ import Seo, { SITE_NAME, SITE_URL } from '../../components/Seo'
 import StructuredData from '../../components/StructuredData'
 import { formatPostDate, type PostMeta } from '../../lib/content'
 import { getAllPosts, getPost, getPostSlugs } from '../../lib/content.server'
-import { COVER_SIZES_ARTICLE, coverImageProps } from '../../lib/cover-image'
+import {
+  COVER_SIZES_ARTICLE,
+  COVER_SIZES_TILE,
+  type CoverImageProps,
+  coverImageProps,
+  type WithCover,
+  withCover,
+} from '../../lib/cover-image'
 
 interface Props {
   meta: PostMeta
+  /** Optimizer props for the hero, resolved at build time. */
+  cover: CoverImageProps | null
   source: MDXRemoteSerializeResult
-  more: PostMeta[]
+  more: WithCover<PostMeta>[]
   crumb: LeafCrumb
 }
 
@@ -32,9 +41,13 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const more = getAllPosts()
     .filter((post) => post.slug !== slug)
     .slice(0, 3)
+    .map((post) => withCover(post, COVER_SIZES_TILE))
   return {
     props: {
       meta,
+      cover: meta.image
+        ? coverImageProps(meta.image, COVER_SIZES_ARTICLE)
+        : null,
       source,
       more,
       crumb: {
@@ -48,11 +61,8 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
 // Newsroom-style article: narrow centered column with category eyebrow,
 // headline, the excerpt as standfirst, cover art and the MDX body.
-const Artikel = ({ meta, source, more }: Props) => {
+const Artikel = ({ meta, cover, source, more }: Props) => {
   const path = `/nyheter/${meta.slug}`
-  const cover = meta.image
-    ? coverImageProps(meta.image, COVER_SIZES_ARTICLE)
-    : undefined
   const jsonLd: WithContext<NewsArticle> = {
     '@context': 'https://schema.org',
     '@type': 'NewsArticle',
@@ -98,7 +108,7 @@ const Artikel = ({ meta, source, more }: Props) => {
             seed={meta.slug}
             image={meta.image}
             eager
-            imgProps={cover}
+            imgProps={cover ?? undefined}
           />
         </div>
         <div className="mt-2">

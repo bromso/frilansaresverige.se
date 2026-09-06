@@ -77,6 +77,17 @@ const nextConfig = {
       'motion/react': 'framer-motion',
     },
   },
+  // Production builds use webpack (`next build --webpack`, see the build
+  // script) while `next dev` stays on Turbopack. Measured on the same
+  // code, Turbopack's chunker emitted the Seo/routes module group into
+  // both the shared chunk and several page chunks and split each page
+  // across 13–19 files; webpack's splitChunks dedupes it and ships
+  // 12–15% less first-load JavaScript per page in 5–8 files. Same alias
+  // as above, for the same reason.
+  webpack: (config) => {
+    config.resolve.alias['motion/react'] = 'framer-motion'
+    return config
+  },
   transpilePackages: ['@frilansaresverige/ui'],
   reactStrictMode: true,
 }

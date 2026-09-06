@@ -126,6 +126,21 @@
   }
 }
 
+/* Draws an external SVG (set per element as --logo: url(...)) in the
+   element's currentColor, the same mask technique the iconify plugin
+   uses for the inline icons. Used for the homepage client logos, which
+   are served as files instead of being embedded in this stylesheet. */
+@utility logo-mask {
+  display: inline-block;
+  background-color: currentColor;
+  -webkit-mask-image: var(--logo);
+  mask-image: var(--logo);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
 /* Static hero background in the palette the retired WebGPU hero shader
    painted: violet up top, coral mass on the right, darkest at the bottom
    so the wash dissolves into the flat page background. The light-theme

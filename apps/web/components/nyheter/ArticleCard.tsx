@@ -1,29 +1,22 @@
 import { DuotoneCover } from '@frilansaresverige/ui/ui/duotone-cover'
 import Link from 'next/link'
 import { formatPostDate, type PostMeta } from '../../lib/content'
-import {
-  COVER_SIZES_FEATURED,
-  COVER_SIZES_TILE,
-  coverImageProps,
-} from '../../lib/cover-image'
+import type { WithCover } from '../../lib/cover-image'
 import CoverPreload from './CoverPreload'
 
 // Newsroom-style tile: cover flush to the top, category eyebrow, title
 // and date below. `featured` blows the newest post up to a full-width
-// card with its excerpt as a standfirst.
+// card with its excerpt as a standfirst. The optimizer `cover` props are
+// resolved in getStaticProps (see lib/cover-image.ts) so this stays free
+// of next/image on the client.
 const ArticleCard = ({
   post,
   featured = false,
 }: {
-  post: PostMeta
+  post: WithCover<PostMeta>
   featured?: boolean
 }) => {
-  const cover = post.image
-    ? coverImageProps(
-        post.image,
-        featured ? COVER_SIZES_FEATURED : COVER_SIZES_TILE,
-      )
-    : undefined
+  const cover = post.cover ?? undefined
   return (
     <Link
       href={`/nyheter/${post.slug}`}

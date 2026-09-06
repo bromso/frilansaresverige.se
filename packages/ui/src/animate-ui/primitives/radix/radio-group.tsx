@@ -1,7 +1,7 @@
 'use client'
 
+import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
 import { AnimatePresence, type HTMLMotionProps, m } from 'motion/react'
-import { RadioGroup as RadioGroupPrimitive } from 'radix-ui'
 import * as React from 'react'
 
 import { useControlledState } from '../../../hooks/use-controlled-state'

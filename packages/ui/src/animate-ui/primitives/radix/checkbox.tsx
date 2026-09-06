@@ -1,7 +1,7 @@
 'use client'
 
+import * as CheckboxPrimitive from '@radix-ui/react-checkbox'
 import { type HTMLMotionProps, m, type SVGMotionProps } from 'motion/react'
-import { Checkbox as CheckboxPrimitive } from 'radix-ui'
 import type * as React from 'react'
 
 import { useControlledState } from '../../../hooks/use-controlled-state'

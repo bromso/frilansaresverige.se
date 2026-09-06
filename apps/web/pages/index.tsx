@@ -1,9 +1,3 @@
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@frilansaresverige/ui/animate-ui/components/animate/tooltip'
 import { Button } from '@frilansaresverige/ui/animate-ui/components/buttons/button'
 import { Fade } from '@frilansaresverige/ui/animate-ui/primitives/effects/fade'
 import { Slide } from '@frilansaresverige/ui/animate-ui/primitives/effects/slide'
@@ -24,7 +18,7 @@ import {
 import { VerticalMarquee } from '@frilansaresverige/ui/ui/vertical-marquee'
 import type { GetStaticProps, NextPage } from 'next'
 import Link from 'next/link'
-import type { ReactElement, ReactNode } from 'react'
+import type { CSSProperties, ReactElement, ReactNode } from 'react'
 import type { Organization, WebSite, WithContext } from 'schema-dts'
 import GigToastStack from '../components/GigToastStack'
 import { ProgressiveBlur } from '../components/ProgressiveBlur'
@@ -237,17 +231,22 @@ const BENTO_CARDS: BentoCard[] = [
 
 // Placeholder logos of companies where members have done gigs — swap for
 // real client logos (with permission) before this goes live.
+// Served as plain SVG files (public/images/logos, extracted from
+// simple-icons) and drawn through a CSS mask, instead of the iconify
+// `icon-[simple-icons--…]` classes: those inline every logo as a data
+// URI in the global stylesheet, ~24 KB that every page had to download
+// before it could render for a marquee only the homepage shows.
 const CLIENT_LOGOS = [
-  { name: 'Spotify', icon: 'icon-[simple-icons--spotify]' },
-  { name: 'Klarna', icon: 'icon-[simple-icons--klarna]' },
-  { name: 'IKEA', icon: 'icon-[simple-icons--ikea]' },
-  { name: 'Volvo', icon: 'icon-[simple-icons--volvo]' },
-  { name: 'Ericsson', icon: 'icon-[simple-icons--ericsson]' },
-  { name: 'Polestar', icon: 'icon-[simple-icons--polestar]' },
-  { name: 'Scania', icon: 'icon-[simple-icons--scania]' },
-  { name: 'H&M', icon: 'icon-[simple-icons--handm]' },
-  { name: 'Husqvarna', icon: 'icon-[simple-icons--husqvarna]' },
-  { name: 'Tietoevry', icon: 'icon-[simple-icons--tietoevry]' },
+  { name: 'Spotify', src: '/images/logos/spotify.svg' },
+  { name: 'Klarna', src: '/images/logos/klarna.svg' },
+  { name: 'IKEA', src: '/images/logos/ikea.svg' },
+  { name: 'Volvo', src: '/images/logos/volvo.svg' },
+  { name: 'Ericsson', src: '/images/logos/ericsson.svg' },
+  { name: 'Polestar', src: '/images/logos/polestar.svg' },
+  { name: 'Scania', src: '/images/logos/scania.svg' },
+  { name: 'H&M', src: '/images/logos/handm.svg' },
+  { name: 'Husqvarna', src: '/images/logos/husqvarna.svg' },
+  { name: 'Tietoevry', src: '/images/logos/tietoevry.svg' },
 ]
 
 interface Testimonial {
@@ -533,36 +532,33 @@ const Home: NextPage<HomeProps> = ({ memberCount }) => {
             <li key={logo.name}>{logo.name}</li>
           ))}
         </ul>
-        <TooltipProvider>
-          <div ref={logos.ref} aria-hidden="true">
-            <Marquee>
-              <MarqueeContent play={!reduced && logos.near} speed={40}>
-                {CLIENT_LOGOS.map((logo) => (
-                  <MarqueeItem key={logo.name} className="mx-8 md:mx-12">
-                    <Tooltip side="top" sideOffset={8}>
-                      <TooltipTrigger asChild>
-                        <button
-                          type="button"
-                          tabIndex={-1}
-                          aria-label={logo.name}
-                          className="flex cursor-default items-center"
-                        >
-                          <span
-                            className={`${logo.icon} size-14 text-brand-cream/75 transition-colors duration-200 hover:text-brand-cream md:size-16`}
-                            aria-hidden="true"
-                          />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent>{logo.name}</TooltipContent>
-                    </Tooltip>
-                  </MarqueeItem>
-                ))}
-              </MarqueeContent>
-              <MarqueeFade side="left" />
-              <MarqueeFade side="right" />
-            </Marquee>
-          </div>
-        </TooltipProvider>
+        {/* The hover label is plain CSS rather than the animate-ui Tooltip:
+            the tooltip dragged @floating-ui and motion's domMax chunk into
+            the homepage bundle just to name a logo on hover. The items carry
+            top padding so the label has room inside the marquee's
+            overflow-hidden track instead of being clipped. */}
+        <div ref={logos.ref} aria-hidden="true">
+          <Marquee>
+            <MarqueeContent play={!reduced && logos.near} speed={40}>
+              {CLIENT_LOGOS.map((logo) => (
+                <MarqueeItem key={logo.name} className="mx-8 pt-10 md:mx-12">
+                  <span className="group relative flex cursor-default items-center">
+                    <span
+                      className="logo-mask size-14 text-brand-cream/75 transition-colors duration-200 group-hover:text-brand-cream md:size-16"
+                      style={{ '--logo': `url(${logo.src})` } as CSSProperties}
+                      aria-hidden="true"
+                    />
+                    <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 rounded-md bg-brand-coral px-3 py-1.5 text-xs font-medium whitespace-nowrap text-brand-grey opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+                      {logo.name}
+                    </span>
+                  </span>
+                </MarqueeItem>
+              ))}
+            </MarqueeContent>
+            <MarqueeFade side="left" />
+            <MarqueeFade side="right" />
+          </Marquee>
+        </div>
       </Reveal>
 
       {/* Features */}

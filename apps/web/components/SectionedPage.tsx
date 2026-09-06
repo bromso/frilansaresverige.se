@@ -1,15 +1,20 @@
-import { LayoutMotion } from '@frilansaresverige/ui/lib/layout-motion'
-import { m, useInView } from 'motion/react'
+import { useInView } from 'motion/react'
 import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote'
-import { type ReactNode, useEffect, useRef, useState } from 'react'
+import {
+  type ReactNode,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 import { formatPostDate, type SidaMeta } from '../lib/content'
 import { MDX_COMPONENTS } from './nyheter/MdxContent'
 import Seo from './Seo'
 
 // Long-form static pages (legal, uppförandekoden): MDX sections with a
 // sticky scrollspy menu. Adapted from Skiper UI's Skiper60 terms layout
-// (skiper-ui.com): a springing coral tick slides between menu items as
-// the matching section scrolls into view.
+// (skiper-ui.com): a coral tick slides between menu items as the
+// matching section scrolls into view.
 export interface SerializedSection {
   id: string
   title: string
@@ -23,6 +28,9 @@ interface SectionedPageProps {
   meta: SidaMeta
   sections: SerializedSection[]
 }
+
+/** The tick is `h-5`: 20px. Used to centre it on the active item. */
+const TICK_HEIGHT = 20
 
 const Section = ({
   id,
@@ -63,11 +71,28 @@ const SectionedPage = ({
   sections,
 }: SectionedPageProps) => {
   const [active, setActive] = useState(0)
+  const itemRefs = useRef<(HTMLLIElement | null)[]>([])
+  const [offset, setOffset] = useState(0)
 
-  // The menu tick springs between items with layoutId: LayoutMotion
-  // fetches motion's layout features for this page.
+  // The menu tick is a single element moved with a CSS transform rather
+  // than a `layoutId` shared between items: a layoutId would make motion
+  // fetch its 48 KB layout-features chunk on every legal page just to
+  // slide a 2px bar. The offset is the active item's vertical centre
+  // relative to the <ul>, re-read on resize since the titles wrap.
+  useLayoutEffect(() => {
+    if (typeof window === 'undefined') return
+    const update = () => {
+      const item = itemRefs.current[active]
+      if (!item) return
+      setOffset(item.offsetTop + item.offsetHeight / 2 - TICK_HEIGHT / 2)
+    }
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [active])
+
   return (
-    <LayoutMotion>
+    <>
       <Seo title={title} description={description} path={path} />
       <div className="flex w-full max-w-[60em] flex-col py-12 md:py-16">
         <p className="font-display mb-3 text-sm font-bold tracking-widest text-eyebrow uppercase">
@@ -85,20 +110,19 @@ const SectionedPage = ({
         <div className="mt-10 flex gap-12 md:mt-14">
           <nav aria-label="Innehåll" className="hidden md:block">
             <ul className="sticky top-28 w-[15em] space-y-4 border-l border-brand-cream/15">
+              <span
+                aria-hidden="true"
+                className="absolute top-0 -left-[1.5px] inline-block h-5 w-[2px] rounded-full bg-highlight transition-transform duration-300 ease-(--expo-out) motion-reduce:transition-none"
+                style={{ transform: `translateY(${offset}px)` }}
+              />
               {sections.map((section, index) => (
-                <li key={section.id} className="relative pl-4">
-                  {active === index && (
-                    <m.span
-                      layoutId="active-section"
-                      aria-hidden="true"
-                      className="absolute top-1/2 -left-[1.5px] inline-block h-5 w-[2px] -translate-y-1/2 rounded-full bg-highlight"
-                      transition={{
-                        type: 'spring',
-                        stiffness: 400,
-                        damping: 30,
-                      }}
-                    />
-                  )}
+                <li
+                  key={section.id}
+                  ref={(el) => {
+                    itemRefs.current[index] = el
+                  }}
+                  className="pl-4"
+                >
                   <a
                     href={`#${section.id}`}
                     className={`block leading-snug transition-opacity duration-200 hover:opacity-100 ${
@@ -136,7 +160,7 @@ const SectionedPage = ({
           </div>
         </div>
       </div>
-    </LayoutMotion>
+    </>
   )
 }
 
