@@ -1,8 +1,12 @@
 # Local MySQL for the uppdrag service. schema.sql is applied on the first
 # boot of the volume; `docker compose down -v` to start over.
 #
+# MySQL 8's default caching_sha2_password auth plugin requires a TLS
+# connection for Bun's SQL mysql adapter; without it, the adapter fails with
+# ERR_MYSQL_PUBLIC_KEY_RETRIEVAL_NOT_ALLOWED. Hence the ?sslmode=require below.
+#
 #   docker compose -f apps/uppdrag/compose.yml up -d
-#   MYSQL_URL=mysql://uppdrag:uppdrag@127.0.0.1:3306/uppdrag
+#   MYSQL_URL=mysql://uppdrag:uppdrag@127.0.0.1:3306/uppdrag?sslmode=require
 services:
   mysql:
     image: mysql:8.4

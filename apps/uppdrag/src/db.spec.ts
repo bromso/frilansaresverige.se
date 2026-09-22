@@ -3,6 +3,9 @@ import { SQL } from 'bun'
 import { createDb, randomString } from './db'
 import type { NewAssignment } from './types'
 
+// See apps/uppdrag/compose.yml for how to start the local MySQL this needs.
+// The URL must include `?sslmode=require`, or Bun's mysql adapter fails
+// authenticating against MySQL 8's default caching_sha2_password plugin.
 const MYSQL_URL = process.env.MYSQL_URL
 
 const input: NewAssignment = {
