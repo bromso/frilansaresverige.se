@@ -62,11 +62,13 @@ const Hantera = () => {
     setError(null)
     try {
       await remove()
-      setConfirming(false)
       setCommentState('editing')
     } catch {
       setError(ERROR_COPY)
     } finally {
+      // Close the dialog on failure too, so the page-level error notice
+      // (rendered behind the modal overlay) becomes visible.
+      setConfirming(false)
       setDeleting(false)
     }
   }

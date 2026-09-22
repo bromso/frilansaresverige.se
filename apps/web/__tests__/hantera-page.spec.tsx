@@ -1,5 +1,11 @@
 import { afterEach, describe, expect, it, jest, mock } from 'bun:test'
-import { cleanup, render, screen, waitFor } from '@testing-library/react'
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react'
 
 mock.module('next/router', () => ({
   useRouter: () => ({ isReady: true, query: { id: 'ABCDEFGHIJKLMNOP' } }),
@@ -77,5 +83,39 @@ describe('/tipsa/hantera/[id]', () => {
     expect(
       screen.queryByRole('button', { name: 'Ta bort uppdraget' }),
     ).toBeNull()
+  })
+
+  it('closes the dialog and surfaces the error when deletion fails', async () => {
+    global.fetch = jest.fn(async (url: string, init?: RequestInit) => {
+      if (url.endsWith('/comments')) {
+        return new Response(JSON.stringify([]), { status: 200 })
+      }
+      if (init?.method === 'DELETE') {
+        return new Response(JSON.stringify({ success: false, error: 'nope' }), {
+          status: 502,
+        })
+      }
+      return new Response(JSON.stringify(listing), { status: 200 })
+    }) as unknown as typeof fetch
+
+    render(<Hantera />)
+    await waitFor(() =>
+      expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
+        'Frontendutvecklare',
+      ),
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Ta bort uppdraget' }))
+    const confirmButton = await screen.findByRole('button', {
+      name: 'Ta bort',
+    })
+    fireEvent.click(confirmButton)
+
+    await waitFor(() =>
+      expect(screen.getByRole('alert')).toHaveTextContent(
+        'Något gick fel. Försök igen om en stund.',
+      ),
+    )
+    expect(screen.queryByRole('alertdialog')).toBeNull()
   })
 })
