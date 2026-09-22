@@ -5234,7 +5234,36 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 
 ## Cutover checklist (manual, after Task 14)
 
-1. Apply the `ALTER TABLE` block at the end of `apps/uppdrag/schema.sql` to production MySQL.
-2. On the server: create `uppdrag.env` from `apps/uppdrag/.env.example` with the production values, add the compose service and the two web env vars, point the reverse proxy for uppdrag.frilansaresverige.se at the `uppdrag` service.
-3. Run `./deploy.sh`.
-4. Parity check against production: publish as broker and as direct on /tipsa; confirm the message and thread in the right channel; receive the receipt; open the manage link; add a komplettering; delete; confirm every Slack message reads "raderats"; open one old receipt link on the old domain and confirm the redirect; load the homepage and confirm the member count renders.
+Do these in order:
+
+1. Build `apps/uppdrag/Dockerfile` locally and start it once against a
+   scratch env before anything touches the server:
+   `docker build -t frilansaresverige-uppdrag -f apps/uppdrag/Dockerfile .`,
+   then `docker run --rm -p 8989:8989 --env-file <scratch env> frilansaresverige-uppdrag`
+   and `curl http://localhost:8989/api/health`.
+2. Confirm the production MySQL accepts `?sslmode=require` in `MYSQL_URL`,
+   or configure a user with `mysql_native_password` instead of the
+   `caching_sha2_password` default. Then apply the last `ALTER TABLE` block
+   at the end of `apps/uppdrag/schema.sql` by hand; the earlier statements
+   are already in place.
+3. Inspect the rows the startup sync would post:
+   `SELECT id, created, deleted FROM assignment WHERE slackId IS NULL`.
+   Delete or mark any stale ones. The service skips deleted rows, but old
+   undeleted failures will be posted.
+4. On the server: write `uppdrag.env` from `apps/uppdrag/.env.example` with
+   the production values, add the compose service and the two web env vars
+   (see the `apps/uppdrag/README.md` compose snippet), point the reverse proxy for uppdrag.frilansaresverige.se at the
+   `uppdrag` service on 8989, and confirm the proxy overwrites
+   `X-Forwarded-For` rather than appending to it (the rate limiter trusts
+   the first hop).
+5. Stop and remove the old bot container, so two processes never share the
+   database or both run the startup sync.
+6. Run `./deploy.sh` from the repo root (it loads both images before
+   `docker compose up`).
+7. Parity check against production: publish as broker and as direct on
+   /tipsa; the message and thread land in the right channel; the receipt
+   arrives; the manage link works; add a komplettering; delete; every Slack
+   message is rewritten to "raderats"; one old receipt link on the old
+   domain redirects (take the real link format from an old mail); a legacy
+   row with only `contact` set renders on the manage page; the homepage
+   member count renders.

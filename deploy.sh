@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+set -o pipefail
 
 # Start Docker: systemctl on Linux, or Docker Desktop on macOS if that fails.
 if ! sudo systemctl start docker 2>/dev/null; then

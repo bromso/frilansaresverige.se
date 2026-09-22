@@ -47,11 +47,11 @@ bun install
 bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). Nothing else is required to render the site, but copy `.env.example` to `apps/web/.env.local` if you need the membership form or analytics — it documents all three variables and what silently changes without them. The gig form on `/tipsa` needs the uppdrag service running too; `apps/uppdrag/README.md` covers it in three commands.
+Open [http://localhost:3000](http://localhost:3000). Nothing else is required to render the site, but copy `.env.example` to `apps/web/.env.local` if you need the membership form or analytics — it documents every variable and what silently changes without them. The gig form on `/tipsa` needs the uppdrag service running too; `apps/uppdrag/README.md` covers it in three commands.
 
 ### Working in a container
 
-`.devcontainer/` is set up for VS Code's Dev Containers extension: "Reopen in Container" gives you Bun and Node 24 with ports 3000, 6006 and 9229 forwarded. It is a development image only — production is built by the `Dockerfile` at the repo root and served on `node:24-alpine`.
+`.devcontainer/` is set up for VS Code's Dev Containers extension: "Reopen in Container" gives you Bun and Node 24 with ports 3000, 6006, 9229 and 8989 forwarded. It is a development image only — production is built by the `Dockerfile` at the repo root and served on `node:24-alpine`.
 
 `deploy.sh` will not work from inside the container: it needs Docker on the host plus SSH access to the deploy target.
 
