@@ -16,7 +16,7 @@ describe('tack pages', () => {
   it('tipsa/tack confirms the gig tip', () => {
     render(<TipsaTack />)
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-      'Tack för tipset',
+      'Tack, uppdraget är publicerat',
     )
   })
 })

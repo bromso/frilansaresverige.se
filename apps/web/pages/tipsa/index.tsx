@@ -21,8 +21,9 @@ const Tipsa: NextPage = () => {
 
       <p className="mt-4 mb-8 max-w-[36em] text-lg leading-[1.6] text-brand-cream/85">
         Har du eller ditt företag ett konsultbehov? Beskriv uppdraget, så
-        publicerar vi det för tusentals frilansare i Slack. Det är gratis, och
-        de som är intresserade hör av sig direkt till dig. Tre korta steg.
+        publiceras det direkt för tusentals frilansare i Slack. Det är gratis,
+        och de som är intresserade hör av sig direkt till dig. Du får en
+        kvittens med en länk där du kan komplettera eller ta bort uppdraget.
       </p>
 
       <GigTipForm />

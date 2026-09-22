@@ -15,9 +15,9 @@ export const TIPSA_FAQ_ITEMS: FaqItem[] = [
     icon: 'icon-[lucide--megaphone]',
     question: 'Vad händer med mitt tips?',
     answer:
-      'En av oss läser igenom tipset och publicerar det i uppdragskanalen i vår Slack, där det når tusentals frilansare. Intresserade hör av sig via den kontaktväg du angett, ofta redan samma dag.',
+      'Det publiceras direkt i uppdragskanalen i vår Slack, där det når tusentals frilansare. Du får en kvittens med en länk där du kan komplettera eller ta bort uppdraget. Intresserade hör av sig via den kontaktväg du angett, ofta redan samma dag.',
     answerText:
-      'En av oss läser igenom tipset och publicerar det i uppdragskanalen i vår Slack, där det når tusentals frilansare. Intresserade hör av sig via den kontaktväg du angett, ofta redan samma dag.',
+      'Det publiceras direkt i uppdragskanalen i vår Slack, där det når tusentals frilansare. Du får en kvittens med en länk där du kan komplettera eller ta bort uppdraget. Intresserade hör av sig via den kontaktväg du angett, ofta redan samma dag.',
   },
   {
     icon: 'icon-[lucide--building-2]',

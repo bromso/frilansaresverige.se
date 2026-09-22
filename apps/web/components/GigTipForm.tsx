@@ -18,7 +18,11 @@ import { Textarea } from '@frilansaresverige/ui/ui/textarea'
 import { useRouter } from 'next/router'
 import type { FormEvent } from 'react'
 import { useEffect, useRef, useState } from 'react'
-import { useSubmitGigTipForm } from '../hooks/useSubmitGigTipForm'
+import {
+  RELATION_TO_SENDER_TYPE,
+  useSubmitGigTipForm,
+} from '../hooks/useSubmitGigTipForm'
+import AssignmentPreview, { type AssignmentView } from './AssignmentPreview'
 import {
   EMAIL_PATTERN,
   EMAIL_TITLE,
@@ -63,6 +67,7 @@ const STEPS = [
   { value: 'uppdraget', label: '1. Uppdraget' },
   { value: 'villkor', label: '2. Villkor' },
   { value: 'kontakt', label: '3. Kontakt' },
+  { value: 'granska', label: '4. Granska' },
 ]
 
 const GigTipForm = () => {
@@ -72,6 +77,47 @@ const GigTipForm = () => {
   const [step, setStep] = useState(STEPS[0].value)
   const [stepError, setStepError] = useState<string | null>(null)
   const paneRefs = useRef<Record<string, HTMLDivElement | null>>({})
+  const formRef = useRef<HTMLFormElement>(null)
+  // The relation drives which fields step 3 shows, so it is controlled;
+  // Radix still renders the hidden radio input the hook reads.
+  const [relation, setRelation] = useState('')
+  const [customerFee, setCustomerFee] = useState('')
+  const [nonTransparentFee, setNonTransparentFee] = useState(false)
+  const [emailAddress, setEmailAddress] = useState('')
+  const [preview, setPreview] = useState<AssignmentView | null>(null)
+  const isBroker = relation === 'formedlare'
+
+  // Reads the current answers off the form for the preview step. The
+  // panes stay mounted, so every field is in the DOM.
+  const snapshot = (): {
+    view: AssignmentView
+    contactEmail: string
+  } | null => {
+    const form = formRef.current
+    if (!form) {
+      return null
+    }
+    const data = new FormData(form)
+    const read = (name: string) => String(data.get(name) ?? '').trim()
+    const contactEmail = read('contactEmail')
+    return {
+      contactEmail,
+      view: {
+        title: read('title'),
+        description: read('description'),
+        customerName: read('clientName'),
+        location: read('location') || null,
+        scope: read('omfattning') || null,
+        workForm: data.getAll('arbetsform').map(String).join(', ') || null,
+        contact: [read('contactName'), read('contactPhone'), contactEmail]
+          .filter(Boolean)
+          .join('\n'),
+        senderType: RELATION_TO_SENDER_TYPE[read('relation')] ?? 'DIRECT',
+        clientHourlyRate: read('minRate') || null,
+        deleted: false,
+      },
+    }
+  }
 
   useEffect(() => {
     if (data?.success) {
@@ -120,9 +166,20 @@ const GigTipForm = () => {
   }
 
   const goNext = () => {
-    if (validateStep() && stepIndex < STEPS.length - 1) {
-      setStep(STEPS[stepIndex + 1].value)
+    if (!validateStep() || stepIndex >= STEPS.length - 1) {
+      return
     }
+    const next = STEPS[stepIndex + 1].value
+    if (next === 'granska') {
+      const current = snapshot()
+      if (current) {
+        setPreview(current.view)
+        // The receipt goes to the contact by default; the sender can
+        // change it on the preview step.
+        setEmailAddress((previous) => previous || current.contactEmail)
+      }
+    }
+    setStep(next)
   }
 
   const goBack = () => {
@@ -151,14 +208,15 @@ const GigTipForm = () => {
 
   return (
     <form
+      ref={formRef}
       className="relative rounded-[1.25rem] bg-brand-cream p-6 text-left text-brand-blue md:p-10"
       onSubmit={handleSubmit}
       aria-busy={isLoading}
     >
       {error ? (
         <SubmitErrorAlert reduced={reduced}>
-          Något gick fel när tipset skulle skickas. Försök igen om en stund.
-          Fortsätter det strula, hör av dig via kontaktsidan.
+          Något gick fel när uppdraget skulle publiceras. Försök igen om en
+          stund. Fortsätter det strula, hör av dig via kontaktsidan.
         </SubmitErrorAlert>
       ) : null}
       <HoneypotField />
@@ -333,7 +391,13 @@ const GigTipForm = () => {
                 <legend className={LABEL_CLASSES}>
                   Vem skriver frilansaren avtal med?
                 </legend>
-                <RadioGroup name="relation" required className="mt-2 gap-3">
+                <RadioGroup
+                  name="relation"
+                  required
+                  value={relation}
+                  onValueChange={setRelation}
+                  className="mt-2 gap-3"
+                >
                   {RELATION_OPTIONS.map((option) => (
                     <Label
                       key={option.value}
@@ -380,6 +444,76 @@ const GigTipForm = () => {
                   />
                 </div>
               </div>
+
+              {isBroker && (
+                <div className="mt-5 grid gap-5 md:grid-cols-2">
+                  <div className="flex flex-col gap-1.5">
+                    <Label
+                      htmlFor="customerOrganizationNumber"
+                      className={LABEL_CLASSES}
+                    >
+                      Uppdragsgivarens organisationsnummer
+                    </Label>
+                    <div className="relative">
+                      <span
+                        className="icon-[lucide--hash] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/75"
+                        aria-hidden="true"
+                      />
+                      <Input
+                        id="customerOrganizationNumber"
+                        name="customerOrganizationNumber"
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]{6}-?[0-9]{4}"
+                        title="Ange ett organisationsnummer, t.ex. 556677-8899"
+                        placeholder="t.ex. 556677-8899…"
+                        className={`${FIELD_CLASSES} pl-[2.4em]`}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="customerFee" className={LABEL_CLASSES}>
+                      Er avgift som mellanhand
+                    </Label>
+                    <div className="relative">
+                      <span
+                        className="icon-[lucide--percent] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/75"
+                        aria-hidden="true"
+                      />
+                      <Input
+                        id="customerFee"
+                        name="customerFee"
+                        type="text"
+                        placeholder="t.ex. 10 % eller 50 kr/h…"
+                        value={customerFee}
+                        onChange={(event) => setCustomerFee(event.target.value)}
+                        required={!nonTransparentFee}
+                        disabled={nonTransparentFee}
+                        className={`${FIELD_CLASSES} pl-[2.4em] disabled:opacity-60`}
+                      />
+                    </div>
+                    <Label
+                      htmlFor="nonTransparentFee"
+                      className="mt-2 flex cursor-pointer flex-row items-center gap-3 text-[0.95em] font-normal"
+                    >
+                      <Checkbox
+                        id="nonTransparentFee"
+                        checked={nonTransparentFee}
+                        onCheckedChange={(checked) => {
+                          const on = checked === true
+                          setNonTransparentFee(on)
+                          if (on) {
+                            setCustomerFee('')
+                          }
+                        }}
+                        className="border-brand-blue"
+                      />
+                      <span>Vi är inte transparenta med vår avgift</span>
+                    </Label>
+                  </div>
+                </div>
+              )}
 
               <div className="mt-5 flex flex-col gap-1.5">
                 <Label htmlFor="contactName" className={LABEL_CLASSES}>
@@ -450,6 +584,52 @@ const GigTipForm = () => {
               </div>
             </div>
           </TabsContent>
+
+          <TabsContent value="granska">
+            <div
+              ref={(el) => {
+                paneRefs.current.granska = el
+              }}
+            >
+              <p className="mb-4 leading-[1.6]">
+                Så här kommer uppdraget att se ut för frilansarna. Vill du ändra
+                något? Gå tillbaka till rätt steg ovan.
+              </p>
+              {preview && (
+                <div className="rounded-[1rem] border border-brand-blue/20">
+                  <AssignmentPreview assignment={preview} />
+                </div>
+              )}
+
+              <div className="mt-6 flex flex-col gap-1.5">
+                <Label htmlFor="emailAddress" className={LABEL_CLASSES}>
+                  Din e-postadress
+                </Label>
+                <p className="text-[0.95em] text-brand-blue/80">
+                  Hit skickar vi kvittensen och länken där du kan komplettera
+                  eller ta bort uppdraget. Håll länken hemlig.
+                </p>
+                <div className="relative">
+                  <span
+                    className="icon-[lucide--mail-check] pointer-events-none absolute top-1/2 left-[0.75em] size-[1.2em] -translate-y-1/2 text-brand-blue/75"
+                    aria-hidden="true"
+                  />
+                  <Input
+                    id="emailAddress"
+                    name="emailAddress"
+                    type="email"
+                    pattern={EMAIL_PATTERN}
+                    title={EMAIL_TITLE}
+                    autoComplete="email"
+                    value={emailAddress}
+                    onChange={(event) => setEmailAddress(event.target.value)}
+                    required
+                    className={`${FIELD_CLASSES} pl-[2.4em]`}
+                  />
+                </div>
+              </div>
+            </div>
+          </TabsContent>
         </TabsContents>
       </Tabs>
 
@@ -484,7 +664,7 @@ const GigTipForm = () => {
             size="none"
             disabled={isLoading}
           >
-            {isLoading ? 'Skickar…' : 'Skicka in tipset'}
+            {isLoading ? 'Publicerar…' : 'Publicera uppdraget'}
           </Button>
         )}
       </div>
