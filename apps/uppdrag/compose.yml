@@ -1,0 +1,20 @@
+# Local MySQL for the uppdrag service. schema.sql is applied on the first
+# boot of the volume; `docker compose down -v` to start over.
+#
+#   docker compose -f apps/uppdrag/compose.yml up -d
+#   MYSQL_URL=mysql://uppdrag:uppdrag@127.0.0.1:3306/uppdrag
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: uppdrag
+      MYSQL_USER: uppdrag
+      MYSQL_PASSWORD: uppdrag
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+      - mysql-data:/var/lib/mysql
+volumes:
+  mysql-data: {}

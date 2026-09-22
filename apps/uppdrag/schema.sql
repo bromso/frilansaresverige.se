@@ -44,3 +44,14 @@ ALTER TABLE `assignment`
   ADD COLUMN `slackChannelId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   ADD COLUMN `deleted` bigint(30) DEFAULT NULL,
   ADD COLUMN `slackDeleted` tinyint(1) NOT NULL DEFAULT 0;
+
+-- 2026-09: the site's form collects structured contact details, scope and
+-- work form. Rows created by the old service keep their free-text contact;
+-- the service renders whichever is present.
+ALTER TABLE `assignment`
+  MODIFY `contact` text COLLATE utf8mb4_unicode_ci NULL,
+  ADD COLUMN `scope` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  ADD COLUMN `workForm` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  ADD COLUMN `contactName` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  ADD COLUMN `contactPhone` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  ADD COLUMN `contactEmail` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL;
