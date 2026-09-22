@@ -38,6 +38,9 @@ const createMockFormEvent = (data: Record<string, { value: string }> = {}) => ({
     contactEmail: { value: 'contact@example.se' },
     relation: { value: 'direktavtal' },
     omfattning: { value: 'Heltid' },
+    emailAddress: { value: 'sender@example.se' },
+    customerOrganizationNumber: { value: '' },
+    customerFee: { value: '' },
     ...data,
   },
 })
@@ -71,13 +74,48 @@ describe('useSubmitGigTipForm', () => {
     expect(result.current.isLoading).toBe(false)
 
     const [url, init] = fetchMock.mock.calls[0]
-    expect(url).toBe('/api/submit-gig-tip')
-    expect(JSON.parse(init.body)).toMatchObject({
+    expect(url).toBe('/api/uppdrag/assignments')
+    expect(JSON.parse(init.body)).toEqual({
+      senderType: 'DIRECT',
+      emailAddress: 'sender@example.se',
       title: 'title',
+      location: 'location',
+      customerName: 'clientName',
+      description: 'description',
+      scope: 'Heltid',
+      workForm: '',
+      clientHourlyRate: '1000',
+      contactName: 'contactName',
+      contactPhone: '0701234567',
       contactEmail: 'contact@example.se',
-      relation: 'direktavtal',
-      arbetsform: '',
+      customerOrganizationNumber: '',
+      customerFee: '',
       website: '',
+    })
+  })
+
+  it('maps a broker relation and passes the broker fields', async () => {
+    const fetchMock = mockFetch({
+      status: 201,
+      body: { success: true, id: 'X' },
+    })
+    const { result } = renderHook(() => useSubmitGigTipForm())
+    await act(async () => {
+      await result.current.submitForm(
+        forceType<FormEvent>(
+          createMockFormEvent({
+            relation: { value: 'formedlare' },
+            customerOrganizationNumber: { value: '556677-8899' },
+            customerFee: { value: '10 %' },
+          }),
+        ),
+      )
+    })
+    const [, init] = fetchMock.mock.calls[0]
+    expect(JSON.parse(init.body)).toMatchObject({
+      senderType: 'BROKER',
+      customerOrganizationNumber: '556677-8899',
+      customerFee: '10 %',
     })
   })
 
