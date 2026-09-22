@@ -165,10 +165,10 @@ export function parseCommentBody(body: unknown): Validation<string> {
   return fields.ok ? { ok: true, value: fields.value.comment } : fields
 }
 
+export const senderDomain = (emailAddress: string): string =>
+  emailAddress.slice(emailAddress.lastIndexOf('@') + 1).toLowerCase()
+
 export const isBlockedSender = (
   emailAddress: string,
   blockedDomains: readonly string[],
-): boolean =>
-  blockedDomains.includes(
-    emailAddress.slice(emailAddress.lastIndexOf('@') + 1).toLowerCase(),
-  )
+): boolean => blockedDomains.includes(senderDomain(emailAddress))

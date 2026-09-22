@@ -50,6 +50,7 @@ export function createSlackClient(
         method: 'POST',
         headers,
         body: JSON.stringify(body),
+        signal: AbortSignal.timeout(10_000),
       })
       const payload = (await response.json()) as SlackPayload
       if (!payload.ok) {
@@ -78,7 +79,10 @@ export function createSlackClient(
         })
         const response = await fetchImpl(
           `https://slack.com/api/conversations.info?${params}`,
-          { headers: { Authorization: headers.Authorization } },
+          {
+            headers: { Authorization: headers.Authorization },
+            signal: AbortSignal.timeout(10_000),
+          },
         )
         const payload = (await response.json()) as SlackPayload
         if (!payload.ok || typeof payload.channel !== 'object') {
@@ -212,8 +216,10 @@ export function createSlackPropagation({
         )
       }
     }
-    // It may have been deleted while the posts above were in flight.
-    if (assignment.deleted !== null) {
+    // Re-read the row: it may have been deleted before or while the posts
+    // above were in flight, and that deletion has to reach Slack too.
+    const latest = await db.getAssignment(id)
+    if (latest !== null && latest.deleted !== null) {
       await propagateAssignmentDeletion(id)
     }
   }

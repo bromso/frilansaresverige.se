@@ -94,6 +94,14 @@ describe.skipIf(!MYSQL_URL)('createDb', () => {
     expect((await db.getAssignment(id))?.slackDeleted).toBe(true)
   })
 
+  it('does not list a deleted, unposted row for propagation', async () => {
+    const id = await db.saveAssignment(input, '#broker')
+    created.push(id)
+    await db.deleteAssignment(id, 1700000010)
+    expect(await db.getAssignmentIdsNeedingSlackPropagation()).not.toContain(id)
+    expect(await db.getAssignmentIdsNeedingSlackDeletion()).toContain(id)
+  })
+
   it('reports health', async () => {
     expect(await db.isHealthy()).toBe(true)
   })

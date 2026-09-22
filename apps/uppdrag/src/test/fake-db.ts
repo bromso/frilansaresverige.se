@@ -80,7 +80,7 @@ export function createFakeDb(): FakeDb {
     },
     async getAssignmentIdsNeedingSlackPropagation() {
       return [...assignments.values()]
-        .filter((a) => a.slackId === null)
+        .filter((a) => a.slackId === null && a.deleted === null)
         .map((a) => a.id)
     },
     async getAssignmentIdsNeedingSlackDeletion() {

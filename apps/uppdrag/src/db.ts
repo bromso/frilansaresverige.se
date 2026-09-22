@@ -124,7 +124,7 @@ export function createDb(mysqlUrl: string): Db {
     async getAssignmentIdsNeedingSlackPropagation() {
       const rows = await sql<
         Row[]
-      >`SELECT id FROM assignment WHERE slackId IS NULL`
+      >`SELECT id FROM assignment WHERE slackId IS NULL AND deleted IS NULL`
       return rows.map((row) => String(row.id))
     },
 

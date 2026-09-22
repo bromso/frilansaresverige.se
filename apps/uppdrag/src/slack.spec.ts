@@ -324,6 +324,56 @@ describe('createSlackPropagation', () => {
     expect(db.assignments.get(a.id)?.slackDeleted).toBe(true)
   })
 
+  it('sees a deletion that lands while the first post is in flight', async () => {
+    const db = createFakeDb()
+    const a = fakeAssignment()
+    db.seed(a)
+    const { client: scripted, calls } = scriptedClient([])
+    const client: SlackClient = {
+      ...scripted,
+      postMessage: async (message) => {
+        const result = await scripted.postMessage(message)
+        if (calls.length === 1) {
+          const row = db.assignments.get(a.id)
+          if (row) {
+            db.assignments.set(a.id, { ...row, deleted: 5 })
+          }
+        }
+        return result
+      },
+    }
+    const slack = createSlackPropagation({
+      db,
+      slack: client,
+      siteUrl: SITE,
+      log: noLog,
+    })
+    await slack.propagateAssignment(a.id)
+    expect(calls.map((c) => c.method)).toEqual([
+      'postMessage',
+      'postMessage',
+      'updateMessage',
+      'updateMessage',
+    ])
+    expect(db.assignments.get(a.id)?.slackDeleted).toBe(true)
+  })
+
+  it('sync never posts a listing that is already deleted', async () => {
+    const db = createFakeDb()
+    const a = fakeAssignment({ slackId: null, deleted: 5 })
+    db.seed(a)
+    const { client, calls } = scriptedClient([])
+    const slack = createSlackPropagation({
+      db,
+      slack: client,
+      siteUrl: SITE,
+      log: noLog,
+    })
+    await slack.sync()
+    expect(calls.map((c) => c.method)).not.toContain('postMessage')
+    expect(db.assignments.get(a.id)?.slackDeleted).toBe(true)
+  })
+
   it('sync posts everything unposted and rewrites everything pending', async () => {
     const db = createFakeDb()
     const unposted = fakeAssignment()

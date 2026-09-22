@@ -7,6 +7,7 @@ import {
   isBlockedSender,
   parseAssignmentBody,
   parseCommentBody,
+  senderDomain,
 } from './validate'
 
 export const json = (status: number, body: unknown): Response =>
@@ -63,6 +64,9 @@ export function createAssignmentHandlers({
       }
       if (isBlockedSender(parsed.value.emailAddress, blockedSenderDomains)) {
         // Inherited behaviour: these senders believe they published.
+        log(
+          `Dropped a submission from blocked sender domain: ${senderDomain(parsed.value.emailAddress)}`,
+        )
         return json(201, { success: true, id: null })
       }
       const id = await db.saveAssignment(
@@ -101,6 +105,8 @@ export function createAssignmentHandlers({
         workForm: a.workForm,
         contact: contactText(a),
         clientHourlyRate: a.clientHourlyRate,
+        customerFee: a.customerFee,
+        customerOrganizationNumber: a.customerOrganizationNumber,
         deleted: false,
       })
     },

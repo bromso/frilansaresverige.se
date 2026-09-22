@@ -49,7 +49,7 @@ describe('loadConfig', () => {
       PORT: '9000',
       HOST: '127.0.0.1',
       SMTP_PORT: '587',
-      SMTP_SECURE: 'false',
+      SMTP_SECURE: 'FALSE',
       EMAIL_BCC: 'arkiv@example.se',
       EMAIL_TO_OVERRIDE: 'dev@example.se',
       SLACK_MEMBER_COUNT_CHANNEL: 'C123',

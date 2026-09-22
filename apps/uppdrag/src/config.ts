@@ -67,7 +67,7 @@ export function loadConfig(env: Env = process.env): Config {
     smtp: {
       host: required(env, 'SMTP_HOST'),
       port: integer(env, 'SMTP_PORT', 465),
-      secure: (env.SMTP_SECURE ?? 'true').trim() !== 'false',
+      secure: (env.SMTP_SECURE ?? 'true').trim().toLowerCase() !== 'false',
       user: required(env, 'SMTP_USER'),
       pass: required(env, 'SMTP_PASS'),
     },

@@ -36,15 +36,16 @@ const build = () => {
     propagateAssignmentDeletion: jest.fn(async () => {}),
   }
   const mailer = { sendConfirmation: jest.fn(async () => {}) }
+  const log = jest.fn()
   const deps: HandlerDeps = {
     db,
     slack,
     mailer,
     channels: { BROKER: '#broker', DIRECT: '#direct' },
     blockedSenderDomains: ['gmail.com'],
-    log: () => {},
+    log,
   }
-  return { db, slack, mailer, handlers: createAssignmentHandlers(deps) }
+  return { db, slack, mailer, log, handlers: createAssignmentHandlers(deps) }
 }
 
 describe('create', () => {
@@ -82,7 +83,7 @@ describe('create', () => {
   })
 
   it('pretends to accept blocked sender domains', async () => {
-    const { db, slack, handlers } = build()
+    const { db, slack, log, handlers } = build()
     const response = await handlers.create(
       post({ ...body, emailAddress: 'a@gmail.com' }),
     )
@@ -90,6 +91,9 @@ describe('create', () => {
     expect(await response.json()).toEqual({ success: true, id: null })
     expect(db.assignments.size).toBe(0)
     expect(slack.propagateAssignment).not.toHaveBeenCalled()
+    expect(log).toHaveBeenCalledTimes(1)
+    expect(log.mock.calls[0][0]).toContain('gmail.com')
+    expect(log.mock.calls[0][0]).not.toContain('a@gmail.com')
   })
 })
 
@@ -111,6 +115,8 @@ describe('get', () => {
       workForm: 'Distans',
       contact: 'Kim\n070-123 45 67\nkim@acme.se',
       clientHourlyRate: '950',
+      customerFee: '10 %',
+      customerOrganizationNumber: '556677-8899',
       deleted: false,
     })
   })
