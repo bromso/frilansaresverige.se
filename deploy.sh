@@ -21,5 +21,9 @@ docker build --platform linux/amd64 -t frilansaresverige-website \
   --build-arg GOOGLE_ANALYTICS_ID="${GOOGLE_ANALYTICS_ID:-}" \
   --build-arg NEXT_PUBLIC_SITE_URL="${NEXT_PUBLIC_SITE_URL:-https://frilansaresverige.se}" \
   .
-docker save frilansaresverige-website:latest | gzip | ssh gredelin 'gunzip | docker load'
+# The uppdrag service reads all of its configuration at runtime, so no
+# build args; its env lives in the compose file on the server.
+docker build --platform linux/amd64 -t frilansaresverige-uppdrag \
+  -f apps/uppdrag/Dockerfile .
+docker save frilansaresverige-website:latest frilansaresverige-uppdrag:latest | gzip | ssh gredelin 'gunzip | docker load'
 ssh gredelin 'cd /home/martin/frilansaresverige && docker compose up -d'

@@ -17,7 +17,7 @@ The website for [Frilansare Sverige](https://frilansaresverige.se/) — Sweden's
 
 ## What this is
 
-A statically generated Next.js site (Pages Router) serving the community's public face: who we are, how membership works, gig tips for companies, news, events, gig listings and community reviews. Forms post directly to the community Slack via webhooks — there is no database.
+A statically generated Next.js site (Pages Router) serving the community's public face: who we are, how membership works, gig tips for companies, news, events, gig listings and community reviews. The membership form posts to Slack via a webhook; published gigs go through the uppdrag service and its MySQL.
 
 ## Monorepo layout
 
@@ -29,6 +29,7 @@ apps/
     content/    MDX content: nyheter, event, uppdrag, recensioner, sidor
     lib/        routes registry, content loaders, sitemap/llms builders
   story/        Storybook harness for the component library (dev-only)
+  uppdrag/      Bun service behind /tipsa: MySQL, Slack, receipt mails (see apps/uppdrag/README.md)
 packages/
   ui/           Shared components: shadcn/radix ui, vendored animate-ui, brand theme
   tsconfig/     Shared TypeScript configs
@@ -46,7 +47,7 @@ bun install
 bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). Nothing else is required to render the site, but copy `.env.example` to `apps/web/.env.local` if you need the membership form or analytics — it documents all three variables and what silently changes without them.
+Open [http://localhost:3000](http://localhost:3000). Nothing else is required to render the site, but copy `.env.example` to `apps/web/.env.local` if you need the membership form or analytics — it documents all three variables and what silently changes without them. The gig form on `/tipsa` needs the uppdrag service running too; `apps/uppdrag/README.md` covers it in three commands.
 
 ### Working in a container
 
@@ -111,6 +112,8 @@ After running `shadcn add` inside `packages/ui`, rewrite any emitted `@/…` imp
 Production is a standalone Next.js build. `bun run build` assembles the complete standalone tree (server, static assets and `public/`) and `bun run start` runs it with `node` — so PaaS platforms that auto-detect Bun (Dokploy/Nixpacks, Railway, etc.) work out of the box, as does the `Dockerfile` at the repo root. `deploy.sh` ships the Docker image (`node:24-alpine`, built for `linux/amd64`) over SSH and restarts the compose service on the server.
 
 Note for anything that reads files at request time (like the sitemap reading `content/`): the standalone output only includes what's traced, so such paths must be listed in `outputFileTracingIncludes` in `next.config.js`.
+
+`deploy.sh` also builds and ships the uppdrag service image; see `apps/uppdrag/README.md` for the compose fragment the server needs.
 
 ## Design docs
 
