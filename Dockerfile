@@ -8,6 +8,7 @@ COPY package.json bun.lock bunfig.toml ./
 # whose package.json is not on disk.
 COPY apps/web/package.json apps/web/
 COPY apps/story/package.json apps/story/
+COPY apps/uppdrag/package.json apps/uppdrag/
 COPY packages/tsconfig/package.json packages/tsconfig/
 COPY packages/ui/package.json packages/ui/
 # apps/story is Storybook — a dev-only workspace that is never built or
@@ -15,7 +16,7 @@ COPY packages/ui/package.json packages/ui/
 # fails on a lockfile reference whose package.json is absent), but excluding
 # it from the install drops ~128 packages / ~96MB from this layer. That is
 # real deploy time: deploy.sh streams the whole image over ssh.
-RUN bun install --frozen-lockfile --filter '!@frilansaresverige/story'
+RUN bun install --frozen-lockfile --filter '!@frilansaresverige/story' --filter '!@frilansaresverige/uppdrag'
 
 FROM oven/bun:1.4.2-alpine AS builder
 WORKDIR /app
