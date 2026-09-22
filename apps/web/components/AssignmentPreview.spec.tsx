@@ -40,6 +40,42 @@ describe('AssignmentPreview', () => {
     ).toBeInTheDocument()
   })
 
+  it('shows the broker fee and organisation number as published', () => {
+    render(
+      <AssignmentPreview
+        assignment={{
+          ...view,
+          customerFee: '10 %',
+          customerOrganizationNumber: '556677-8899',
+        }}
+      />,
+    )
+    expect(screen.getByText('Mellanhandsavgift')).toBeInTheDocument()
+    expect(screen.getByText('10 %')).toBeInTheDocument()
+    expect(screen.getByText('Organisationsnummer')).toBeInTheDocument()
+    expect(screen.getByText('556677-8899')).toBeInTheDocument()
+  })
+
+  it('says a broker would not disclose a missing fee', () => {
+    render(<AssignmentPreview assignment={{ ...view, customerFee: null }} />)
+    expect(screen.getByText('Vill ej uppge')).toBeInTheDocument()
+  })
+
+  it('shows neither fee nor organisation number for a direct listing', () => {
+    render(
+      <AssignmentPreview
+        assignment={{
+          ...view,
+          senderType: 'DIRECT',
+          customerFee: null,
+          customerOrganizationNumber: null,
+        }}
+      />,
+    )
+    expect(screen.queryByText('Mellanhandsavgift')).toBeNull()
+    expect(screen.queryByText('Organisationsnummer')).toBeNull()
+  })
+
   it('renders the deleted notice instead of the details', () => {
     render(<AssignmentPreview assignment={{ ...view, deleted: true }} />)
     expect(

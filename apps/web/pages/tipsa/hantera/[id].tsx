@@ -144,13 +144,13 @@ const Hantera = () => {
                     onChange={(event) => setComment(event.target.value)}
                     disabled={commentState === 'saving'}
                     required
+                    maxLength={5000}
                     className={`${FIELD_CLASSES} min-h-[8em]`}
                   />
                 </div>
                 {commentState === 'saved' && (
                   <p className="mt-3 text-[0.95em]" role="status">
-                    <strong>Tack!</strong> Kompletteringen är sparad och skickad
-                    till Slack.
+                    <strong>Tack!</strong> Din komplettering är sparad.
                   </p>
                 )}
                 <div className="mt-5">

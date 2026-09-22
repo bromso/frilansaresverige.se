@@ -201,4 +201,22 @@ describe('createUppdragProxy', () => {
     expect(htmlRes.statusCode).toBe(502)
     expect(htmlRes.body).toMatchObject({ success: false })
   })
+
+  it('passes a 401 through and logs it', async () => {
+    const log = jest.fn()
+    const handler = createUppdragProxy(create, {
+      env,
+      fetchImpl: upstream(
+        401,
+        '{"success":false,"error":"Unauthorized"}',
+      ) as unknown as typeof fetch,
+      log,
+    })
+    const res = makeRes()
+    await handler(makeReq({ body: { title: 'x' } }), res)
+    expect(res.statusCode).toBe(401)
+    expect(res.body).toEqual({ success: false, error: 'Unauthorized' })
+    expect(log).toHaveBeenCalledTimes(1)
+    expect(log.mock.calls[0][0]).toBe('The uppdrag service answered 401')
+  })
 })

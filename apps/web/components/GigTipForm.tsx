@@ -114,6 +114,10 @@ const GigTipForm = () => {
           .join('\n'),
         senderType: RELATION_TO_SENDER_TYPE[read('relation')] ?? 'DIRECT',
         clientHourlyRate: read('minRate') || null,
+        // The broker fields are only mounted for brokers, so a direct
+        // listing reads both as empty.
+        customerFee: nonTransparentFee ? null : read('customerFee') || null,
+        customerOrganizationNumber: read('customerOrganizationNumber') || null,
         deleted: false,
       },
     }
@@ -607,7 +611,8 @@ const GigTipForm = () => {
                 </Label>
                 <p className="text-[0.95em] text-brand-blue/80">
                   Hit skickar vi kvittensen och länken där du kan komplettera
-                  eller ta bort uppdraget. Håll länken hemlig.
+                  eller ta bort uppdraget. Adressen visas också som avsändare i
+                  Slack, så att frilansare kan nå dig. Håll länken hemlig.
                 </p>
                 <div className="relative">
                   <span

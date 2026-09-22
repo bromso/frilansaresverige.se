@@ -53,6 +53,8 @@ export async function fetchAssignment(
       contact: '',
       senderType: 'DIRECT',
       clientHourlyRate: null,
+      customerFee: null,
+      customerOrganizationNumber: null,
       deleted: true,
     }
   }

@@ -115,6 +115,8 @@ export function createUppdragProxy(
           'X-Forwarded-For': clientKey(req),
         },
         body: body === undefined ? undefined : JSON.stringify(body),
+        // A timeout throws and lands in the 502 below.
+        signal: AbortSignal.timeout(10_000),
       })
     } catch (error) {
       log('The uppdrag service could not be reached', error)
@@ -132,6 +134,11 @@ export function createUppdragProxy(
       )
       res.status(502).json({ success: false, error: NOT_DELIVERED })
       return
+    }
+    // A 401 means the shared key is out of step; a 5xx is a service fault.
+    // Both pass through to the client, but someone should see them here.
+    if (upstream.status === 401 || upstream.status >= 500) {
+      log(`The uppdrag service answered ${upstream.status}`)
     }
     res.status(upstream.status).json(payload)
   }

@@ -47,8 +47,11 @@ export default class MyDocument extends Document {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
+            // The manage-page id is the only credential for a listing, so it never reaches analytics.
+            var maskedPath = window.location.pathname.replace(/^\\/tipsa\\/hantera\\/[^/?#]+/, '/tipsa/hantera');
             gtag('config', '${process.env.GOOGLE_ANALYTICS_ID}', {
-              page_path: window.location.pathname,
+              page_path: maskedPath,
+              page_location: window.location.origin + maskedPath + window.location.search,
             });
           `,
                 }}

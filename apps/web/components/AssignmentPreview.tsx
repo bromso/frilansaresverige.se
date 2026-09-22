@@ -9,6 +9,9 @@ export interface AssignmentView {
   contact: string
   senderType: 'BROKER' | 'DIRECT'
   clientHourlyRate: string | number | null
+  /** Published for brokers; null means the broker would not disclose it. */
+  customerFee?: string | null
+  customerOrganizationNumber?: string | null
   deleted: boolean
 }
 
@@ -83,6 +86,17 @@ const AssignmentPreview = ({
           <Fact
             label="Avtal"
             value={SENDER_TYPE_LABELS[assignment.senderType]}
+          />
+          <Fact
+            label="Mellanhandsavgift"
+            value={
+              assignment.customerFee ??
+              (assignment.senderType === 'BROKER' ? 'Vill ej uppge' : null)
+            }
+          />
+          <Fact
+            label="Organisationsnummer"
+            value={assignment.customerOrganizationNumber ?? null}
           />
         </dl>
         <SectionHeading>Beskrivning</SectionHeading>
