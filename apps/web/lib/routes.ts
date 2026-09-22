@@ -78,8 +78,17 @@ export const ROUTES: RouteMeta[] = [
   },
   {
     path: '/tipsa/tack',
-    title: 'Tack för tipset',
-    description: 'Tipset är inskickat till communityt. Tack för att du delar.',
+    title: 'Tack, uppdraget är publicerat',
+    description:
+      'Uppdraget är publicerat i Slack och en kvittens med hanteringslänk är på väg.',
+    parent: '/tipsa',
+    noindex: true,
+  },
+  {
+    path: '/tipsa/hantera',
+    title: 'Hantera ditt uppdrag',
+    description:
+      'Komplettera eller ta bort ett uppdrag du har publicerat. Sidan nås bara via länken i din kvittens.',
     parent: '/tipsa',
     noindex: true,
   },

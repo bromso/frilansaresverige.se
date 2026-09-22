@@ -88,6 +88,7 @@ describe('routes registry', () => {
   it('marks tack pages noindex', () => {
     expect(getRoute('/ansokan/tack')?.noindex).toBe(true)
     expect(getRoute('/tipsa/tack')?.noindex).toBe(true)
+    expect(getRoute('/tipsa/hantera')?.noindex).toBe(true)
   })
 
   it('every page file under pages/ has a matching ROUTES entry', () => {
