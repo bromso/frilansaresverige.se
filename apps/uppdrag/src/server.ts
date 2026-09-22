@@ -1,3 +1,4 @@
+import { createHash, timingSafeEqual } from 'node:crypto'
 import type { BunRequest } from 'bun'
 import { type AssignmentHandlers, fail } from './assignments'
 import type { Config } from './config'
@@ -19,8 +20,12 @@ export function createRoutes({
   isHealthy,
   memberCount,
 }: ServerDeps) {
+  const digest = (value: string) => createHash('sha256').update(value).digest()
+  const expected = digest(`Bearer ${config.apiKey}`)
+  // Hashing both sides gives equal-length buffers, so the comparison
+  // cannot leak the key's length or a matching prefix.
   const authorized = (req: Request) =>
-    req.headers.get('authorization') === `Bearer ${config.apiKey}`
+    timingSafeEqual(digest(req.headers.get('authorization') ?? ''), expected)
 
   const guarded =
     <P extends string>(handler: (req: BunRequest<P>) => Promise<Response>) =>
