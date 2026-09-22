@@ -18,7 +18,8 @@ describe('createMailer', () => {
     const assignment = fakeAssignment({ id: 'ABCDEFGHIJKLMNOP' })
     await mailer.sendConfirmation(assignment)
     expect(sendMail).toHaveBeenCalledTimes(1)
-    const options = (sendMail as unknown as { mock: { calls: unknown[][] } }).mock.calls[0][0] as Record<string, string>
+    const options = (sendMail as unknown as { mock: { calls: unknown[][] } })
+      .mock.calls[0][0] as Record<string, string>
     expect(options).toMatchObject({
       from: 'FS <hej@fs.se>',
       to: 'kim@broker.se',
@@ -40,7 +41,8 @@ describe('createMailer', () => {
       () => {},
     )
     await mailer.sendConfirmation(fakeAssignment())
-    const options = (sendMail as unknown as { mock: { calls: unknown[][] } }).mock.calls[0][0] as Record<string, unknown>
+    const options = (sendMail as unknown as { mock: { calls: unknown[][] } })
+      .mock.calls[0][0] as Record<string, unknown>
     expect(options.to).toBe('dev@fs.se')
     expect('bcc' in options).toBe(false)
   })
