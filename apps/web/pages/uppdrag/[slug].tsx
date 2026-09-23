@@ -5,9 +5,9 @@ import { serialize } from 'next-mdx-remote/serialize'
 import type { JobPosting, WithContext } from 'schema-dts'
 import type { LeafCrumb } from '../../components/Breadcrumbs'
 import { MDX_COMPONENTS } from '../../components/nyheter/MdxContent'
-import Seo, { SITE_NAME, SITE_URL } from '../../components/Seo'
+import Seo, { SITE_URL } from '../../components/Seo'
 import StructuredData from '../../components/StructuredData'
-import { formatPostDate, type GigMeta } from '../../lib/content'
+import { addDays, formatPostDate, type GigMeta } from '../../lib/content'
 import { getGig, getGigSlugs } from '../../lib/content.server'
 
 interface Props {
@@ -42,7 +42,7 @@ const InfoRow = ({ icon, children }: { icon: string; children: string }) => (
   <div className="flex items-center gap-3">
     <span
       aria-hidden="true"
-      className={`${icon} size-5 shrink-0 text-brand-coral`}
+      className={`${icon} size-5 shrink-0 text-highlight`}
     />
     <span className="text-brand-cream/85">{children}</span>
   </div>
@@ -57,13 +57,24 @@ const EnskiltUppdrag = ({ meta, source }: Props) => {
     title: meta.title,
     description: meta.excerpt,
     datePosted: meta.date,
+    // Listings are not dated to expire in frontmatter; Google drops a
+    // posting without validThrough and the community treats tips as
+    // fresh for a couple of months, so say so.
+    validThrough: addDays(meta.date, 60),
     employmentType: 'CONTRACTOR',
-    hiringOrganization: {
-      '@type': 'Organization',
-      name: meta.client ?? SITE_NAME,
-    },
+    // Only name the hirer when the listing does: the community publishes
+    // the tip, it is not the hiring organization.
+    ...(meta.client && {
+      hiringOrganization: { '@type': 'Organization', name: meta.client },
+    }),
     ...(remote
-      ? { jobLocationType: 'TELECOMMUTE' }
+      ? {
+          jobLocationType: 'TELECOMMUTE',
+          applicantLocationRequirements: {
+            '@type': 'Country',
+            name: 'Sverige',
+          },
+        }
       : {
           jobLocation: {
             '@type': 'Place',
@@ -115,9 +126,9 @@ const EnskiltUppdrag = ({ meta, source }: Props) => {
               />
             </a>
           ) : (
-            <p className="mt-2 leading-[1.6] text-brand-cream/70">
-              Uppdraget söks via communityt — som medlem hittar du kontaktvägen
-              i uppdragskanalen i Slack.{' '}
+            <p className="mt-2 leading-[1.6] text-brand-cream/75">
+              Uppdraget söks via communityt. Som medlem hittar du kontaktvägen i
+              uppdragskanalen i Slack.{' '}
               <Link href="/ansokan" className="underline hover:no-underline">
                 Bli medlem
               </Link>

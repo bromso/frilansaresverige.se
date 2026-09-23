@@ -4,22 +4,24 @@ import ItemListJsonLd from '../../components/ItemListJsonLd'
 import Seo from '../../components/Seo'
 import { type EventMeta, splitEvents } from '../../lib/content'
 import { getAllEvents } from '../../lib/content.server'
-import { getRoute } from '../../lib/routes'
+import { requireRoute } from '../../lib/routes'
 
 interface Props {
   upcoming: EventMeta[]
   past: EventMeta[]
 }
 
-// The upcoming/past split happens at build time, so it refreshes on the
-// next deploy — fine for a static site where events are added (and
-// thereby rebuilt) well before they happen.
+// The upcoming/past split is computed here, so the page regenerates
+// hourly (ISR) rather than waiting for the next deploy to move an event
+// that has happened into the past list. Needs content/ traced for this
+// route in next.config.js.
 export const getStaticProps: GetStaticProps<Props> = async () => ({
   props: splitEvents(getAllEvents(), new Date()),
+  revalidate: 3600,
 })
 
 const Event = ({ upcoming, past }: Props) => {
-  const meta = getRoute('/event')!
+  const meta = requireRoute('/event')
   return (
     <>
       <Seo title={meta.title} description={meta.description} path="/event" />
@@ -35,8 +37,9 @@ const Event = ({ upcoming, past }: Props) => {
           Event
         </h1>
         <p className="mt-4 max-w-[36em] text-lg leading-[1.6] text-brand-cream/85">
-          AW:er, workshops och årsmöten — communityts träffar är gratis och
-          öppna för alla medlemmar.
+          AW:er, workshops och årsmöten. Träffarna är gratis, öppna för alla
+          medlemmar och det enklaste sättet att sätta ansikten på
+          Slack-avatarerna.
         </p>
 
         <h2 className="font-display mt-10 text-2xl font-bold tracking-tight text-brand-cream">
@@ -49,9 +52,10 @@ const Event = ({ upcoming, past }: Props) => {
             ))}
           </div>
         ) : (
-          <p className="mt-4 max-w-[36em] leading-[1.6] text-brand-cream/70">
-            Inga inplanerade event just nu — håll utkik i Slacken, det brukar
-            inte dröja länge.
+          <p className="mt-4 max-w-[36em] leading-[1.6] text-brand-cream/75">
+            Inga inplanerade event just nu. Håll utkik i Slacken, det brukar
+            inte dröja länge. Vill du dra igång en träff på din ort? Säg till i
+            #meta.
           </p>
         )}
 

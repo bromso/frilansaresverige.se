@@ -1,0 +1,57 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+CREATE TABLE `assignment` (
+  `id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `senderType` enum('DIRECT','BROKER') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `emailAddress` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `customerName` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `contact` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created` bigint(30) NOT NULL,
+  `slackChannel` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slackId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `assignmentComment` (
+  `assignment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `id` int(11) NOT NULL,
+  `comment` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created` bigint(30) NOT NULL,
+  `slackId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+ALTER TABLE `assignment`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `assignmentComment`
+  ADD PRIMARY KEY (`assignment`,`id`);
+
+
+ALTER TABLE `assignmentComment`
+  ADD CONSTRAINT `assignmentComment_ibfk_1` FOREIGN KEY (`assignment`) REFERENCES `assignment` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `assignment`
+  ADD COLUMN `customerOrganizationNumber` varchar(15) COLLATE utf8mb4_unicode_ci AFTER `customerName`,
+  ADD COLUMN `customerFee` varchar(50) DEFAULT NULL AFTER `customerOrganizationNumber`,
+  ADD COLUMN `clientHourlyRate` varchar(20) DEFAULT NULL AFTER `customerFee`,
+  ADD COLUMN `location` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;
+
+ALTER TABLE `assignment`
+  ADD COLUMN `slackThreadId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  ADD COLUMN `slackChannelId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  ADD COLUMN `deleted` bigint(30) DEFAULT NULL,
+  ADD COLUMN `slackDeleted` tinyint(1) NOT NULL DEFAULT 0;
+
+-- 2026-09: the site's form collects structured contact details, scope and
+-- work form. Rows created by the old service keep their free-text contact;
+-- the service renders whichever is present.
+ALTER TABLE `assignment`
+  MODIFY `contact` text COLLATE utf8mb4_unicode_ci NULL,
+  ADD COLUMN `scope` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  ADD COLUMN `workForm` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  ADD COLUMN `contactName` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  ADD COLUMN `contactPhone` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  ADD COLUMN `contactEmail` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL;

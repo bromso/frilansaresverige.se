@@ -44,7 +44,12 @@ const SiteNav = () => (
     items={NAV_ITEMS}
     LinkComponent={Link}
     logo={
-      <Link href="/" title="Gå till startsidan" className="flex items-center">
+      <Link
+        href="/"
+        prefetch={false}
+        title="Gå till startsidan"
+        className="flex items-center"
+      >
         <LogoMark className="h-7 w-auto" />
       </Link>
     }

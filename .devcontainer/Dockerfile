@@ -14,7 +14,7 @@ FROM mcr.microsoft.com/devcontainers/typescript-node:24-bookworm
 # hand with .bun-version and the two `oven/bun:` FROM lines in the root
 # Dockerfile — there is no maintained first-party Bun devcontainer Feature,
 # and a pinned install is more auditable than depending on a third-party one.
-ARG BUN_VERSION=1.3.14
+ARG BUN_VERSION=1.4.2
 ENV BUN_INSTALL=/usr/local/bun
 ENV PATH=${BUN_INSTALL}/bin:${PATH}
 

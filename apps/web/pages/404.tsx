@@ -7,7 +7,7 @@ const Custom404 = () => (
   <section className="flex w-full max-w-[44em] flex-col items-start py-20 md:py-28">
     <Seo
       title="Sidan finns inte"
-      description="Sidan du letar efter finns inte."
+      description="Sidan du letar efter finns inte längre, eller har aldrig funnits."
       path="/404"
       noindex
     />
@@ -18,8 +18,8 @@ const Custom404 = () => (
       Sidan finns inte
     </h1>
     <p className="mt-4 max-w-[36em] text-lg leading-[1.6] text-brand-cream/85">
-      Länken kan vara gammal eller felstavad. Här är vägarna vidare — eller
-      fråga i Slacken, där finns alltid någon som vet.
+      Länken kan vara gammal eller felstavad. Här är några vägar vidare. Är du
+      medlem kan du också fråga i Slacken, där finns alltid någon som vet.
     </p>
     <ul className="mt-8 flex flex-wrap gap-3">
       <li>

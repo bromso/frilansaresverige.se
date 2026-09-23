@@ -6,7 +6,7 @@ const Custom500 = () => (
   <section className="flex w-full max-w-[44em] flex-col items-start py-20 md:py-28">
     <Seo
       title="Något gick fel"
-      description="Ett tekniskt fel inträffade."
+      description="Ett tekniskt fel inträffade på servern."
       path="/500"
       noindex
     />
@@ -17,8 +17,9 @@ const Custom500 = () => (
       Något gick fel
     </h1>
     <p className="mt-4 max-w-[36em] text-lg leading-[1.6] text-brand-cream/85">
-      Ett tekniskt fel inträffade på servern. Ladda om sidan om en stund — och
-      om det fortsätter, säg till i Slacken eller öppna ett ärende på GitHub.
+      Ett tekniskt fel inträffade på servern, och det är vårt fel, inte ditt.
+      Ladda om sidan om en stund. Fortsätter det, säg till i Slacken eller öppna
+      ett ärende på GitHub.
     </p>
     <a
       href="/"

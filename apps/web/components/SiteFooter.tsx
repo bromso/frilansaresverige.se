@@ -41,19 +41,19 @@ const SiteFooter = ({
               </span>
             </Link>
             <p className="mt-4 leading-relaxed text-brand-cream/85">
-              Sveriges största community för frilansare. Vi främjar
-              kontaktskapande och uppdragstipsande mellan frilansare — helt
-              gratis, utan mellanhänder.
+              Sveriges största community för frilansare. Tusentals kollegor som
+              delar uppdrag, kunskap och vardag i Slack. Gratis, ideellt och
+              utan mellanhänder.
             </p>
             <p className="mt-3 leading-relaxed text-brand-cream/85">
-              Sajten byggs av communityt och koden är öppen —{' '}
+              Sajten byggs av communityt och koden är öppen.{' '}
               <a
                 href={GITHUB_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-brand-cream underline hover:no-underline"
               >
-                bidra gärna
+                Bidra gärna på GitHub
               </a>
               .
             </p>
@@ -104,9 +104,11 @@ const SiteFooter = ({
               href={GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-brand-cream/75 hover:text-brand-cream"
+              className="-m-2 inline-block p-2 text-brand-cream/75 hover:text-brand-cream"
             >
-              <span className="sr-only">GitHub</span>
+              <span className="sr-only">
+                GitHub (öppnas i ett nytt fönster)
+              </span>
               <span
                 className="icon-[simple-icons--github] size-6"
                 aria-hidden="true"
@@ -114,7 +116,12 @@ const SiteFooter = ({
             </a>
           </div>
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-brand-cream/75 md:order-1 md:mt-0">
-            <span>© {new Date().getFullYear()} Frilansare Sverige</span>
+            {/* Baked in at build; from 1 January until the next deploy the
+                client's year differs, which is harmless but would otherwise
+                log a hydration mismatch. */}
+            <span suppressHydrationWarning>
+              © {new Date().getFullYear()} Frilansare Sverige
+            </span>
             {LEGAL_ROUTES.map((legal) => (
               <Link
                 key={legal.path}

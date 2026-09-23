@@ -11,6 +11,7 @@ import {
   formatEventDate,
   formatEventTime,
   parseLocalDate,
+  toStockholmIso,
 } from '../../lib/content'
 import { getEvent, getEventSlugs } from '../../lib/content.server'
 
@@ -39,6 +40,10 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       isPast,
       crumb: { section: '/event', path: `/event/${slug}`, label: meta.title },
     },
+    // The past/upcoming state is computed here, so let the page regenerate
+    // hourly instead of waiting for the next deploy. Needs content/ traced
+    // for this route in next.config.js.
+    revalidate: 3600,
   }
 }
 
@@ -46,7 +51,7 @@ const InfoRow = ({ icon, children }: { icon: string; children: string }) => (
   <div className="flex items-center gap-3">
     <span
       aria-hidden="true"
-      className={`${icon} size-5 shrink-0 text-brand-coral`}
+      className={`${icon} size-5 shrink-0 text-highlight`}
     />
     <span className="text-brand-cream/85">{children}</span>
   </div>
@@ -60,14 +65,19 @@ const EnskiltEvent = ({ meta, source, isPast }: Props) => {
     '@type': 'Event',
     name: meta.title,
     description: meta.excerpt,
-    startDate: meta.startDate,
-    ...(meta.endDate && { endDate: meta.endDate }),
+    // With the Swedish UTC offset: without one Google guesses the zone.
+    startDate: toStockholmIso(meta.startDate),
+    ...(meta.endDate && { endDate: toStockholmIso(meta.endDate) }),
     eventStatus: 'https://schema.org/EventScheduled',
     eventAttendanceMode: online
       ? 'https://schema.org/OnlineEventAttendanceMode'
       : 'https://schema.org/OfflineEventAttendanceMode',
     location: online
-      ? { '@type': 'VirtualLocation', name: meta.location }
+      ? {
+          '@type': 'VirtualLocation',
+          name: meta.location,
+          url: meta.rsvpUrl ?? `${SITE_URL}${path}`,
+        }
       : {
           '@type': 'Place',
           name: meta.location,
@@ -78,15 +88,16 @@ const EnskiltEvent = ({ meta, source, isPast }: Props) => {
           },
         },
     organizer: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
-    ...(meta.rsvpUrl && {
-      offers: {
-        '@type': 'Offer',
-        url: meta.rsvpUrl,
-        price: meta.price === 'Gratis' ? '0' : (meta.price ?? '0'),
-        priceCurrency: 'SEK',
-        availability: 'https://schema.org/InStock',
-      },
-    }),
+    // Always present: a free event without an RSVP link is still an
+    // offer at price 0, and Google's event validator asks for one.
+    offers: {
+      '@type': 'Offer',
+      url: meta.rsvpUrl ?? `${SITE_URL}${path}`,
+      price: meta.price === 'Gratis' ? '0' : (meta.price ?? '0'),
+      priceCurrency: 'SEK',
+      availability: 'https://schema.org/InStock',
+    },
+    ...(meta.image && { image: `${SITE_URL}${meta.image}` }),
   }
   return (
     <>
@@ -117,8 +128,8 @@ const EnskiltEvent = ({ meta, source, isPast }: Props) => {
             <InfoRow icon="icon-[lucide--ticket]">{meta.price}</InfoRow>
           )}
           {isPast ? (
-            <p className="mt-2 text-brand-cream/60">
-              Det här eventet har ägt rum.
+            <p className="mt-2 text-brand-cream/75">
+              Det här eventet har redan ägt rum. Håll utkik efter nästa.
             </p>
           ) : (
             meta.rsvpUrl && (

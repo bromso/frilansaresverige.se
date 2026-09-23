@@ -5,16 +5,27 @@ import { serialize } from 'next-mdx-remote/serialize'
 import type { NewsArticle, WithContext } from 'schema-dts'
 import type { LeafCrumb } from '../../components/Breadcrumbs'
 import ArticleCard from '../../components/nyheter/ArticleCard'
+import CoverPreload from '../../components/nyheter/CoverPreload'
 import { MDX_COMPONENTS } from '../../components/nyheter/MdxContent'
 import Seo, { SITE_NAME, SITE_URL } from '../../components/Seo'
 import StructuredData from '../../components/StructuredData'
 import { formatPostDate, type PostMeta } from '../../lib/content'
 import { getAllPosts, getPost, getPostSlugs } from '../../lib/content.server'
+import {
+  COVER_SIZES_ARTICLE,
+  COVER_SIZES_TILE,
+  type CoverImageProps,
+  coverImageProps,
+  type WithCover,
+  withCover,
+} from '../../lib/cover-image'
 
 interface Props {
   meta: PostMeta
+  /** Optimizer props for the hero, resolved at build time. */
+  cover: CoverImageProps | null
   source: MDXRemoteSerializeResult
-  more: PostMeta[]
+  more: WithCover<PostMeta>[]
   crumb: LeafCrumb
 }
 
@@ -30,9 +41,13 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const more = getAllPosts()
     .filter((post) => post.slug !== slug)
     .slice(0, 3)
+    .map((post) => withCover(post, COVER_SIZES_TILE))
   return {
     props: {
       meta,
+      cover: meta.image
+        ? coverImageProps(meta.image, COVER_SIZES_ARTICLE)
+        : null,
       source,
       more,
       crumb: {
@@ -46,7 +61,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
 // Newsroom-style article: narrow centered column with category eyebrow,
 // headline, the excerpt as standfirst, cover art and the MDX body.
-const Artikel = ({ meta, source, more }: Props) => {
+const Artikel = ({ meta, cover, source, more }: Props) => {
   const path = `/nyheter/${meta.slug}`
   const jsonLd: WithContext<NewsArticle> = {
     '@context': 'https://schema.org',
@@ -54,6 +69,7 @@ const Artikel = ({ meta, source, more }: Props) => {
     headline: meta.title,
     description: meta.excerpt,
     datePublished: meta.date,
+    ...(meta.image && { image: `${SITE_URL}${meta.image}` }),
     inLanguage: 'sv',
     author: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
     publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
@@ -66,14 +82,18 @@ const Artikel = ({ meta, source, more }: Props) => {
         description={meta.excerpt}
         path={path}
         type="article"
+        image={meta.image}
+        imageAlt={meta.image ? meta.title : undefined}
+        publishedTime={meta.date}
       />
       <StructuredData data={jsonLd} />
+      {cover && <CoverPreload {...cover} />}
       <article className="w-full max-w-[42em] py-12 md:py-16">
         <div className="flex items-baseline gap-4">
           <p className="font-display text-sm font-bold tracking-widest text-eyebrow uppercase">
             {meta.category}
           </p>
-          <time dateTime={meta.date} className="text-sm text-brand-cream/60">
+          <time dateTime={meta.date} className="text-sm text-brand-cream/75">
             {formatPostDate(meta.date)}
           </time>
         </div>
@@ -84,7 +104,12 @@ const Artikel = ({ meta, source, more }: Props) => {
           {meta.excerpt}
         </p>
         <div className="mt-8 aspect-[16/9] overflow-hidden rounded-3xl">
-          <DuotoneCover seed={meta.slug} image={meta.image} eager />
+          <DuotoneCover
+            seed={meta.slug}
+            image={meta.image}
+            eager
+            imgProps={cover ?? undefined}
+          />
         </div>
         <div className="mt-2">
           <MDXRemote {...source} components={MDX_COMPONENTS} />

@@ -19,15 +19,16 @@ const buttonVariants = cva(
           'bg-brand-coral text-brand-grey hover:bg-brand-coral-light rounded-[3em] px-6 py-3 text-[1.1em] font-bold gap-2 max-w-max transition-[box-shadow,background] duration-150 focus:shadow-[0_0_0_0.1em_var(--color-brand-cream),0_0_0_0.2em_var(--color-brand-coral)] focus:outline-none focus-visible:ring-0',
         'primary-outline':
           'border-2 border-brand-cream/40 bg-transparent text-brand-cream hover:border-brand-cream hover:bg-brand-cream hover:text-brand-blue rounded-[3em] px-6 py-3 text-[1.1em] font-bold gap-2 max-w-max transition-[box-shadow,background,border-color,color] duration-150 focus:shadow-[0_0_0_0.1em_var(--color-brand-blue),0_0_0_0.2em_var(--color-brand-cream)] focus:outline-none focus-visible:ring-0',
-        accent: 'bg-accent text-accent-foreground shadow-xs hover:bg-accent/90',
+        accent:
+          'bg-highlight text-highlight-foreground shadow-xs hover:bg-highlight/90',
         destructive:
           'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
         outline:
-          'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
+          'border bg-background shadow-xs hover:bg-highlight hover:text-highlight-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
         secondary:
           'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
         ghost:
-          'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
+          'hover:bg-highlight hover:text-highlight-foreground dark:hover:bg-highlight/50',
         link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {

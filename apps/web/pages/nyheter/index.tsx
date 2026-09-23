@@ -4,20 +4,32 @@ import ArticleCard from '../../components/nyheter/ArticleCard'
 import Seo from '../../components/Seo'
 import type { PostMeta } from '../../lib/content'
 import { getAllPosts } from '../../lib/content.server'
-import { getRoute } from '../../lib/routes'
+import {
+  COVER_SIZES_FEATURED,
+  COVER_SIZES_TILE,
+  type WithCover,
+  withCover,
+} from '../../lib/cover-image'
+import { requireRoute } from '../../lib/routes'
 
 interface Props {
-  posts: PostMeta[]
+  posts: WithCover<PostMeta>[]
 }
 
+// The first post is the featured card and gets the wider `sizes`; the
+// covers are resolved here so the page never imports next/image.
 export const getStaticProps: GetStaticProps<Props> = async () => ({
-  props: { posts: getAllPosts() },
+  props: {
+    posts: getAllPosts().map((post, index) =>
+      withCover(post, index === 0 ? COVER_SIZES_FEATURED : COVER_SIZES_TILE),
+    ),
+  },
 })
 
 // Newsroom-style archive: the latest post as a full-width featured card,
 // the rest in a tile grid.
 const Nyheter = ({ posts }: Props) => {
-  const meta = getRoute('/nyheter')!
+  const meta = requireRoute('/nyheter')
   const [featured, ...rest] = posts
   return (
     <>
@@ -35,6 +47,7 @@ const Nyheter = ({ posts }: Props) => {
         </h1>
         <p className="mt-4 max-w-[36em] text-lg leading-[1.6] text-brand-cream/85">
           Det senaste från communityt, sajten och frilanslivet i Sverige.
+          Skrivet av medlemmar, för medlemmar.
         </p>
         {featured && (
           <div className="mt-10">

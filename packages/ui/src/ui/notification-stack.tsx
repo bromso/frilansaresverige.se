@@ -1,6 +1,6 @@
 'use client'
 
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import { useNearViewport } from '../lib/use-near-viewport'
 
@@ -37,7 +37,7 @@ const NotificationRow = ({ icon, title, body }: NotificationMessage) => (
     </span>
     <span className="min-w-0 text-brand-grey">
       <span className="block truncate text-sm font-medium">{title}</span>
-      <span className="block truncate font-mono text-xs text-brand-grey/60">
+      <span className="block truncate font-mono text-xs text-brand-grey/75">
         {body}
       </span>
     </span>
@@ -68,7 +68,12 @@ export const NotificationStack = ({
   }, [reduced, near, intervalMs])
 
   if (reduced) {
-    return <NotificationRow {...messages[0]} />
+    // Still decorative: the sample tip is illustration, not content.
+    return (
+      <div aria-hidden="true">
+        <NotificationRow {...messages[0]} />
+      </div>
+    )
   }
 
   return (
@@ -77,7 +82,7 @@ export const NotificationStack = ({
         {toasts.map((id, index) => {
           const message = messages[id % messages.length]
           return (
-            <motion.div
+            <m.div
               key={id}
               className="absolute inset-x-0 bottom-0 origin-bottom will-change-transform"
               style={{ zIndex: MAX_VISIBLE - index }}
@@ -100,14 +105,14 @@ export const NotificationStack = ({
               }}
             >
               <NotificationRow {...message} />
-              <motion.div
+              <m.div
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 rounded-2xl bg-[#ffe4df]"
                 initial={false}
                 animate={{ opacity: index * STACK_OPACITY }}
                 transition={{ type: 'spring', stiffness: 400, damping: 30 }}
               />
-            </motion.div>
+            </m.div>
           )
         })}
       </AnimatePresence>

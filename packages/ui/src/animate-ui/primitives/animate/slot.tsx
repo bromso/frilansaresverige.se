@@ -1,6 +1,6 @@
 'use client'
 
-import { type HTMLMotionProps, isMotionComponent, motion } from 'motion/react'
+import { type HTMLMotionProps, isMotionComponent, m } from 'motion/react'
 import * as React from 'react'
 import { cn } from '../../../lib/utils'
 
@@ -72,7 +72,7 @@ function Slot<T extends HTMLElement = HTMLElement>({
     () =>
       isAlreadyMotion
         ? (children.type as React.ElementType)
-        : motion.create(children.type as React.ElementType),
+        : m.create(children.type as React.ElementType),
     [isAlreadyMotion, children.type],
   )
 

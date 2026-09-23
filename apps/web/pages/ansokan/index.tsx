@@ -4,10 +4,10 @@ import FaqAccordion from '../../components/Faq/FaqAccordion'
 import { FAQ_ITEMS } from '../../components/Faq/faq-items'
 import RequestSlackInvitationForm from '../../components/RequestSlackInvitationForm'
 import Seo from '../../components/Seo'
-import { getRoute } from '../../lib/routes'
+import { requireRoute } from '../../lib/routes'
 
 const Ansokan: NextPage = () => {
-  const meta = getRoute('/ansokan')!
+  const meta = requireRoute('/ansokan')
   return (
     <>
       <Seo title={meta.title} description={meta.description} path={meta.path} />
@@ -21,7 +21,7 @@ const Ansokan: NextPage = () => {
           Vanliga frågor
         </h2>
         <p className="font-display mb-6 text-2xl font-extrabold tracking-tight text-brand-cream md:text-3xl">
-          Innan du ansöker
+          Bra att veta innan du ansöker
         </p>
         <FaqAccordion items={FAQ_ITEMS.slice(0, 3)} />
         <Link

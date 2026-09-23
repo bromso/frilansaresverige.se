@@ -5,7 +5,7 @@
 // the container animates to the active pane's height. Vendored as-is
 // apart from this repo's import paths and formatting.
 
-import { type HTMLMotionProps, motion, type Transition } from 'motion/react'
+import { type HTMLMotionProps, m, type Transition } from 'motion/react'
 import * as React from 'react'
 import { getStrictContext } from '../../../lib/get-strict-context'
 import {
@@ -170,7 +170,7 @@ function TabsTrigger({
     return () => registerTrigger(value, null)
   }, [value, registerTrigger])
 
-  const Component = asChild ? Slot : motion.button
+  const Component = asChild ? Slot : m.button
 
   return (
     <Component
@@ -275,7 +275,7 @@ function TabsContents({
   }, [activeIndex, height, measure])
 
   return (
-    <motion.div
+    <m.div
       ref={containerRef}
       data-slot="tabs-contents"
       style={{ overflow: 'hidden' }}
@@ -283,7 +283,7 @@ function TabsContents({
       transition={transition}
       {...props}
     >
-      <motion.div
+      <m.div
         className="flex -mx-2"
         animate={{ x: `${activeIndex * -100}%` }}
         transition={transition}
@@ -299,8 +299,8 @@ function TabsContents({
             {child}
           </div>
         ))}
-      </motion.div>
-    </motion.div>
+      </m.div>
+    </m.div>
   )
 }
 
@@ -320,7 +320,7 @@ function TabsContent({
   const { activeValue } = useTabs()
   const isActive = activeValue === value
 
-  const Component = asChild ? Slot : motion.div
+  const Component = asChild ? Slot : m.div
 
   return (
     <Component

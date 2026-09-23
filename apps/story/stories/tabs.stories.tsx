@@ -13,7 +13,11 @@ const meta = {
 } satisfies Meta<typeof Tabs>
 
 export default meta
-type Story = StoryObj<typeof meta>
+// StoryObj<typeof meta> would make `args` mandatory here: TabsProps is a
+// discriminated union with required children, which Storybook cannot
+// collapse into optional args. Typing against the component instead
+// keeps `render`-only stories valid.
+type Story = StoryObj<typeof Tabs>
 
 const STEPS = [
   { value: 'ett', label: '1. Uppdraget' },

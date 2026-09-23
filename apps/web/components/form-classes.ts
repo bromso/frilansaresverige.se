@@ -1,7 +1,9 @@
 // Shared field styling for the cream form cards: full width, blue border,
-// and the double-ring focus style, on top of shadcn's base classes.
+// and the double-ring focus style, on top of shadcn's base classes. The
+// dark: repeat of the surface overrides the primitive's dark:bg-input/30
+// so the fields keep their light surface in the dark theme too.
 export const FIELD_CLASSES =
-  'h-auto w-full rounded-[0.6em] border border-brand-blue/40 bg-white/60 p-[0.6em] text-[1.1em] shadow-none md:text-[1.1em] transition-colors focus-visible:border-brand-blue focus-visible:ring-0 focus:shadow-[0_0_0_0.1em_var(--color-brand-cream),0_0_0_0.2em_var(--color-brand-blue)] focus:outline-none'
+  'h-auto w-full rounded-[0.6em] border border-brand-blue/40 bg-white/60 dark:bg-white/60 p-[0.6em] text-[1.1em] shadow-none md:text-[1.1em] transition-colors focus-visible:border-brand-blue focus-visible:ring-0 focus:shadow-[0_0_0_0.1em_var(--color-brand-cream),0_0_0_0.2em_var(--color-brand-blue)] focus:outline-none'
 
 export const LABEL_CLASSES =
   'font-display text-[1.05em] font-bold leading-[1.5]'
@@ -17,5 +19,5 @@ export const URL_PATTERN = String.raw`(https?://)?([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,
 export const URL_TITLE = 'Ange en giltig webbadress, t.ex. exempel.se'
 export const PHONE_PATTERN = String.raw`\+?[0-9][0-9 \-]{5,}`
 export const PHONE_TITLE = 'Ange ett giltigt telefonnummer, t.ex. 070-123 45 67'
-export const NUMBER_PATTERN = String.raw`[0-9][0-9 ]*`
+export const NUMBER_PATTERN = '[0-9][0-9 ]*'
 export const NUMBER_TITLE = 'Ange ett belopp i siffror, t.ex. 950'

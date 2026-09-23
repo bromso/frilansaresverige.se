@@ -1,5 +1,5 @@
 import { Button } from '@frilansaresverige/ui/animate-ui/components/buttons/button'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, m } from 'motion/react'
 import { useEffect, useState } from 'react'
 
 // Cookie notice as a bottom-center toast, visually adapted from a
@@ -41,7 +41,7 @@ const CookieToast = () => {
     >
       <AnimatePresence initial={false}>
         {open && (
-          <motion.section
+          <m.section
             aria-label="Information om cookies"
             className="pointer-events-auto flex origin-bottom items-start gap-3 rounded-2xl border border-brand-cream/15 bg-brand-blue-dark p-4 text-brand-cream shadow-[0_8px_32px_rgba(0,0,0,0.25)]"
             initial={{ opacity: 0, y: 60, scale: 0.85 }}
@@ -61,9 +61,9 @@ const CookieToast = () => {
               <p className="font-display text-sm leading-tight font-bold">
                 Cookies
               </p>
-              <p className="mt-0.5 text-[0.8rem] leading-snug text-brand-cream/60">
-                Vi använder cookies för att se hur många besökare det kommer
-                till denna sida.
+              <p className="mt-0.5 text-[0.8rem] leading-snug text-brand-cream/75">
+                Vi använder cookies för att räkna besökare på sajten. Inget mer
+                än så.
               </p>
               <div className="mt-3 flex items-center gap-2">
                 <Button
@@ -72,7 +72,7 @@ const CookieToast = () => {
                   className="px-4 py-1.5 text-sm"
                   onClick={() => answer(true)}
                 >
-                  Okej det går väl bra
+                  Okej, det går bra
                 </Button>
                 <Button
                   variant="primary-outline"
@@ -80,11 +80,11 @@ const CookieToast = () => {
                   className="px-4 py-1.5 text-sm"
                   onClick={() => answer(false)}
                 >
-                  Nej
+                  Nej tack
                 </Button>
               </div>
             </div>
-          </motion.section>
+          </m.section>
         )}
       </AnimatePresence>
     </div>

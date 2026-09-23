@@ -17,56 +17,64 @@ export const FAQ_ITEMS: FaqItem[] = [
     icon: 'icon-[lucide--users]',
     question: 'Vem kan bli medlem?',
     answer:
-      'Communityt är till för dig som redan är igång som frilansare — med ett bolag att fakturera genom och minst en kund. Alla branscher är välkomna: utvecklare, designers, skribenter, fotografer, projektledare, ekonomer och många fler.',
+      'Alla som redan är igång som frilansare, alltså har ett bolag eller en enskild firma att fakturera genom och minst en kund. Bransch spelar ingen roll: här finns utvecklare, designers, skribenter, fotografer, projektledare, ekonomer och många fler. Bor du i Sverige är du välkommen oavsett ort.',
     answerText:
-      'Communityt är till för dig som redan är igång som frilansare — med ett bolag att fakturera genom och minst en kund. Alla branscher är välkomna: utvecklare, designers, skribenter, fotografer, projektledare, ekonomer och många fler.',
+      'Alla som redan är igång som frilansare, alltså har ett bolag eller en enskild firma att fakturera genom och minst en kund. Bransch spelar ingen roll: här finns utvecklare, designers, skribenter, fotografer, projektledare, ekonomer och många fler. Bor du i Sverige är du välkommen oavsett ort.',
   },
   {
     icon: 'icon-[lucide--wallet]',
     question: 'Vad kostar medlemskapet?',
     answer:
-      'Ingenting. Det finns ingen medlemsavgift, inga premiumnivåer och inga mellanhänder — communityt drivs av medlemmarna själva.',
+      'Ingenting. Det finns ingen medlemsavgift, inga premiumnivåer och ingen som tjänar pengar på communityt. Allt drivs ideellt av medlemmarna själva, och du kan lämna när du vill.',
     answerText:
-      'Ingenting. Det finns ingen medlemsavgift, inga premiumnivåer och inga mellanhänder — communityt drivs av medlemmarna själva.',
+      'Ingenting. Det finns ingen medlemsavgift, inga premiumnivåer och ingen som tjänar pengar på communityt. Allt drivs ideellt av medlemmarna själva, och du kan lämna när du vill.',
   },
   {
     icon: 'icon-[lucide--send]',
     question: 'Hur går ansökan till?',
     answer:
-      'Berätta kort om vad du gör och länka till din LinkedIn — det tar bara ett par minuter. Vi tittar på ansökan och godkänner dig som redan är igång som frilansare.',
+      'Du fyller i ett kort formulär: vad du gör, hur länge du frilansat, ditt bolag och en länk till din LinkedIn. Det tar ett par minuter. Sedan tittar en av oss på ansökan, oftast inom några dagar.',
     answerText:
-      'Berätta kort om vad du gör och länka till din LinkedIn — det tar bara ett par minuter. Vi tittar på ansökan och godkänner dig som redan är igång som frilansare.',
+      'Du fyller i ett kort formulär: vad du gör, hur länge du frilansat, ditt bolag och en länk till din LinkedIn. Det tar ett par minuter. Sedan tittar en av oss på ansökan, oftast inom några dagar.',
   },
   {
     icon: 'icon-[lucide--party-popper]',
     question: 'Vad händer när jag blivit godkänd?',
     answer:
-      'Du får en inbjudan till vår Slack via mejl. Hoppa in, presentera dig och hitta kanalerna som passar din bransch eller din stad.',
+      'Du får en inbjudan till vår Slack via mejl. Hoppa in, säg hej i välkomstkanalen och leta upp kanalerna för din bransch och din stad. Sedan är du igång.',
     answerText:
-      'Du får en inbjudan till vår Slack via mejl. Hoppa in, presentera dig och hitta kanalerna som passar din bransch eller din stad.',
+      'Du får en inbjudan till vår Slack via mejl. Hoppa in, säg hej i välkomstkanalen och leta upp kanalerna för din bransch och din stad. Sedan är du igång.',
   },
   {
     icon: 'icon-[simple-icons--slack]',
     question: 'Var händer allt?',
     answer:
-      'Allt händer i vår Slack — trådar, kanaler och direktmeddelanden. Där delar medlemmarna uppdrag, kunskap och kollegskap varje dag.',
+      'I vår Slack. Där finns kanaler för branscher, städer och ämnen som prissättning, avtal och fakturering, plus uppdragskanalen där tipsen delas. Trådar för frågor, direktmeddelanden när du vill ta något vidare.',
     answerText:
-      'Allt händer i vår Slack — trådar, kanaler och direktmeddelanden. Där delar medlemmarna uppdrag, kunskap och kollegskap varje dag.',
+      'I vår Slack. Där finns kanaler för branscher, städer och ämnen som prissättning, avtal och fakturering, plus uppdragskanalen där tipsen delas. Trådar för frågor, direktmeddelanden när du vill ta något vidare.',
   },
   {
     icon: 'icon-[lucide--briefcase]',
-    question: 'Jag söker en konsult — ska jag också ansöka?',
+    question: 'Jag är inte frilansare än, kan jag ändå gå med?',
+    answer:
+      'Inte riktigt än. Communityt bygger på att alla delar samma vardag, så vi väntar med att säga ja tills du har ditt bolag och din första kund på plats. Sök gärna igen då, vi ser fram emot det.',
+    answerText:
+      'Inte riktigt än. Communityt bygger på att alla delar samma vardag, så vi väntar med att säga ja tills du har ditt bolag och din första kund på plats. Sök gärna igen då, vi ser fram emot det.',
+  },
+  {
+    icon: 'icon-[lucide--building-2]',
+    question: 'Jag söker en konsult. Ska jag också ansöka?',
     answer: (
       <>
         Nej, medlemskapet är för frilansare. Har du eller ditt företag ett
         konsultbehov kan du i stället{' '}
         <Link href="/tipsa" className="underline hover:no-underline">
           tipsa om uppdraget
-        </Link>{' '}
-        — gratis och utan mellanhänder.
+        </Link>
+        . Det är gratis, och frilansarna hör av sig direkt till dig.
       </>
     ),
     answerText:
-      'Nej, medlemskapet är för frilansare. Har du eller ditt företag ett konsultbehov kan du i stället tipsa om uppdraget — gratis och utan mellanhänder.',
+      'Nej, medlemskapet är för frilansare. Har du eller ditt företag ett konsultbehov kan du i stället tipsa om uppdraget. Det är gratis, och frilansarna hör av sig direkt till dig.',
   },
 ]

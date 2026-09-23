@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import { useEffect } from 'react'
 import Seo from '../../components/Seo'
-import { getRoute } from '../../lib/routes'
+import { requireRoute } from '../../lib/routes'
 
 const TipsaTack = () => {
-  const meta = getRoute('/tipsa/tack')!
+  const meta = requireRoute('/tipsa/tack')
 
   // The form redirects here client-side, so _document's gtag config (which
   // only fires on a full document load) never records this pageview.
@@ -23,19 +23,21 @@ const TipsaTack = () => {
       />
       <section className="flex w-full max-w-[44em] flex-col items-start py-16 md:py-24">
         <p className="font-display mb-3 text-sm font-bold tracking-widest text-eyebrow uppercase">
-          Tips inskickat
+          Uppdrag publicerat
         </p>
         <h1 className="font-display text-4xl font-extrabold tracking-tight text-brand-cream md:text-5xl">
-          Tack för tipset
+          Tack, uppdraget är publicerat
         </h1>
         <p className="mt-4 max-w-[36em] text-lg leading-[1.6] text-brand-cream/85">
-          Uppdraget är inskickat till communityt. Frilansare som är intresserade
-          hör av sig direkt till kontaktpersonen du angav — utan mellanhänder.
+          Uppdraget ligger nu i uppdragskanalen i Slack. En kvittens med en länk
+          för att komplettera eller ta bort uppdraget är på väg till
+          e-postadressen du angav. Frilansare som är intresserade hör av sig
+          direkt till kontaktpersonen. Vi står inte emellan.
         </p>
-        <p className="mt-4 max-w-[36em] leading-[1.6] text-brand-cream/70">
+        <p className="mt-4 max-w-[36em] leading-[1.6] text-brand-cream/75">
           Har du fler uppdrag?{' '}
           <Link href="/tipsa" className="underline hover:no-underline">
-            Tipsa igen
+            Publicera ett till
           </Link>
           .
         </p>

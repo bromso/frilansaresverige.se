@@ -18,9 +18,9 @@ const rendersH1 = (Page: () => ReturnType<typeof Community>, text: RegExp) => {
 describe('content pages', () => {
   it('sa-fungerar-det', () => rendersH1(SaFungerarDet, /Så fungerar/))
   it('kunskap', () => rendersH1(Kunskap, /Kunskap/))
-  it('community', () => rendersH1(Community, /communityt/i))
+  it('community', () => rendersH1(Community, /bakom sajten/i))
   it('om', () => rendersH1(Om, /Om Frilansare Sverige/))
-  it('kontakt', () => rendersH1(Kontakt, /Kontakt/))
+  it('kontakt', () => rendersH1(Kontakt, /Hör av dig/))
   it('uppforandekod', async () => {
     render(<Uppforandekod {...(await loadSida('uppforandekod'))} />)
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(

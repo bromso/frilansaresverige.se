@@ -1,71 +1,68 @@
 import { type FormEvent, useState } from 'react'
+import { HONEYPOT_FIELD } from '../lib/form-fields'
+import { controlValue, type FormResult, postForm } from './submit-form'
 
-interface GigTipFormTarget extends EventTarget {
-  title: HTMLInputElement
-  location: HTMLInputElement
-  clientName: HTMLInputElement
-  minRate: HTMLInputElement
-  description: HTMLInputElement
-  contactName: HTMLInputElement
-  contactPhone: HTMLInputElement
-  contactEmail: HTMLInputElement
-  // Radix RadioGroup renders hidden radio inputs, so the named form
-  // control is a RadioNodeList whose .value is the checked item's value.
-  relation: { value: string }
-  omfattning: { value: string }
-}
-interface Data {
-  success?: boolean
+/** The form's relation values mapped to the stored sender type. */
+export const RELATION_TO_SENDER_TYPE: Record<string, 'BROKER' | 'DIRECT'> = {
+  formedlare: 'BROKER',
+  direktavtal: 'DIRECT',
 }
 
 export const useSubmitGigTipForm = () => {
-  const [data, setData] = useState<Data | null>(null)
+  const [data, setData] = useState<FormResult | null>(null)
   const [error, setError] = useState<unknown>(null)
   const [isLoading, setIsLoading] = useState(false)
 
   const submitForm = async (event: FormEvent) => {
     event.preventDefault()
+    if (isLoading) {
+      return
+    }
     setIsLoading(true)
 
-    const target = event.target as GigTipFormTarget
+    const target = event.target
     // The arbetsform checkboxes share a name and only checked ones land
     // in FormData, so reading them there gives the selected set directly.
     // (The instanceof guard keeps unit tests with plain-object mock
     // targets working.)
-    const arbetsform =
+    const workForm =
       target instanceof HTMLFormElement
         ? new FormData(target).getAll('arbetsform').map(String).join(', ')
         : ''
+    // Radix RadioGroup renders hidden radio inputs, so the named form
+    // control is a RadioNodeList whose .value is the checked item's value.
+    // The keys are the uppdrag service's, not the form's.
+    const relation = controlValue(target, 'relation')
     const requestBody = {
-      title: target.title.value,
-      location: target.location.value,
-      clientName: target.clientName.value,
-      minRate: target.minRate.value,
-      description: target.description.value,
-      contactName: target.contactName.value,
-      contactPhone: target.contactPhone.value,
-      contactEmail: target.contactEmail.value,
-      relation: target.relation.value,
-      omfattning: target.omfattning.value,
-      arbetsform,
+      senderType: RELATION_TO_SENDER_TYPE[relation] ?? relation,
+      emailAddress: controlValue(target, 'emailAddress'),
+      title: controlValue(target, 'title'),
+      location: controlValue(target, 'location'),
+      customerName: controlValue(target, 'clientName'),
+      description: controlValue(target, 'description'),
+      scope: controlValue(target, 'omfattning'),
+      workForm,
+      clientHourlyRate: controlValue(target, 'minRate'),
+      contactName: controlValue(target, 'contactName'),
+      contactPhone: controlValue(target, 'contactPhone'),
+      contactEmail: controlValue(target, 'contactEmail'),
+      customerOrganizationNumber: controlValue(
+        target,
+        'customerOrganizationNumber',
+      ),
+      customerFee: controlValue(target, 'customerFee'),
+      [HONEYPOT_FIELD]: controlValue(target, HONEYPOT_FIELD),
     }
 
-    await fetch('/api/submit-gig-tip', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(requestBody),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data)
-        setError(null)
-        setIsLoading(false)
-      })
-      .catch((e) => {
-        setError(e)
-        setData(null)
-        setIsLoading(false)
-      })
+    try {
+      setData(await postForm('/api/uppdrag/assignments', requestBody))
+      setError(null)
+    } catch (e) {
+      setError(e)
+      setData(null)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return { submitForm, data, isLoading, error }

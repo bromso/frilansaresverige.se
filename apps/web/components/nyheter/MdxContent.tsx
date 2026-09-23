@@ -21,7 +21,7 @@ export const MDX_COMPONENTS: MDXRemoteProps['components'] = {
   ),
   a: (props) => (
     <a
-      className="text-brand-coral underline underline-offset-2 hover:no-underline"
+      className="text-link underline underline-offset-2 hover:no-underline"
       {...props}
     />
   ),
@@ -39,7 +39,7 @@ export const MDX_COMPONENTS: MDXRemoteProps['components'] = {
   ),
   blockquote: (props) => (
     <blockquote
-      className="font-display my-8 border-l-2 border-brand-coral pl-6 text-xl leading-[1.5] text-brand-cream"
+      className="font-display my-8 border-l-2 border-highlight pl-6 text-xl leading-[1.5] text-brand-cream"
       {...props}
     />
   ),

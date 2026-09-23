@@ -34,6 +34,25 @@ describe('buildSeoTags', () => {
       noindex: true,
     })
     expect(tags.robots).toBe('noindex,nofollow')
+    expect(tags.canonical).toBeNull()
+  })
+
+  it('uses the default card with its known size unless a page brings one', () => {
+    const plain = buildSeoTags({ title: 'T', description: 'D', path: '/x' })
+    expect(plain.image).toBe(`${SITE_URL}/images/og-default.png`)
+    expect(plain.imageSize).toEqual({ width: '1200', height: '630' })
+    expect(plain.imageAlt).toBe('Frilansare Sverige')
+
+    const cover = buildSeoTags({
+      title: 'T',
+      description: 'D',
+      path: '/nyheter/x',
+      image: '/images/nyheter/x.jpg',
+      imageAlt: 'Omslag',
+    })
+    expect(cover.image).toBe(`${SITE_URL}/images/nyheter/x.jpg`)
+    expect(cover.imageSize).toBeNull()
+    expect(cover.imageAlt).toBe('Omslag')
   })
 })
 

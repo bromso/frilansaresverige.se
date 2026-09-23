@@ -21,6 +21,23 @@ describe('buildSitemapXml', () => {
     expect(xml).not.toContain('/nyheter/hej')
   })
 
+  it('emits lastmod for dated entries, trimmed to the date', () => {
+    const withDates = buildSitemapXml('https://example.se', [
+      { path: '/nyheter/hej', lastmod: '2026-08-29' },
+      { path: '/event/aw', lastmod: '2026-09-17T18:00' },
+      { path: '/uppdrag/x' },
+    ])
+    expect(withDates).toContain(
+      '<url><loc>https://example.se/nyheter/hej</loc><lastmod>2026-08-29</lastmod></url>',
+    )
+    expect(withDates).toContain(
+      '<url><loc>https://example.se/event/aw</loc><lastmod>2026-09-17</lastmod></url>',
+    )
+    expect(withDates).toContain(
+      '<url><loc>https://example.se/uppdrag/x</loc></url>',
+    )
+  })
+
   it('is a urlset document', () => {
     expect(xml.startsWith('<?xml version="1.0" encoding="UTF-8"?>')).toBe(true)
     expect(xml).toContain(

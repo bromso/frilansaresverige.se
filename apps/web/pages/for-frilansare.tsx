@@ -4,25 +4,25 @@ const ForFrilansare = () => (
   <HubPage
     path="/for-frilansare"
     eyebrow="För frilansare"
-    heading="Frilansa — men aldrig ensam"
+    heading="Frilansa, men aldrig ensam"
     intro={
       <p>
         Frilansare Sverige är ett gratis community där tusentals frilansare
-        delar uppdrag, kunskap och kollegskap i Slack. Ingen medlemsavgift, inga
-        mellanhänder — bara kollegor.
+        delar uppdrag, kunskap och vardag i Slack. Ingen medlemsavgift, inga
+        mellanhänder, bara kollegor som vet hur det är att driva eget.
       </p>
     }
     links={[
       {
         href: '/ansokan',
         label: 'Bli medlem',
-        text: 'Ansökan är gratis och tar ett par minuter. Vi ses i Slack!',
+        text: 'Ansökan är gratis och tar ett par minuter. Sedan ses vi i Slack.',
         icon: 'icon-[lucide--user-round]',
       },
       {
         href: '/sa-fungerar-det',
         label: 'Så fungerar det',
-        text: 'Kanalerna, uppdragstipsen och reglerna — allt du behöver veta som ny.',
+        text: 'Kanalerna, uppdragstipsen och reglerna. Allt du behöver veta som ny.',
         icon: 'icon-[lucide--map]',
       },
       {
@@ -34,7 +34,7 @@ const ForFrilansare = () => (
       {
         href: '/uppdrag',
         label: 'Hitta uppdrag',
-        text: 'Uppdrag tipsade av medlemmar och företag — utan mellanhänder.',
+        text: 'Uppdrag tipsade av medlemmar och företag. Du kontaktar uppdragsgivaren direkt.',
         icon: 'icon-[lucide--briefcase-business]',
       },
     ]}

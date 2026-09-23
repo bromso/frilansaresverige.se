@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 import {
+  addDays,
   formatEventBadge,
   formatEventDate,
   formatEventTime,
@@ -17,6 +18,7 @@ import {
   sortPosts,
   splitEvents,
   splitSections,
+  toStockholmIso,
 } from './content'
 import {
   getAllEvents,
@@ -348,5 +350,42 @@ describe('content directory', () => {
     }
     const overalls = reviews.map((r) => r.overall)
     expect(overalls).toEqual([...overalls].sort((a, b) => b - a))
+  })
+})
+
+describe('parseLocalDate strictness', () => {
+  it('rejects days and months that do not exist', () => {
+    expect(() => parseLocalDate('2026-09-31')).toThrow('finns inte')
+    expect(() => parseLocalDate('2026-13-01')).toThrow('finns inte')
+    expect(() => parseLocalDate('2026-02-29')).toThrow('finns inte')
+    expect(() => parseLocalDate('2026-09-17T24:00')).toThrow('finns inte')
+  })
+
+  it('still accepts real dates and times', () => {
+    expect(parseLocalDate('2028-02-29').getDate()).toBe(29)
+    expect(parseLocalDate('2026-09-17T23:59').getMinutes()).toBe(59)
+  })
+})
+
+describe('toStockholmIso', () => {
+  it('adds the Swedish offset for winter and summer time', () => {
+    expect(toStockholmIso('2026-02-26T18:00')).toBe('2026-02-26T18:00:00+01:00')
+    expect(toStockholmIso('2026-09-17T18:00')).toBe('2026-09-17T18:00:00+02:00')
+  })
+
+  it('treats a bare date as midnight local time', () => {
+    expect(toStockholmIso('2026-06-01')).toBe('2026-06-01T00:00:00+02:00')
+  })
+
+  it('resolves the wall time on the DST switch days', () => {
+    expect(toStockholmIso('2026-03-29T12:00')).toBe('2026-03-29T12:00:00+02:00')
+    expect(toStockholmIso('2026-10-25T12:00')).toBe('2026-10-25T12:00:00+01:00')
+  })
+})
+
+describe('addDays', () => {
+  it('rolls over month ends', () => {
+    expect(addDays('2026-08-29', 60)).toBe('2026-10-28')
+    expect(addDays('2026-12-31', 1)).toBe('2027-01-01')
   })
 })

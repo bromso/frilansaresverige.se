@@ -1,3 +1,10 @@
+/* Tailwind's dark: variant defaults to prefers-color-scheme. next-themes
+   drives the site's theme with a .light/.dark class on <html> instead, so
+   bind the variant to that class: otherwise every dark:* utility in the
+   shadcn primitives (input, textarea, checkbox, radio, button) follows
+   the OS while the rest of the page follows the toggle. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-brand-blue: #4823dc;
   --color-brand-cream: #fffce3;
@@ -7,10 +14,20 @@
   --color-brand-grey: #333333;
 
   /* Eyebrow labels (the small uppercase coral kickers). Plain brand
-     coral fails WCAG contrast on the blue ground (~3.4:1), so eyebrows
-     use the light coral in the dark theme (~6:1) and a burnt coral on
-     the cream ground in light mode (~4.7:1). */
+     coral fails WCAG contrast on the blue ground (~4.1:1 at small sizes),
+     so eyebrows use the light coral in the dark theme (~5.9:1) and a
+     burnt coral on the cream ground in light mode (~4.7:1). */
   --color-eyebrow: #ffcfc8;
+
+  /* Accent text and graphics: brand coral in both themes, by design.
+     It reads fine on the blue ground at display sizes (~4.1:1, AA for
+     large text) and as a bar or icon; on the cream ground in light mode
+     it is a deliberate brand choice over the contrast ratio. Body-size
+     text needs 4.5:1, which coral misses even on blue, so inline links
+     use `link`: the light coral in the dark theme (~5.9:1) and the ink
+     blue in light mode. */
+  --color-highlight: var(--color-brand-coral);
+  --color-link: var(--color-brand-coral-light);
 
   --color-background: var(--color-brand-blue);
   --color-foreground: var(--color-brand-cream);
@@ -42,6 +59,8 @@
   --color-brand-cream: #4823dc;
   --color-brand-blue-dark: #f1e8c8;
   --color-eyebrow: #c8442b;
+  --color-highlight: var(--color-brand-coral);
+  --color-link: #2601bb;
 }
 
 /* A theme --animate-* variable would resolve var(--duration) against :root

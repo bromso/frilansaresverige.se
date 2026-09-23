@@ -1,10 +1,10 @@
 import type { GetServerSideProps } from 'next'
 import { SITE_URL } from '../components/Seo'
 import {
-  getEventSlugs,
-  getGigSlugs,
-  getPostSlugs,
-  getReviewSlugs,
+  getAllEvents,
+  getAllGigs,
+  getAllPosts,
+  getAllReviews,
 } from '../lib/content.server'
 import { buildSitemapXml } from '../lib/sitemap'
 
@@ -16,13 +16,25 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   res.setHeader('Content-Type', 'application/xml')
   res.setHeader(
     'Cache-Control',
-    'public, s-maxage=86400, stale-while-revalidate',
+    'public, s-maxage=86400, stale-while-revalidate=604800',
   )
   const extras = [
-    ...getPostSlugs().map((slug) => `/nyheter/${slug}`),
-    ...getEventSlugs().map((slug) => `/event/${slug}`),
-    ...getGigSlugs().map((slug) => `/uppdrag/${slug}`),
-    ...getReviewSlugs().map((slug) => `/recensioner/${slug}`),
+    ...getAllPosts().map((post) => ({
+      path: `/nyheter/${post.slug}`,
+      lastmod: post.date,
+    })),
+    ...getAllEvents().map((event) => ({
+      path: `/event/${event.slug}`,
+      lastmod: event.startDate,
+    })),
+    ...getAllGigs().map((gig) => ({
+      path: `/uppdrag/${gig.slug}`,
+      lastmod: gig.date,
+    })),
+    ...getAllReviews().map((review) => ({
+      path: `/recensioner/${review.slug}`,
+      lastmod: review.date,
+    })),
   ]
   res.write(buildSitemapXml(SITE_URL, extras))
   res.end()

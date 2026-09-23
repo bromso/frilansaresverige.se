@@ -13,7 +13,7 @@ const GigCard = ({ gig }: { gig: GigMeta }) => (
       <span className="font-display text-xs font-bold tracking-widest text-eyebrow uppercase">
         {gig.role}
       </span>
-      <time dateTime={gig.date} className="text-sm text-brand-cream/60">
+      <time dateTime={gig.date} className="text-sm text-brand-cream/75">
         {formatPostDate(gig.date)}
       </time>
     </span>

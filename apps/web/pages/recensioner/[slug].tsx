@@ -47,7 +47,7 @@ const ScoreRow = ({ label, score }: { label: string; score: number }) => (
     <span className="w-28 shrink-0 text-brand-cream/85">{label}</span>
     <div className="h-2 flex-1 overflow-hidden rounded-full bg-brand-cream/10">
       <div
-        className="h-full rounded-full bg-brand-coral"
+        className="h-full rounded-full bg-highlight"
         style={{ width: `${(score / 5) * 100}%` }}
       />
     </div>
@@ -102,14 +102,14 @@ const EnskildRecension = ({ meta, source }: Props) => {
             <span className="font-display text-5xl font-extrabold text-brand-cream">
               {formatScore(meta.overall)}
             </span>
-            <span className="text-brand-cream/60">av 5</span>
+            <span className="text-brand-cream/75">av 5</span>
           </div>
           <div className="flex flex-col gap-3">
             {REVIEW_CRITERIA.map(({ key, label }) => (
               <ScoreRow key={key} label={label} score={meta.scores[key]} />
             ))}
           </div>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-brand-cream/60">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-brand-cream/75">
             <span>Publicerad {formatPostDate(meta.date)}</span>
             {meta.website && (
               <a
@@ -121,9 +121,10 @@ const EnskildRecension = ({ meta, source }: Props) => {
               </a>
             )}
           </div>
-          <p className="text-sm leading-[1.6] text-brand-cream/60 italic">
+          <p className="text-sm leading-[1.6] text-brand-cream/75 italic">
             Recensionen bygger på erfarenheter från medlemmar i communityt och
-            uppdateras när nya erfarenheter kommer in.
+            uppdateras när nya erfarenheter kommer in. Har du egna erfarenheter
+            av bolaget? Dela dem i Slacken.
           </p>
         </div>
 

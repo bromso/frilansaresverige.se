@@ -19,7 +19,7 @@ jobs:
 
       - uses: oven-sh/setup-bun@v2
         with:
-          bun-version: latest
+          bun-version-file: .bun-version
 
       # next build runs under Node (bun scripts spawn the binaries), so pin
       # the same major the production image uses (node:24-alpine).
@@ -32,6 +32,9 @@ jobs:
 
       - name: Lint (Biome)
         run: bun run check
+
+      - name: Typecheck
+        run: bun run typecheck
 
       # From the repo root on purpose — bunfig.toml's preload path resolves
       # against the invoking directory (see README "Tests").

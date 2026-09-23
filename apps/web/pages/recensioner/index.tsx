@@ -10,7 +10,7 @@ import {
   type ReviewMeta,
 } from '../../lib/content'
 import { getAllReviews } from '../../lib/content.server'
-import { getRoute } from '../../lib/routes'
+import { requireRoute } from '../../lib/routes'
 
 interface Props {
   reviews: ReviewMeta[]
@@ -23,7 +23,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => ({
 // Ranked review directory: category chips like /uppdrag, but a two-column
 // card grid led by score badges, sorted best first.
 const Recensioner = ({ reviews }: Props) => {
-  const meta = getRoute('/recensioner')!
+  const meta = requireRoute('/recensioner')
   const [category, setCategory] = useState<ReviewCategory | null>(null)
   const categories = REVIEW_CATEGORIES.filter((c) =>
     reviews.some((review) => review.category === c),
@@ -50,9 +50,10 @@ const Recensioner = ({ reviews }: Props) => {
           Recensioner av konsultmäklare och rekryterare
         </h1>
         <p className="mt-4 max-w-[36em] text-lg leading-[1.6] text-brand-cream/85">
-          Så upplever communityts medlemmar bolagen som förmedlar uppdrag och
-          rekryterar frilansare — villkor, transparens och bemötande, utan
-          filter. Har du en egen erfarenhet? Dela den i Slacken.
+          Så upplever medlemmarna bolagen som förmedlar uppdrag och rekryterar
+          frilansare. Vi betygsätter villkor, transparens och bemötande, utan
+          filter och utan att någon betalar för sin plats. Har du en egen
+          erfarenhet? Dela den i Slacken.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-2">
@@ -79,10 +80,11 @@ const Recensioner = ({ reviews }: Props) => {
           ))}
         </div>
 
-        <p className="mt-10 max-w-[36em] text-sm leading-[1.6] text-brand-cream/60">
+        <p className="mt-10 max-w-[36em] text-sm leading-[1.6] text-brand-cream/75">
           Recensionerna bygger på erfarenheter från medlemmar i Frilansare
           Sverige och uppdateras när nya erfarenheter kommer in. Betygen är
-          communityts samlade bild, inte en vetenskaplig mätning.
+          communityts samlade bild, inte en vetenskaplig mätning. Bolagen kan
+          inte köpa sig ett bättre betyg.
         </p>
       </section>
     </>
