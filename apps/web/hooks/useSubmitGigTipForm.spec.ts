@@ -74,7 +74,7 @@ describe('useSubmitGigTipForm', () => {
     expect(result.current.isLoading).toBe(false)
 
     const [url, init] = fetchMock.mock.calls[0]
-    expect(url).toBe('/api/uppdrag/assignments')
+    expect(url).toBe('/api/gig/assignments')
     expect(JSON.parse(init.body)).toEqual({
       senderType: 'DIRECT',
       emailAddress: 'sender@example.se',

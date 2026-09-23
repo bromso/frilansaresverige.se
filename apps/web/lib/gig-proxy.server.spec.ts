@@ -1,13 +1,13 @@
 import { beforeEach, describe, expect, it, jest } from 'bun:test'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { resetRateLimit } from './rate-limit.server'
 import {
   assignmentIdFrom,
-  createUppdragProxy,
-  type UppdragProxyRoute,
-} from './uppdrag-proxy.server'
+  createGigProxy,
+  type GigProxyRoute,
+} from './gig-proxy.server'
+import { resetRateLimit } from './rate-limit.server'
 
-const env = { UPPDRAG_API_URL: 'http://uppdrag:8989/', UPPDRAG_API_KEY: 'k' }
+const env = { GIG_API_URL: 'http://gig:8989/', GIG_API_KEY: 'k' }
 
 const makeReq = (
   overrides: Partial<{
@@ -73,15 +73,15 @@ describe('assignmentIdFrom', () => {
   })
 })
 
-describe('createUppdragProxy', () => {
+describe('createGigProxy', () => {
   beforeEach(() => resetRateLimit())
 
   const build = (
-    route: UppdragProxyRoute = create,
+    route: GigProxyRoute = create,
     fetchImpl = upstream(201, '{"success":true,"id":"X"}'),
     overrides = {},
   ) => ({
-    handler: createUppdragProxy(route, {
+    handler: createGigProxy(route, {
       env: { ...env, ...overrides },
       fetchImpl: fetchImpl as unknown as typeof fetch,
       log: () => {},
@@ -111,7 +111,7 @@ describe('createUppdragProxy', () => {
 
   it('500s when the service is not configured', async () => {
     const { handler, fetchImpl } = build(create, undefined, {
-      UPPDRAG_API_KEY: '',
+      GIG_API_KEY: '',
     })
     const res = makeRes()
     await handler(makeReq({ body: {} }), res)
@@ -151,7 +151,7 @@ describe('createUppdragProxy', () => {
     expect(res.statusCode).toBe(201)
     expect(res.body).toEqual({ success: true, id: 'X' })
     const [url, init] = fetchImpl.mock.calls[0]
-    expect(url).toBe('http://uppdrag:8989/api/assignments')
+    expect(url).toBe('http://gig:8989/api/assignments')
     expect(init.method).toBe('POST')
     expect(init.headers.Authorization).toBe('Bearer k')
     expect(init.headers['X-Forwarded-For']).toBe('203.0.113.1')
@@ -170,7 +170,7 @@ describe('createUppdragProxy', () => {
       expect(res.statusCode).toBe(200)
     }
     const [url, init] = fetchImpl.mock.calls[0]
-    expect(url).toBe('http://uppdrag:8989/api/assignments/ABCDEFGHIJKLMNOP')
+    expect(url).toBe('http://gig:8989/api/assignments/ABCDEFGHIJKLMNOP')
     expect(init.body).toBeUndefined()
   })
 
@@ -184,7 +184,7 @@ describe('createUppdragProxy', () => {
     expect(res.statusCode).toBe(400)
     expect(res.body).toEqual({ success: false, error: 'Titel is required' })
 
-    const down = createUppdragProxy(create, {
+    const down = createGigProxy(create, {
       env,
       fetchImpl: (async () => {
         throw new Error('ECONNREFUSED')
@@ -204,7 +204,7 @@ describe('createUppdragProxy', () => {
 
   it('passes a 401 through and logs it', async () => {
     const log = jest.fn()
-    const handler = createUppdragProxy(create, {
+    const handler = createGigProxy(create, {
       env,
       fetchImpl: upstream(
         401,
@@ -217,6 +217,6 @@ describe('createUppdragProxy', () => {
     expect(res.statusCode).toBe(401)
     expect(res.body).toEqual({ success: false, error: 'Unauthorized' })
     expect(log).toHaveBeenCalledTimes(1)
-    expect(log.mock.calls[0][0]).toBe('The uppdrag service answered 401')
+    expect(log.mock.calls[0][0]).toBe('The gig service answered 401')
   })
 })

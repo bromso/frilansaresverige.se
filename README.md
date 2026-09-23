@@ -17,7 +17,7 @@ The website for [Frilansare Sverige](https://frilansaresverige.se/) — Sweden's
 
 ## What this is
 
-A statically generated Next.js site (Pages Router) serving the community's public face: who we are, how membership works, gig tips for companies, news, events, gig listings and community reviews. The membership form posts to Slack via a webhook; published gigs go through the uppdrag service and its MySQL.
+A statically generated Next.js site (Pages Router) serving the community's public face: who we are, how membership works, gig tips for companies, news, events, gig listings and community reviews. The membership form posts to Slack via a webhook; published gigs go through the gig service and its MySQL.
 
 ## Monorepo layout
 
@@ -29,7 +29,7 @@ apps/
     content/    MDX content: nyheter, event, uppdrag, recensioner, sidor
     lib/        routes registry, content loaders, sitemap/llms builders
   story/        Storybook harness for the component library (dev-only)
-  uppdrag/      Bun service behind /tipsa: MySQL, Slack, receipt mails (see apps/uppdrag/README.md)
+  gig/          Bun service behind /tipsa: MySQL, Slack, receipt mails (see apps/gig/README.md)
 packages/
   ui/           Shared components: shadcn/radix ui, vendored animate-ui, brand theme
   tsconfig/     Shared TypeScript configs
@@ -47,7 +47,7 @@ bun install
 bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). Nothing else is required to render the site, but copy `.env.example` to `apps/web/.env.local` if you need the membership form or analytics — it documents every variable and what silently changes without them. The gig form on `/tipsa` needs the uppdrag service running too; `apps/uppdrag/README.md` covers it in three commands.
+Open [http://localhost:3000](http://localhost:3000). Nothing else is required to render the site, but copy `.env.example` to `apps/web/.env.local` if you need the membership form or analytics — it documents every variable and what silently changes without them. The gig form on `/tipsa` needs the gig service running too; `apps/gig/README.md` covers it in three commands.
 
 ### Working in a container
 
@@ -113,7 +113,7 @@ Production is a standalone Next.js build. `bun run build` assembles the complete
 
 Note for anything that reads files at request time (like the sitemap reading `content/`): the standalone output only includes what's traced, so such paths must be listed in `outputFileTracingIncludes` in `next.config.js`.
 
-`deploy.sh` also builds and ships the uppdrag service image; see `apps/uppdrag/README.md` for the compose fragment the server needs.
+`deploy.sh` also builds and ships the gig service image; see `apps/gig/README.md` for the compose fragment the server needs.
 
 ## Design docs
 

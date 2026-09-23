@@ -19,12 +19,12 @@
     "source=frilansare-node-modules-web,target=${containerWorkspaceFolder}/apps/web/node_modules,type=volume",
     "source=frilansare-node-modules-story,target=${containerWorkspaceFolder}/apps/story/node_modules,type=volume",
     "source=frilansare-node-modules-ui,target=${containerWorkspaceFolder}/packages/ui/node_modules,type=volume",
-    "source=frilansare-node-modules-uppdrag,target=${containerWorkspaceFolder}/apps/uppdrag/node_modules,type=volume"
+    "source=frilansare-node-modules-gig,target=${containerWorkspaceFolder}/apps/gig/node_modules,type=volume"
   ],
 
   // Named volumes are created root-owned; hand them to the user that will
   // actually run bun install, then install.
-  "onCreateCommand": "sudo chown -R node:node ${containerWorkspaceFolder}/node_modules ${containerWorkspaceFolder}/apps/web/node_modules ${containerWorkspaceFolder}/apps/story/node_modules ${containerWorkspaceFolder}/packages/ui/node_modules ${containerWorkspaceFolder}/apps/uppdrag/node_modules",
+  "onCreateCommand": "sudo chown -R node:node ${containerWorkspaceFolder}/node_modules ${containerWorkspaceFolder}/apps/web/node_modules ${containerWorkspaceFolder}/apps/story/node_modules ${containerWorkspaceFolder}/packages/ui/node_modules ${containerWorkspaceFolder}/apps/gig/node_modules",
   "postCreateCommand": "bun install",
 
   "forwardPorts": [3000, 6006, 9229, 8989],
@@ -32,7 +32,7 @@
     "3000": { "label": "Next.js", "onAutoForward": "notify" },
     "6006": { "label": "Storybook", "onAutoForward": "silent" },
     "9229": { "label": "Node inspector", "onAutoForward": "silent" },
-    "8989": { "label": "Uppdrag API", "onAutoForward": "silent" }
+    "8989": { "label": "Gig API", "onAutoForward": "silent" }
   },
 
   "remoteUser": "node",

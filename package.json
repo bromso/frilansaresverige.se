@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "dev": "bun run --filter '@frilansaresverige/web' dev",
-    "dev:uppdrag": "bun run --filter '@frilansaresverige/uppdrag' dev",
+    "dev:gig": "bun run --filter '@frilansaresverige/gig' dev",
     "build": "bun run --filter '@frilansaresverige/web' build",
     "start": "bun run --filter '@frilansaresverige/web' start",
     "test": "bun test",

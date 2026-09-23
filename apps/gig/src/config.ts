@@ -85,7 +85,7 @@ export function loadConfig(env: Env = process.env): Config {
       memberCountChannel: env.SLACK_MEMBER_COUNT_CHANNEL?.trim() || 'C8P11NBEF',
     },
     siteUrl: required(env, 'SITE_URL').replace(/\/+$/, ''),
-    apiKey: required(env, 'UPPDRAG_API_KEY'),
+    apiKey: required(env, 'GIG_API_KEY'),
     blockedSenderDomains: (env.BLOCKED_SENDER_DOMAINS ?? 'gmail.com,partna.se')
       .split(',')
       .map((domain) => domain.trim().toLowerCase())

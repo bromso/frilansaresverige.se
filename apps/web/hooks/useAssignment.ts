@@ -33,7 +33,7 @@ const failed = (response: Response, payload: Record<string, unknown>) =>
 export async function fetchAssignment(
   id: string,
 ): Promise<LoadedAssignment | null> {
-  const response = await fetch(`/api/uppdrag/assignments/${id}`)
+  const response = await fetch(`/api/gig/assignments/${id}`)
   if (response.status === 404) {
     return null
   }
@@ -62,7 +62,7 @@ export async function fetchAssignment(
 }
 
 export async function fetchComments(id: string): Promise<CommentView[]> {
-  const response = await fetch(`/api/uppdrag/assignments/${id}/comments`)
+  const response = await fetch(`/api/gig/assignments/${id}/comments`)
   const payload = await response.json()
   if (!response.ok || !Array.isArray(payload)) {
     throw new SubmitError(
@@ -109,7 +109,7 @@ export const useAssignment = (id: string | undefined) => {
     if (!id) {
       return
     }
-    await postForm(`/api/uppdrag/assignments/${id}/comments`, { comment })
+    await postForm(`/api/gig/assignments/${id}/comments`, { comment })
     setComments(await fetchComments(id))
   }
 
@@ -117,7 +117,7 @@ export const useAssignment = (id: string | undefined) => {
     if (!id) {
       return
     }
-    const response = await fetch(`/api/uppdrag/assignments/${id}`, {
+    const response = await fetch(`/api/gig/assignments/${id}`, {
       method: 'DELETE',
     })
     const payload = await readJson(response)
