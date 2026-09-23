@@ -39,8 +39,8 @@ describe('useAssignment', () => {
 
   it('loads the listing and its comments sorted by id', async () => {
     scriptFetch({
-      [`GET /api/uppdrag/assignments/${ID}`]: { status: 200, body: listing },
-      [`GET /api/uppdrag/assignments/${ID}/comments`]: {
+      [`GET /api/gig/assignments/${ID}`]: { status: 200, body: listing },
+      [`GET /api/gig/assignments/${ID}/comments`]: {
         status: 200,
         body: [
           { id: 2, comment: 'Två', created: 2 },
@@ -60,7 +60,7 @@ describe('useAssignment', () => {
 
   it('reports a missing listing and an error', async () => {
     scriptFetch({
-      [`GET /api/uppdrag/assignments/${ID}`]: {
+      [`GET /api/gig/assignments/${ID}`]: {
         status: 404,
         body: { success: false },
       },
@@ -69,7 +69,7 @@ describe('useAssignment', () => {
     await waitFor(() => expect(result.current.status).toBe('missing'))
 
     scriptFetch({
-      [`GET /api/uppdrag/assignments/${ID}`]: {
+      [`GET /api/gig/assignments/${ID}`]: {
         status: 502,
         body: { success: false },
       },
@@ -80,7 +80,7 @@ describe('useAssignment', () => {
 
   it('does not fetch comments for a deleted listing', async () => {
     const fetchMock = scriptFetch({
-      [`GET /api/uppdrag/assignments/${ID}`]: {
+      [`GET /api/gig/assignments/${ID}`]: {
         status: 200,
         body: { id: ID, title: 'Frontendutvecklare', deleted: true },
       },
@@ -113,7 +113,7 @@ describe('useAssignment', () => {
       { id: 1, comment: 'Ny', created: 3 },
     ])
     const post = fn.mock.calls.find(([, init]) => init?.method === 'POST')
-    expect(post?.[0]).toBe(`/api/uppdrag/assignments/${ID}/comments`)
+    expect(post?.[0]).toBe(`/api/gig/assignments/${ID}/comments`)
     expect(JSON.parse(String(post?.[1]?.body))).toEqual({ comment: 'Ny' })
   })
 

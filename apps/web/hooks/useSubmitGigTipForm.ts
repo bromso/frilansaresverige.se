@@ -31,7 +31,7 @@ export const useSubmitGigTipForm = () => {
         : ''
     // Radix RadioGroup renders hidden radio inputs, so the named form
     // control is a RadioNodeList whose .value is the checked item's value.
-    // The keys are the uppdrag service's, not the form's.
+    // The keys are the gig service's, not the form's.
     const relation = controlValue(target, 'relation')
     const requestBody = {
       senderType: RELATION_TO_SENDER_TYPE[relation] ?? relation,
@@ -55,7 +55,7 @@ export const useSubmitGigTipForm = () => {
     }
 
     try {
-      setData(await postForm('/api/uppdrag/assignments', requestBody))
+      setData(await postForm('/api/gig/assignments', requestBody))
       setError(null)
     } catch (e) {
       setError(e)

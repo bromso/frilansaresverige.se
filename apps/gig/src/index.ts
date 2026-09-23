@@ -52,7 +52,7 @@ const server = Bun.serve({
   },
 })
 
-console.log(`uppdrag listening on http://${server.hostname}:${server.port}`)
+console.log(`gig listening on http://${server.hostname}:${server.port}`)
 
 // Anything that never reached Slack (a crash mid-post, an outage) is
 // retried on every start; the member count is refreshed hourly.

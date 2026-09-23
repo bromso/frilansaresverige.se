@@ -1,8 +1,8 @@
-import { createUppdragProxy } from '../../../lib/uppdrag-proxy.server'
+import { createGigProxy } from '../../../lib/gig-proxy.server'
 
 // POST: publish a listing. The body is the service's shape, mapped by
 // hooks/useSubmitGigTipForm.ts.
-export default createUppdragProxy({
+export default createGigProxy({
   methods: ['POST'],
   path: () => '/api/assignments',
 })

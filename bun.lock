@@ -11,6 +11,19 @@
         "shadcn": "^4.19.1",
       },
     },
+    "apps/gig": {
+      "name": "@frilansaresverige/gig",
+      "version": "0.0.0",
+      "dependencies": {
+        "nodemailer": "^9.0.3",
+      },
+      "devDependencies": {
+        "@frilansaresverige/tsconfig": "workspace:*",
+        "@types/bun": "^1.4.0",
+        "@types/nodemailer": "^7.0.0",
+        "typescript": "^6.0.3",
+      },
+    },
     "apps/story": {
       "name": "@frilansaresverige/story",
       "version": "0.0.0",
@@ -33,19 +46,6 @@
         "tailwindcss": "4.3.3",
         "typescript": "^6.0.3",
         "vite": "8.2.2",
-      },
-    },
-    "apps/uppdrag": {
-      "name": "@frilansaresverige/uppdrag",
-      "version": "0.0.0",
-      "dependencies": {
-        "nodemailer": "^9.0.3",
-      },
-      "devDependencies": {
-        "@frilansaresverige/tsconfig": "workspace:*",
-        "@types/bun": "^1.4.0",
-        "@types/nodemailer": "^7.0.0",
-        "typescript": "^6.0.3",
       },
     },
     "apps/web": {
@@ -276,13 +276,13 @@
 
     "@floating-ui/utils": ["@floating-ui/utils@0.2.12", "", {}, "sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww=="],
 
+    "@frilansaresverige/gig": ["@frilansaresverige/gig@workspace:apps/gig"],
+
     "@frilansaresverige/story": ["@frilansaresverige/story@workspace:apps/story"],
 
     "@frilansaresverige/tsconfig": ["@frilansaresverige/tsconfig@workspace:packages/tsconfig"],
 
     "@frilansaresverige/ui": ["@frilansaresverige/ui@workspace:packages/ui"],
-
-    "@frilansaresverige/uppdrag": ["@frilansaresverige/uppdrag@workspace:apps/uppdrag"],
 
     "@frilansaresverige/web": ["@frilansaresverige/web@workspace:apps/web"],
 

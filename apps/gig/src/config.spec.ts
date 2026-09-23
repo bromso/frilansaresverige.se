@@ -11,7 +11,7 @@ const full = {
   SLACK_CHANNEL_BROKER: '#uppdrag-formedlare',
   SLACK_CHANNEL_DIRECT: '#uppdrag-direkt',
   SITE_URL: 'https://frilansaresverige.se/',
-  UPPDRAG_API_KEY: 'k',
+  GIG_API_KEY: 'k',
 }
 
 describe('loadConfig', () => {

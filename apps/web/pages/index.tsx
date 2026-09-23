@@ -26,12 +26,12 @@ import Seo, { SITE_NAME, SITE_URL } from '../components/Seo'
 import StructuredData from '../components/StructuredData'
 import { requireRoute } from '../lib/routes'
 
-// On the server the uppdrag service is reached over the Docker network;
+// On the server the gig service is reached over the Docker network;
 // a checkout without the env still gets a count from the public domain.
-const UPPDRAG_API_URL =
-  process.env.UPPDRAG_API_URL?.replace(/\/+$/, '') ||
+const GIG_API_URL =
+  process.env.GIG_API_URL?.replace(/\/+$/, '') ||
   'https://uppdrag.frilansaresverige.se'
-const MEMBER_COUNT_API = `${UPPDRAG_API_URL}/api/member-count`
+const MEMBER_COUNT_API = `${GIG_API_URL}/api/member-count`
 const FALLBACK_MEMBER_COUNT = 'flera tusen'
 const FETCH_TIMEOUT_MS = 1000
 

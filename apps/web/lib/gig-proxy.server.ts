@@ -3,14 +3,14 @@ import { HONEYPOT_FIELD } from './form-fields'
 import { checkRateLimit } from './rate-limit.server'
 import { clientKey } from './slack-form.server'
 
-// Forwards the /api/uppdrag/* routes to the uppdrag service over the
+// Forwards the /api/gig/* routes to the gig service over the
 // Docker network. The browser never sees the service: this is where the
 // honeypot and per-IP rate limit guard the writes, and the shared key
 // means the service refuses anything that did not come through here.
 
 export type ProxyMethod = 'GET' | 'POST' | 'DELETE'
 
-export interface UppdragProxyRoute {
+export interface GigProxyRoute {
   methods: readonly ProxyMethod[]
   /** Upstream path for this request, or null when the query is invalid. */
   path: (query: NextApiRequest['query']) => string | null
@@ -37,8 +37,8 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
 
 const NOT_DELIVERED = 'The submission could not be delivered, please try again'
 
-export function createUppdragProxy(
-  route: UppdragProxyRoute,
+export function createGigProxy(
+  route: GigProxyRoute,
   {
     env = process.env,
     fetchImpl = fetch,
@@ -60,10 +60,10 @@ export function createUppdragProxy(
       return
     }
 
-    const base = env.UPPDRAG_API_URL?.replace(/\/+$/, '')
-    const key = env.UPPDRAG_API_KEY
+    const base = env.GIG_API_URL?.replace(/\/+$/, '')
+    const key = env.GIG_API_KEY
     if (!base || !key) {
-      log('UPPDRAG_API_URL or UPPDRAG_API_KEY is not set; refusing the request')
+      log('GIG_API_URL or GIG_API_KEY is not set; refusing the request')
       res.status(500).json({
         success: false,
         error: 'The form is not configured on the server',
@@ -119,7 +119,7 @@ export function createUppdragProxy(
         signal: AbortSignal.timeout(10_000),
       })
     } catch (error) {
-      log('The uppdrag service could not be reached', error)
+      log('The gig service could not be reached', error)
       res.status(502).json({ success: false, error: NOT_DELIVERED })
       return
     }
@@ -130,7 +130,7 @@ export function createUppdragProxy(
       payload = JSON.parse(text)
     } catch {
       log(
-        `Unexpected response from the uppdrag service: ${upstream.status} ${text.slice(0, 200)}`,
+        `Unexpected response from the gig service: ${upstream.status} ${text.slice(0, 200)}`,
       )
       res.status(502).json({ success: false, error: NOT_DELIVERED })
       return
@@ -138,7 +138,7 @@ export function createUppdragProxy(
     // A 401 means the shared key is out of step; a 5xx is a service fault.
     // Both pass through to the client, but someone should see them here.
     if (upstream.status === 401 || upstream.status >= 500) {
-      log(`The uppdrag service answered ${upstream.status}`)
+      log(`The gig service answered ${upstream.status}`)
     }
     res.status(upstream.status).json(payload)
   }

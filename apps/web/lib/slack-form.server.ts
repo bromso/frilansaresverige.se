@@ -5,7 +5,7 @@ import { checkRateLimit } from './rate-limit.server'
 export { HONEYPOT_FIELD }
 
 // Shared plumbing for the /api/request-slack-invitation form API route
-// (the gig-tip form now goes through lib/uppdrag-proxy.server.ts). The
+// (the gig-tip form now goes through lib/gig-proxy.server.ts). The
 // route describes its fields and how to lay them out as a Slack message;
 // this module does the rest: method
 // and content-type checks, the honeypot, per-IP rate limiting, input
