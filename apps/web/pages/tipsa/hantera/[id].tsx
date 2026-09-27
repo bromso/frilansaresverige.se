@@ -12,10 +12,12 @@ import {
 } from '@frilansaresverige/ui/ui/alert-dialog'
 import { Label } from '@frilansaresverige/ui/ui/label'
 import { Textarea } from '@frilansaresverige/ui/ui/textarea'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { type FormEvent, useState } from 'react'
 import AssignmentPreview from '../../../components/AssignmentPreview'
 import { FIELD_CLASSES, LABEL_CLASSES } from '../../../components/form-classes'
+import { ERROR_ALERT_CLASSES } from '../../../components/form-extras'
 import Seo from '../../../components/Seo'
 import { useAssignment } from '../../../hooks/useAssignment'
 import { requireRoute } from '../../../lib/routes'
@@ -81,6 +83,11 @@ const Hantera = () => {
         path={meta.path}
         noindex
       />
+      <Head>
+        {/* The id in this url is the only credential for managing the
+            listing; keep it out of the referrer sent to the next page. */}
+        <meta name="referrer" content="origin" />
+      </Head>
 
       <p className="font-display mb-3 text-sm font-bold tracking-widest text-eyebrow uppercase">
         Konsultuppdrag
@@ -116,10 +123,7 @@ const Hantera = () => {
           </p>
 
           {error && (
-            <Alert
-              role="alert"
-              className="mb-6 rounded-[0.75em] border-[#6a6a6a] bg-[#ffaaaa] p-5 text-brand-grey"
-            >
+            <Alert className={ERROR_ALERT_CLASSES}>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}

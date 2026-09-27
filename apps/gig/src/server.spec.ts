@@ -1,7 +1,7 @@
 import { describe, expect, it, jest } from 'bun:test'
 import type { BunRequest } from 'bun'
 import type { AssignmentHandlers } from './assignments'
-import { createRoutes } from './server'
+import { createFallback, createRoutes } from './server'
 
 const KEY = 'secret'
 
@@ -135,5 +135,24 @@ describe('createRoutes', () => {
     expect(root.headers.get('location')).toBe(
       'https://frilansaresverige.se/tipsa',
     )
+  })
+})
+
+describe('createFallback', () => {
+  const fallback = createFallback({ siteUrl: 'https://frilansaresverige.se' })
+
+  it('sends unknown pages on the old domain to the site', () => {
+    const response = fallback(new Request('http://x/information'))
+    expect(response.status).toBe(301)
+    expect(response.headers.get('location')).toBe(
+      'https://frilansaresverige.se/tipsa',
+    )
+  })
+
+  it('keeps unknown api paths and non-GET requests as 404', () => {
+    expect(fallback(new Request('http://x/api/nope')).status).toBe(404)
+    expect(
+      fallback(new Request('http://x/information', { method: 'POST' })).status,
+    ).toBe(404)
   })
 })

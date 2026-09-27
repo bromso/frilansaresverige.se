@@ -95,7 +95,13 @@ export function createGigProxy(
           body = rest
         }
       }
-      if (!checkRateLimit(clientKey(req), undefined, now())) {
+      // Only publishing and commenting count against the limit: a
+      // withdrawal needs the secret id anyway, and a sender who has added
+      // a few kompletteringar must still be able to take the listing down.
+      if (
+        method === 'POST' &&
+        !checkRateLimit(clientKey(req), undefined, now())
+      ) {
         res.setHeader('Retry-After', '600')
         res.status(429).json({
           success: false,

@@ -26,8 +26,9 @@ const SENDER_TYPE_LABELS: Record<AssignmentView['senderType'], string> = {
   DIRECT: 'Direktavtal med kunden',
 }
 
-// "den 22 september 2026 kl. 14.05" (the Intl time separator varies by
-// runtime, which is why the spec accepts both).
+// "den 22 september 2026 kl. 14.05". The exact Intl output varies by
+// runtime (Bun omits "kl." and may use ":" in the time), which is why the
+// spec matches loosely.
 export const formatCommentDate = (created: number): string =>
   `den ${new Intl.DateTimeFormat('sv-SE', {
     dateStyle: 'long',

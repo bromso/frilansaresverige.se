@@ -78,3 +78,15 @@ export function createRoutes({
     },
   }
 }
+
+// Anything the routes table does not know: old links on the old domain go
+// to the site, while unknown API paths stay a plain 404.
+export function createFallback(config: Pick<Config, 'siteUrl'>) {
+  return (req: Request): Response => {
+    const path = new URL(req.url).pathname
+    if (req.method === 'GET' && !path.startsWith('/api/')) {
+      return Response.redirect(`${config.siteUrl}/tipsa`, 301)
+    }
+    return new Response(null, { status: 404 })
+  }
+}
