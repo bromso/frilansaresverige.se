@@ -400,6 +400,68 @@ describe('createSlackPropagation', () => {
   })
 })
 
+describe('sync thread retry', () => {
+  const NOW = 1_800_000_000_000
+  const daysAgo = (days: number) =>
+    Math.round((NOW - days * 24 * 60 * 60 * 1000) / 1000)
+
+  it('retries a recent listing that has a post but no thread', async () => {
+    const db = createFakeDb()
+    const recent = fakeAssignment({
+      slackId: '1.0',
+      slackChannelId: 'C1',
+      created: daysAgo(2),
+    })
+    db.seed(recent)
+    const { client, calls } = scriptedClient([
+      { ok: true, ts: '1.1', channel: 'C1' },
+    ])
+    const slack = createSlackPropagation({
+      db,
+      slack: client,
+      siteUrl: SITE,
+      log: noLog,
+      now: () => NOW,
+    })
+    await slack.sync()
+    expect(calls).toHaveLength(1)
+    expect(calls[0].method).toBe('postMessage')
+    expect(calls[0].args[0]).toMatchObject({ thread_ts: '1.0' })
+    expect(db.assignments.get(recent.id)?.slackThreadId).toBe('1.1')
+  })
+
+  it('leaves old, deleted and already threaded listings alone', async () => {
+    const db = createFakeDb()
+    db.seed(fakeAssignment({ slackId: '1.0', created: daysAgo(30) }))
+    db.seed(
+      fakeAssignment({
+        slackId: '2.0',
+        slackChannelId: 'C1',
+        created: daysAgo(1),
+        deleted: 5,
+        slackDeleted: true,
+      }),
+    )
+    db.seed(
+      fakeAssignment({
+        slackId: '3.0',
+        slackThreadId: '3.1',
+        created: daysAgo(1),
+      }),
+    )
+    const { client, calls } = scriptedClient([])
+    const slack = createSlackPropagation({
+      db,
+      slack: client,
+      siteUrl: SITE,
+      log: noLog,
+      now: () => NOW,
+    })
+    await slack.sync()
+    expect(calls).toHaveLength(0)
+  })
+})
+
 describe('createMemberCountCache', () => {
   it('is null until refreshed, then caches the count', async () => {
     let count: number | null = null

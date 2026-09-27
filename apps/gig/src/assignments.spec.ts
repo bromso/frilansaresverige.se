@@ -82,13 +82,16 @@ describe('create', () => {
     expect(broken.status).toBe(400)
   })
 
-  it('pretends to accept blocked sender domains', async () => {
+  it('rejects blocked sender domains with a code the form can explain', async () => {
     const { db, slack, log, handlers } = build()
     const response = await handlers.create(
       post({ ...body, emailAddress: 'a@gmail.com' }),
     )
-    expect(response.status).toBe(201)
-    expect(await response.json()).toEqual({ success: true, id: null })
+    expect(response.status).toBe(400)
+    expect(await response.json()).toEqual({
+      success: false,
+      error: 'BLOCKED_SENDER_DOMAIN',
+    })
     expect(db.assignments.size).toBe(0)
     expect(slack.propagateAssignment).not.toHaveBeenCalled()
     expect(log).toHaveBeenCalledTimes(1)

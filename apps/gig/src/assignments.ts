@@ -4,6 +4,7 @@ import type { SlackPropagation } from './slack'
 import { contactText } from './templates'
 import type { Logger, SenderType } from './types'
 import {
+  BLOCKED_SENDER_DOMAIN,
   isBlockedSender,
   parseAssignmentBody,
   parseCommentBody,
@@ -63,11 +64,11 @@ export function createAssignmentHandlers({
         return fail(400, parsed.error)
       }
       if (isBlockedSender(parsed.value.emailAddress, blockedSenderDomains)) {
-        // Inherited behaviour: these senders believe they published.
+        // The form turns the code into copy asking for a company address.
         log(
-          `Dropped a submission from blocked sender domain: ${senderDomain(parsed.value.emailAddress)}`,
+          `Rejected a submission from blocked sender domain: ${senderDomain(parsed.value.emailAddress)}`,
         )
-        return json(201, { success: true, id: null })
+        return fail(400, BLOCKED_SENDER_DOMAIN)
       }
       const id = await db.saveAssignment(
         parsed.value,

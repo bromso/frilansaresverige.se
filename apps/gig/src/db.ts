@@ -23,6 +23,8 @@ export interface Db {
   getAssignment(id: string): Promise<Assignment | null>
   getAssignmentIdsNeedingSlackPropagation(): Promise<string[]>
   getAssignmentIdsNeedingSlackDeletion(): Promise<string[]>
+  /** Posted, live, but without a thread reply; only rows created since `since` (unix seconds). */
+  getAssignmentIdsNeedingSlackThread(since: number): Promise<string[]>
   getAssignmentComments(id: string): Promise<AssignmentComment[]>
   saveAssignmentComment(
     id: string,
@@ -125,6 +127,14 @@ export function createDb(mysqlUrl: string): Db {
       const rows = await sql<
         Row[]
       >`SELECT id FROM assignment WHERE slackId IS NULL AND deleted IS NULL`
+      return rows.map((row) => String(row.id))
+    },
+
+    async getAssignmentIdsNeedingSlackThread(since) {
+      const rows = await sql<Row[]>`
+        SELECT id FROM assignment
+        WHERE slackId IS NOT NULL AND slackThreadId IS NULL
+          AND deleted IS NULL AND created >= ${since}`
       return rows.map((row) => String(row.id))
     },
 

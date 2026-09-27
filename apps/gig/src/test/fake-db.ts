@@ -83,6 +83,17 @@ export function createFakeDb(): FakeDb {
         .filter((a) => a.slackId === null && a.deleted === null)
         .map((a) => a.id)
     },
+    async getAssignmentIdsNeedingSlackThread(since) {
+      return [...assignments.values()]
+        .filter(
+          (a) =>
+            a.slackId !== null &&
+            a.slackThreadId === null &&
+            a.deleted === null &&
+            a.created >= since,
+        )
+        .map((a) => a.id)
+    },
     async getAssignmentIdsNeedingSlackDeletion() {
       return [...assignments.values()]
         .filter((a) => a.deleted !== null && !a.slackDeleted)

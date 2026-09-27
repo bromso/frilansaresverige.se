@@ -22,6 +22,9 @@ export const EMAIL_PATTERN = /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/
 /** The 400 body the old service sent; the site's form keys its copy on it. */
 export const INVALID_EMAIL_ADDRESS = 'INVALID_EMAIL_ADDRESS'
 
+/** The 400 body for a sender domain in BLOCKED_SENDER_DOMAINS. */
+export const BLOCKED_SENDER_DOMAIN = 'BLOCKED_SENDER_DOMAIN'
+
 // Same shape and messages as readFields in apps/web/lib/slack-form.server.ts,
 // so the proxy can pass the error straight through to the form.
 export function readFields<K extends string>(
