@@ -102,6 +102,21 @@ describe.skipIf(!MYSQL_URL)('createDb', () => {
     expect(await db.getAssignmentIdsNeedingSlackDeletion()).toContain(id)
   })
 
+  it('finds recent posted listings without a thread', async () => {
+    const recent = await db.saveAssignment(input, '#broker', 1_800_000_000)
+    const old = await db.saveAssignment(input, '#broker', 1_700_000_000)
+    created.push(recent, old)
+    await db.setAssignmentSlackId(recent, '1.0')
+    await db.setAssignmentSlackId(old, '2.0')
+    const ids = await db.getAssignmentIdsNeedingSlackThread(1_799_000_000)
+    expect(ids).toContain(recent)
+    expect(ids).not.toContain(old)
+    await db.setAssignmentSlackThreadId(recent, '1.1')
+    expect(
+      await db.getAssignmentIdsNeedingSlackThread(1_799_000_000),
+    ).not.toContain(recent)
+  })
+
   it('reports health', async () => {
     expect(await db.isHealthy()).toBe(true)
   })

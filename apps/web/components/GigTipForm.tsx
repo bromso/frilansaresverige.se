@@ -19,6 +19,7 @@ import { useRouter } from 'next/router'
 import type { FormEvent } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { useSubmitGigTipForm } from '../hooks/useSubmitGigTipForm'
+import { describeGigError } from '../lib/gig-error-copy'
 import AssignmentPreview, { type AssignmentView } from './AssignmentPreview'
 import {
   EMAIL_PATTERN,
@@ -188,8 +189,7 @@ const GigTipForm = () => {
     >
       {error ? (
         <SubmitErrorAlert reduced={reduced}>
-          Något gick fel när uppdraget skulle publiceras. Försök igen om en
-          stund. Fortsätter det strula, hör av dig via kontaktsidan.
+          {describeGigError(error)}
         </SubmitErrorAlert>
       ) : null}
       <HoneypotField />

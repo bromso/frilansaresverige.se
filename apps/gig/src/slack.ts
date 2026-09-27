@@ -112,16 +112,24 @@ const TERMINAL_UPDATE_ERRORS = new Set([
   'channel_not_found',
 ])
 
+// A lost thread reply is retried on startup for this long after the
+// listing was created. Older rows are left alone: the old service never
+// stored thread ids, so its listings would otherwise all get a thread
+// posted at cutover.
+export const THREAD_RETRY_WINDOW_MS = 7 * 24 * 60 * 60 * 1000
+
 export function createSlackPropagation({
   db,
   slack,
   siteUrl,
   log,
+  now = Date.now,
 }: {
   db: Db
   slack: SlackClient
   siteUrl: string
   log: Logger
+  now?: () => number
 }): SlackPropagation {
   const render = (template: string, source: TemplateSource) =>
     fillTemplate(template, source, siteUrl, escapeMrkdwn)
@@ -257,6 +265,10 @@ export function createSlackPropagation({
 
   const sync = async () => {
     for (const id of await db.getAssignmentIdsNeedingSlackPropagation()) {
+      await propagateAssignment(id)
+    }
+    const since = Math.round((now() - THREAD_RETRY_WINDOW_MS) / 1000)
+    for (const id of await db.getAssignmentIdsNeedingSlackThread(since)) {
       await propagateAssignment(id)
     }
     for (const id of await db.getAssignmentIdsNeedingSlackDeletion()) {
