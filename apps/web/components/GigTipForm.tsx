@@ -18,10 +18,7 @@ import { Textarea } from '@frilansaresverige/ui/ui/textarea'
 import { useRouter } from 'next/router'
 import type { FormEvent } from 'react'
 import { useEffect, useRef, useState } from 'react'
-import {
-  RELATION_TO_SENDER_TYPE,
-  useSubmitGigTipForm,
-} from '../hooks/useSubmitGigTipForm'
+import { useSubmitGigTipForm } from '../hooks/useSubmitGigTipForm'
 import AssignmentPreview, { type AssignmentView } from './AssignmentPreview'
 import {
   EMAIL_PATTERN,
@@ -38,6 +35,7 @@ import {
   SubmitErrorAlert,
   SubmittingStatus,
 } from './form-extras'
+import { type GigPreview, prefillEmail, readGigPreview } from './gig-preview'
 
 const RELATION_OPTIONS = [
   {
@@ -87,41 +85,10 @@ const GigTipForm = () => {
   const [preview, setPreview] = useState<AssignmentView | null>(null)
   const isBroker = relation === 'formedlare'
 
-  // Reads the current answers off the form for the preview step. The
-  // panes stay mounted, so every field is in the DOM.
-  const snapshot = (): {
-    view: AssignmentView
-    contactEmail: string
-  } | null => {
-    const form = formRef.current
-    if (!form) {
-      return null
-    }
-    const data = new FormData(form)
-    const read = (name: string) => String(data.get(name) ?? '').trim()
-    const contactEmail = read('contactEmail')
-    return {
-      contactEmail,
-      view: {
-        title: read('title'),
-        description: read('description'),
-        customerName: read('clientName'),
-        location: read('location') || null,
-        scope: read('omfattning') || null,
-        workForm: data.getAll('arbetsform').map(String).join(', ') || null,
-        contact: [read('contactName'), read('contactPhone'), contactEmail]
-          .filter(Boolean)
-          .join('\n'),
-        senderType: RELATION_TO_SENDER_TYPE[read('relation')] ?? 'DIRECT',
-        clientHourlyRate: read('minRate') || null,
-        // The broker fields are only mounted for brokers, so a direct
-        // listing reads both as empty.
-        customerFee: nonTransparentFee ? null : read('customerFee') || null,
-        customerOrganizationNumber: read('customerOrganizationNumber') || null,
-        deleted: false,
-      },
-    }
-  }
+  const snapshot = (): GigPreview | null =>
+    formRef.current
+      ? readGigPreview(formRef.current, { nonTransparentFee })
+      : null
 
   useEffect(() => {
     if (data?.success) {
@@ -180,7 +147,9 @@ const GigTipForm = () => {
         setPreview(current.view)
         // The receipt goes to the contact by default; the sender can
         // change it on the preview step.
-        setEmailAddress((previous) => previous || current.contactEmail)
+        setEmailAddress((previous) =>
+          prefillEmail(previous, current.contactEmail),
+        )
       }
     }
     setStep(next)

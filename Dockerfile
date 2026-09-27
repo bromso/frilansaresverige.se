@@ -11,11 +11,12 @@ COPY apps/story/package.json apps/story/
 COPY apps/gig/package.json apps/gig/
 COPY packages/tsconfig/package.json packages/tsconfig/
 COPY packages/ui/package.json packages/ui/
-# apps/story is Storybook — a dev-only workspace that is never built or
-# served here. Its manifest must still be copied above (a frozen install
-# fails on a lockfile reference whose package.json is absent), but excluding
-# it from the install drops ~128 packages / ~96MB from this layer. That is
-# real deploy time: deploy.sh streams the whole image over ssh.
+# apps/story (Storybook, dev-only) and apps/gig (the gig service, which has
+# its own image built from apps/gig/Dockerfile) are never built or served
+# here. Their manifests must still be copied above (a frozen install fails
+# on a lockfile reference whose package.json is absent), but excluding them
+# from the install keeps this layer small. That is real deploy time:
+# deploy.sh streams the whole image over ssh.
 RUN bun install --frozen-lockfile --filter '!@frilansaresverige/story' --filter '!@frilansaresverige/gig'
 
 FROM oven/bun:1.4.2-alpine AS builder

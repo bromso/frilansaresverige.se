@@ -144,6 +144,20 @@ describe('createGigProxy', () => {
     expect(limited.headers['Retry-After']).toBe('600')
   })
 
+  it('lets a withdrawal through after the limit is reached', async () => {
+    const { handler: publish } = build()
+    for (let i = 0; i < 5; i++) {
+      await publish(makeReq({ body: { title: 'x' } }), makeRes())
+    }
+    const { handler: withdraw } = build(byId, upstream(200, '{"success":true}'))
+    const res = makeRes()
+    await withdraw(
+      makeReq({ method: 'DELETE', query: { id: 'ABCDEFGHIJKLMNOP' } }),
+      res,
+    )
+    expect(res.statusCode).toBe(200)
+  })
+
   it('forwards with the key and client ip, passing status and body through', async () => {
     const { handler, fetchImpl } = build()
     const res = makeRes()

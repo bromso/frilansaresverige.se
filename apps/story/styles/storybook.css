@@ -11,6 +11,8 @@
    class names would otherwise never be seen and every component would render
    unstyled while the build still succeeded. */
 @source "../../../packages/ui/src";
+/* The listing preview lives in the web app; its story needs its classes too. */
+@source "../../web/components/AssignmentPreview.tsx";
 
 @layer base {
   /* Brand ground, foreground and typography. Deliberately NOT the decorative

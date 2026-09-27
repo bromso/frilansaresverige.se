@@ -2,7 +2,7 @@ import { createAssignmentHandlers } from './assignments'
 import { loadConfig } from './config'
 import { createDb } from './db'
 import { createMailer, createTransport } from './email'
-import { createRoutes } from './server'
+import { createFallback, createRoutes } from './server'
 import {
   createMemberCountCache,
   createSlackClient,
@@ -45,7 +45,7 @@ const server = Bun.serve({
     isHealthy: () => db.isHealthy(),
     memberCount: () => memberCount.get(),
   }),
-  fetch: () => new Response(null, { status: 404 }),
+  fetch: createFallback(config),
   error(error) {
     log('Unhandled error', error)
     return new Response(null, { status: 500 })

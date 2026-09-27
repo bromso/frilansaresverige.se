@@ -21,6 +21,10 @@ export const StatusSlide = ({
  * of it, so what the visitor typed survives and they can simply try
  * again; `role="alert"` makes screen readers announce it right away.
  */
+/** Classes for the failure notice, shared with the manage page. */
+export const ERROR_ALERT_CLASSES =
+  'mb-6 rounded-[0.75em] border-[#6a6a6a] bg-[#ffaaaa] p-5 text-brand-grey'
+
 export const SubmitErrorAlert = ({
   reduced,
   children,
@@ -29,10 +33,7 @@ export const SubmitErrorAlert = ({
   children: string
 }) => (
   <StatusSlide reduced={reduced}>
-    <Alert
-      role="alert"
-      className="mb-6 rounded-[0.75em] border-[#6a6a6a] bg-[#ffaaaa] p-5 text-brand-grey"
-    >
+    <Alert className={ERROR_ALERT_CLASSES}>
       <AlertDescription>{children}</AlertDescription>
     </Alert>
   </StatusSlide>
